@@ -1,0 +1,23 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-peerstore-dev-54370-authRole",
+      "UnauthRoleArn": "arn:aws:iam::301856136276:role/amplify-peerstore-dev-54370-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::301856136276:role/amplify-peerstore-dev-54370-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-peerstore-dev-54370-deployment",
+      "UnauthRoleName": "amplify-peerstore-dev-54370-unauthRole",
+      "StackName": "amplify-peerstore-dev-54370",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:301856136276:stack/amplify-peerstore-dev-54370/ad8bae20-c96f-11ef-87b2-0aa8e213cc2d",
+      "AmplifyAppId": "d3rm64c4fy6i0s"
+    },
+    "categories": {
+      "auth": {
+        "peerstorea570dc98": {}
+      },
+      "api": {
+        "peerstore": {}
+      }
+    }
+  }
+}

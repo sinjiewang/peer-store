@@ -1,0 +1,54 @@
+# This "input" configures a global authorization rule to enable public access to
+# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+#input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
+
+type Position @model {
+  positionID: String! @primaryKey
+  lat: Float! @index
+  lng: Float! @index
+  stores: [StoreConnection] @hasMany(indexName: "storeConnectionsByPositionID", fields: ["positionID"])
+}
+
+type StoreConnection @model {
+  id: ID!
+  connectionID: String! @index
+  store: Store @hasOne(fields: ["storeID"])
+  storeID: ID! @index
+  positionID: String! @index(name: "storeConnectionsByPositionID")
+  position: Position @belongsTo(fields: ["positionID"])
+}
+
+type ClientConnection @model {
+  id: ID!
+  connectionID: String! @index
+  lat: Float!
+  lng: Float!
+  zone: String! @index
+}
+
+type Store @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  name: String!
+  description: String
+  address: String
+  city: String
+  state: String
+  # zip: String
+  phone: String
+  email: String
+  # website: String
+  # facebook: String
+  # instagram: String
+  # twitter: String
+  # youtube: String
+  # tiktok: String
+  # pinterest: String
+  # snapchat: String
+  # linkedin: String
+  # hours: String
+  image: String
+  tags: [String]
+  merchantID: String
+  hashKey: String
+  hashIV: String
+}
