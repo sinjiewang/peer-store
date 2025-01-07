@@ -1,8 +1,10 @@
 <script setup>
-  import { ref, computed } from 'vue'
+  import { ref, computed, mergeProps } from 'vue'
   import { useRouter } from 'vue-router'
   import { useStore } from 'vuex'
   import { useTheme } from 'vuetify'
+  import LocalesBtn from './header/LocalesBtn.vue'
+  import ThemeBtn from './header/ThemeBtn.vue'
 
   defineProps({
     drawer: {
@@ -17,24 +19,14 @@
   const theme = useTheme()
   const isAuthenticated = computed(() => store.getters['auth/isAuthenticated'])
 
-  const dataTheme = document.documentElement.getAttribute('data-theme')
-  const currentTheme = ref(dataTheme)
-  const loginLable = ref('Login')
-  const logoutLable = ref('Logout')
-
   function onLoginClick() {
     router.push('/login')
   }
+
   async function onLogoutClick() {
     await store.dispatch('auth/signOut')
 
     router.push('/login')
-  }
-  function onThemeClick() {
-    currentTheme.value = currentTheme.value === 'light' ? 'dark' : 'light'
-    document.documentElement.setAttribute('data-theme', currentTheme.value)
-    theme.global.name.value = currentTheme.value
-    localStorage.setItem('theme', currentTheme.value)
   }
 </script>
 
@@ -44,23 +36,19 @@
       class="hidden-lg-and-up"
       @click="$emit('update:drawer', !drawer)"
     ></v-app-bar-nav-icon>
+    <v-app-bar-title class="text-left" />
 
-    <v-app-bar-title class="text-left"></v-app-bar-title>
+    <v-spacer />
 
-    <v-spacer></v-spacer>
-
-    <v-btn
-      :icon="currentTheme === 'dark' ? 'mdi-brightness-2' : 'mdi-brightness-7'"
-      class="mr-3"
-      @click="onThemeClick"
-    ></v-btn>
+    <LocalesBtn />
+    <ThemeBtn />
     <v-btn
       v-if="!isAuthenticated"
       class="app-bar-button"
       variant="outlined"
       @click="onLoginClick"
     >
-      {{ loginLable }}
+      {{ $t('Login') }}
     </v-btn>
     <v-btn
       v-if="isAuthenticated"
@@ -68,12 +56,12 @@
       variant="outlined"
       @click="onLogoutClick"
     >
-      {{ logoutLable }}
+      {{ $t('Logout') }}
     </v-btn>
   </v-app-bar>
 </template>
 
-<style scoped type="text/scss">
+<style scoped lang="scss">
 .app-bar-button {
   margin-right: 20px !important;
 }

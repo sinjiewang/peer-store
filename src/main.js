@@ -18,6 +18,8 @@ import router from './router'
 import '@/styles/main.scss'
 import '@/styles/amplify.scss'
 
+import i18n from './i18n'
+
 Amplify.configure(awsconfig)
 
 const sysTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
@@ -57,6 +59,7 @@ const initializeApp = async () => {
     .use(AmplifyVue)
     .use(vuetify)
     .use(router)
+    .use(i18n)
     .mount('#app')
 }
 

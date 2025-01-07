@@ -1,5 +1,6 @@
 <script setup>
   import { ref } from 'vue'
+  import { useI18n } from 'vue-i18n'
 
   defineProps({
     drawer: {
@@ -7,17 +8,17 @@
       required: true,
     },
   })
-
+  const { t: $t } = useI18n()
   const emit = defineEmits(['update:drawer'])
 
   const navigation = ref([
     {
-      text: 'Browse',
+      text: $t('Browse'),
       path: '/browse',
       icon: 'mdi-search-web',
     },
     {
-      text: 'Store',
+      text: $t('Store'),
       path: '/store',
       icon: 'mdi-store',
     },
