@@ -4,16 +4,17 @@
     "apiName": "peerstore",
     "serviceName": "AppSync",
     "defaultAuthType": {
-      "mode": "API_KEY",
-      "expirationTime": 365,
-      "apiKeyExpirationDate": "2026-01-03T01:18:00.905Z",
-      "keyDescription": ""
+      "mode": "AMAZON_COGNITO_USER_POOLS",
+      "cognitoUserPoolId": "authpeerstorea570dc98"
     },
     "additionalAuthTypes": [
       {
-        "mode": "AMAZON_COGNITO_USER_POOLS",
-        "cognitoUserPoolId": "authpeerstorea570dc98"
+        "mode": "API_KEY",
+        "expirationTime": 365,
+        "apiKeyExpirationDate": "2026-01-08T06:10:21.379Z",
+        "keyDescription": ""
       }
-    ]
+    ],
+    "conflictResolution": {}
   }
 }

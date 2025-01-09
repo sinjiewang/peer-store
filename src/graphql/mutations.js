@@ -73,6 +73,7 @@ export const createStoreConnection = /* GraphQL */ `
         address
         city
         state
+        zip
         phone
         email
         image
@@ -116,6 +117,7 @@ export const updateStoreConnection = /* GraphQL */ `
         address
         city
         state
+        zip
         phone
         email
         image
@@ -159,6 +161,7 @@ export const deleteStoreConnection = /* GraphQL */ `
         address
         city
         state
+        zip
         phone
         email
         image
@@ -250,6 +253,7 @@ export const createStore = /* GraphQL */ `
       address
       city
       state
+      zip
       phone
       email
       image
@@ -276,6 +280,7 @@ export const updateStore = /* GraphQL */ `
       address
       city
       state
+      zip
       phone
       email
       image
@@ -302,6 +307,7 @@ export const deleteStore = /* GraphQL */ `
       address
       city
       state
+      zip
       phone
       email
       image

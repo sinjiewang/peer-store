@@ -57,6 +57,7 @@ export const getStoreConnection = /* GraphQL */ `
         address
         city
         state
+        zip
         phone
         email
         image
@@ -143,6 +144,62 @@ export const listClientConnections = /* GraphQL */ `
         zone
         createdAt
         updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const getStore = /* GraphQL */ `
+  query GetStore($id: ID!) {
+    getStore(id: $id) {
+      id
+      name
+      description
+      address
+      city
+      state
+      zip
+      phone
+      email
+      image
+      tags
+      merchantID
+      hashKey
+      hashIV
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const listStores = /* GraphQL */ `
+  query ListStores(
+    $filter: ModelStoreFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listStores(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        description
+        address
+        city
+        state
+        zip
+        phone
+        email
+        image
+        tags
+        merchantID
+        hashKey
+        hashIV
+        createdAt
+        updatedAt
+        owner
         __typename
       }
       nextToken
@@ -346,60 +403,6 @@ export const clientConnectionsByZone = /* GraphQL */ `
         zone
         createdAt
         updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-export const getStore = /* GraphQL */ `
-  query GetStore($id: ID!) {
-    getStore(id: $id) {
-      id
-      name
-      description
-      address
-      city
-      state
-      phone
-      email
-      image
-      tags
-      merchantID
-      hashKey
-      hashIV
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const listStores = /* GraphQL */ `
-  query ListStores(
-    $filter: ModelStoreFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listStores(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        name
-        description
-        address
-        city
-        state
-        phone
-        email
-        image
-        tags
-        merchantID
-        hashKey
-        hashIV
-        createdAt
-        updatedAt
-        owner
         __typename
       }
       nextToken

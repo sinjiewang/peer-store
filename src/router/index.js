@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Browse from '@/components/Browse.vue'
-import Auth from '@/components/Auth.vue'
-import Store from '@/components/Store.vue'
+import Browse from '@/pages/Browse.vue'
+import Auth from '@/pages/Auth.vue'
+import Store from '@/pages/Store/index.vue'
 import { useStore } from 'vuex'
 
 const routes = [

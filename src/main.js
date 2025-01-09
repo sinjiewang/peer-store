@@ -13,10 +13,11 @@ import { Amplify } from 'aws-amplify'
 import awsconfig from './aws-exports'
 import AmplifyVue from '@aws-amplify/ui-vue'
 import { getCurrentUser } from 'aws-amplify/auth'
+import { generateClient } from 'aws-amplify/api'
 
 import router from './router'
-import '@/styles/main.scss'
-import '@/styles/amplify.scss'
+import '@/assets/styles/main.scss'
+import '@/assets/styles/amplify.scss'
 
 import i18n from './i18n'
 
@@ -53,13 +54,14 @@ const initializeApp = async () => {
   } catch (error) {
     console.warn(error)
   }
-
+  const graphqlClient = generateClient({ authMode: 'userPool' })
   const app = createApp(App)
     .use(store)
     .use(AmplifyVue)
     .use(vuetify)
     .use(router)
     .use(i18n)
+    .provide('graphqlClient', graphqlClient)
     .mount('#app')
 }
 

@@ -33,7 +33,7 @@ type Store @model @auth(rules: [{ allow: owner }]) {
   address: String
   city: String
   state: String
-  # zip: String
+  zip: String
   phone: String
   email: String
   # website: String

@@ -1,8 +1,23 @@
 {
+  "Address": "Address",
+  "Are you sure you want to delete?": "Are you sure you want to delete?",
   "Browse": "Browse",
+  "Cancel": "Cancel",
+  "Created at": "Created at",
+  "Delete": "Delete",
+  "Store description": "Store description",
+  "Email": "Email",
   "Login": "Login",
   "Logout": "Logout",
+  "Store name": "Store name",
+  "New Store": "New Store",
+  "Payment Gateway": "Payment Gateway",
+  "Phone": "Phone",
+  "Reset": "Reset",
+  "Save": "Save",
+  "Store": "Store",
   "Theme": "Theme",
   "Translations": "Translations",
-  "Store": "Store"
+  "Updated at": "Updated at",
+  "ZIP code": "ZIP code"
 }

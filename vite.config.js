@@ -14,4 +14,11 @@ export default defineConfig({
   optimizeDeps: {
     include: ['aws-amplify'],
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: ``
+      },
+    },
+  },
 })

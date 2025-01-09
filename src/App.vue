@@ -2,7 +2,7 @@
   import Header from './components/Header.vue'
   import Navigation from './components/Navigation.vue'
   import { onBeforeMount, onMounted, onUnmounted, ref } from 'vue'
-  import { useStore } from 'vuex';
+  import { useStore } from 'vuex'
   import { Hub } from 'aws-amplify/utils'
 
   const store = useStore()
