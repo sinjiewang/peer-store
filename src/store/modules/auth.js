@@ -1,4 +1,4 @@
-import { signOut } from 'aws-amplify/auth'
+import { signOut, fetchAuthSession } from 'aws-amplify/auth'
 
 export default {
   namespaced: true,
@@ -29,6 +29,18 @@ export default {
         resolve()
       })
     },
+    async getIdToken() {
+      try {
+        const currentSession = await fetchAuthSession()
+        const idToken = currentSession.tokens?.idToken?.toString()
+
+        return idToken
+      } catch (error) {
+        console.error('Error fetching ID Token:', error)
+
+        throw error
+      }
+    }
   },
   getters: {
     user: (state) => state.user,

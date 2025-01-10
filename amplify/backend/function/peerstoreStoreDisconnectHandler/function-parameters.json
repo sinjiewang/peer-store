@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "storage": {
+      "Position:@model(appsync)": [
+        "read",
+        "delete"
+      ],
+      "StoreConnection:@model(appsync)": [
+        "read",
+        "delete"
+      ],
+      "Store:@model(appsync)": [
+        "read",
+        "update"
+      ]
+    }
+  },
+  "lambdaLayers": [
+    {
+      "type": "ProjectLayer",
+      "resourceName": "peerstoreconfigure",
+      "env": "dev",
+      "version": "Always choose latest version",
+      "isLatestVersionSelected": true
+    }
+  ]
+}

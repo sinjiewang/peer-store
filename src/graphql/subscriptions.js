@@ -1,6 +1,135 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateClientConnection = /* GraphQL */ `
+  subscription OnCreateClientConnection(
+    $filter: ModelSubscriptionClientConnectionFilterInput
+  ) {
+    onCreateClientConnection(filter: $filter) {
+      id
+      connectionID
+      lat
+      lng
+      zone
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateClientConnection = /* GraphQL */ `
+  subscription OnUpdateClientConnection(
+    $filter: ModelSubscriptionClientConnectionFilterInput
+  ) {
+    onUpdateClientConnection(filter: $filter) {
+      id
+      connectionID
+      lat
+      lng
+      zone
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteClientConnection = /* GraphQL */ `
+  subscription OnDeleteClientConnection(
+    $filter: ModelSubscriptionClientConnectionFilterInput
+  ) {
+    onDeleteClientConnection(filter: $filter) {
+      id
+      connectionID
+      lat
+      lng
+      zone
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onCreateStore = /* GraphQL */ `
+  subscription OnCreateStore(
+    $filter: ModelSubscriptionStoreFilterInput
+    $owner: String
+  ) {
+    onCreateStore(filter: $filter, owner: $owner) {
+      id
+      name
+      description
+      address
+      city
+      state
+      zip
+      phone
+      email
+      image
+      tags
+      merchantID
+      hashKey
+      hashIV
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onUpdateStore = /* GraphQL */ `
+  subscription OnUpdateStore(
+    $filter: ModelSubscriptionStoreFilterInput
+    $owner: String
+  ) {
+    onUpdateStore(filter: $filter, owner: $owner) {
+      id
+      name
+      description
+      address
+      city
+      state
+      zip
+      phone
+      email
+      image
+      tags
+      merchantID
+      hashKey
+      hashIV
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onDeleteStore = /* GraphQL */ `
+  subscription OnDeleteStore(
+    $filter: ModelSubscriptionStoreFilterInput
+    $owner: String
+  ) {
+    onDeleteStore(filter: $filter, owner: $owner) {
+      id
+      name
+      description
+      address
+      city
+      state
+      zip
+      phone
+      email
+      image
+      tags
+      merchantID
+      hashKey
+      hashIV
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
 export const onCreatePosition = /* GraphQL */ `
   subscription OnCreatePosition($filter: ModelSubscriptionPositionFilterInput) {
     onCreatePosition(filter: $filter) {
@@ -174,135 +303,6 @@ export const onDeleteStoreConnection = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      __typename
-    }
-  }
-`;
-export const onCreateClientConnection = /* GraphQL */ `
-  subscription OnCreateClientConnection(
-    $filter: ModelSubscriptionClientConnectionFilterInput
-  ) {
-    onCreateClientConnection(filter: $filter) {
-      id
-      connectionID
-      lat
-      lng
-      zone
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const onUpdateClientConnection = /* GraphQL */ `
-  subscription OnUpdateClientConnection(
-    $filter: ModelSubscriptionClientConnectionFilterInput
-  ) {
-    onUpdateClientConnection(filter: $filter) {
-      id
-      connectionID
-      lat
-      lng
-      zone
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const onDeleteClientConnection = /* GraphQL */ `
-  subscription OnDeleteClientConnection(
-    $filter: ModelSubscriptionClientConnectionFilterInput
-  ) {
-    onDeleteClientConnection(filter: $filter) {
-      id
-      connectionID
-      lat
-      lng
-      zone
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const onCreateStore = /* GraphQL */ `
-  subscription OnCreateStore(
-    $filter: ModelSubscriptionStoreFilterInput
-    $owner: String
-  ) {
-    onCreateStore(filter: $filter, owner: $owner) {
-      id
-      name
-      description
-      address
-      city
-      state
-      zip
-      phone
-      email
-      image
-      tags
-      merchantID
-      hashKey
-      hashIV
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const onUpdateStore = /* GraphQL */ `
-  subscription OnUpdateStore(
-    $filter: ModelSubscriptionStoreFilterInput
-    $owner: String
-  ) {
-    onUpdateStore(filter: $filter, owner: $owner) {
-      id
-      name
-      description
-      address
-      city
-      state
-      zip
-      phone
-      email
-      image
-      tags
-      merchantID
-      hashKey
-      hashIV
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const onDeleteStore = /* GraphQL */ `
-  subscription OnDeleteStore(
-    $filter: ModelSubscriptionStoreFilterInput
-    $owner: String
-  ) {
-    onDeleteStore(filter: $filter, owner: $owner) {
-      id
-      name
-      description
-      address
-      city
-      state
-      zip
-      phone
-      email
-      image
-      tags
-      merchantID
-      hashKey
-      hashIV
-      createdAt
-      updatedAt
-      owner
       __typename
     }
   }

@@ -1,15 +1,18 @@
 <script setup>
   import Header from './components/Header.vue'
   import Navigation from './components/Navigation.vue'
-  import { onBeforeMount, onMounted, onUnmounted, ref } from 'vue'
+  import { onBeforeMount, onMounted, onUnmounted, ref, computed } from 'vue'
   import { useStore } from 'vuex'
+  import { useRoute } from 'vue-router'
   import { Hub } from 'aws-amplify/utils'
 
   const store = useStore()
+  const route = useRoute()
 
   const queryMediaIsMediumScreen = () => window.matchMedia('(min-width: 1280px)').matches
   const defaultDrawer = queryMediaIsMediumScreen()
   const drawer = ref(defaultDrawer)
+  const displayLayout = computed(() => route.meta.layout === undefined || route.meta.layout)
 
   function handleDrawer() {
     const isSmallScreen = !queryMediaIsMediumScreen()
@@ -42,9 +45,13 @@
 <template>
   <v-app>
     <v-layout class="rounded rounded-md">
-      <Header v-model:drawer="drawer"></Header>
+      <Header
+        v-if="displayLayout"
+        v-model:drawer="drawer"
+      ></Header>
 
       <Navigation
+        v-if="displayLayout"
         :drawer="drawer"
         @update:drawer="handleDrawer"
       ></Navigation>

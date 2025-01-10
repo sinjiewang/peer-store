@@ -36,7 +36,7 @@
 <template>
   <v-btn
     class="add-button"
-    prepend-icon="mdi-home-plus-outline"
+    prepend-icon="mdi-store-plus"
     variant="outlined"
     block
     @click="onCreateClick"

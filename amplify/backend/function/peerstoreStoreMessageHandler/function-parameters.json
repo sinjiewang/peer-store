@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "storage": {
+      "ClientConnection:@model(appsync)": [
+        "read"
+      ]
+    }
+  },
+  "lambdaLayers": [
+    {
+      "type": "ProjectLayer",
+      "resourceName": "peerstoreconfigure",
+      "env": "dev",
+      "version": "Always choose latest version",
+      "isLatestVersionSelected": true
+    }
+  ]
+}

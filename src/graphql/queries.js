@@ -1,116 +1,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getPosition = /* GraphQL */ `
-  query GetPosition($positionID: String!) {
-    getPosition(positionID: $positionID) {
-      positionID
-      lat
-      lng
-      stores {
-        nextToken
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const listPositions = /* GraphQL */ `
-  query ListPositions(
-    $positionID: String
-    $filter: ModelPositionFilterInput
-    $limit: Int
-    $nextToken: String
-    $sortDirection: ModelSortDirection
-  ) {
-    listPositions(
-      positionID: $positionID
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      sortDirection: $sortDirection
-    ) {
-      items {
-        positionID
-        lat
-        lng
-        createdAt
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-export const getStoreConnection = /* GraphQL */ `
-  query GetStoreConnection($id: ID!) {
-    getStoreConnection(id: $id) {
-      id
-      connectionID
-      store {
-        id
-        name
-        description
-        address
-        city
-        state
-        zip
-        phone
-        email
-        image
-        tags
-        merchantID
-        hashKey
-        hashIV
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      storeID
-      positionID
-      position {
-        positionID
-        lat
-        lng
-        createdAt
-        updatedAt
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const listStoreConnections = /* GraphQL */ `
-  query ListStoreConnections(
-    $filter: ModelStoreConnectionFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listStoreConnections(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        connectionID
-        storeID
-        positionID
-        createdAt
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
 export const getClientConnection = /* GraphQL */ `
   query GetClientConnection($id: ID!) {
     getClientConnection(id: $id) {
@@ -207,6 +97,110 @@ export const listStores = /* GraphQL */ `
     }
   }
 `;
+export const clientConnectionsByConnectionID = /* GraphQL */ `
+  query ClientConnectionsByConnectionID(
+    $connectionID: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelClientConnectionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    clientConnectionsByConnectionID(
+      connectionID: $connectionID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        connectionID
+        lat
+        lng
+        zone
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const clientConnectionsByZone = /* GraphQL */ `
+  query ClientConnectionsByZone(
+    $zone: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelClientConnectionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    clientConnectionsByZone(
+      zone: $zone
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        connectionID
+        lat
+        lng
+        zone
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const getPosition = /* GraphQL */ `
+  query GetPosition($positionID: String!) {
+    getPosition(positionID: $positionID) {
+      positionID
+      lat
+      lng
+      stores {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const listPositions = /* GraphQL */ `
+  query ListPositions(
+    $positionID: String
+    $filter: ModelPositionFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listPositions(
+      positionID: $positionID
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        positionID
+        lat
+        lng
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
 export const positionsByLat = /* GraphQL */ `
   query PositionsByLat(
     $lat: Float!
@@ -254,6 +248,72 @@ export const positionsByLng = /* GraphQL */ `
         positionID
         lat
         lng
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const getStoreConnection = /* GraphQL */ `
+  query GetStoreConnection($id: ID!) {
+    getStoreConnection(id: $id) {
+      id
+      connectionID
+      store {
+        id
+        name
+        description
+        address
+        city
+        state
+        zip
+        phone
+        email
+        image
+        tags
+        merchantID
+        hashKey
+        hashIV
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      storeID
+      positionID
+      position {
+        positionID
+        lat
+        lng
+        createdAt
+        updatedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const listStoreConnections = /* GraphQL */ `
+  query ListStoreConnections(
+    $filter: ModelStoreConnectionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listStoreConnections(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        connectionID
+        storeID
+        positionID
         createdAt
         updatedAt
         __typename
@@ -341,66 +401,6 @@ export const storeConnectionsByPositionID = /* GraphQL */ `
         connectionID
         storeID
         positionID
-        createdAt
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-export const clientConnectionsByConnectionID = /* GraphQL */ `
-  query ClientConnectionsByConnectionID(
-    $connectionID: String!
-    $sortDirection: ModelSortDirection
-    $filter: ModelClientConnectionFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    clientConnectionsByConnectionID(
-      connectionID: $connectionID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        connectionID
-        lat
-        lng
-        zone
-        createdAt
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-export const clientConnectionsByZone = /* GraphQL */ `
-  query ClientConnectionsByZone(
-    $zone: String!
-    $sortDirection: ModelSortDirection
-    $filter: ModelClientConnectionFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    clientConnectionsByZone(
-      zone: $zone
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        connectionID
-        lat
-        lng
-        zone
         createdAt
         updatedAt
         __typename

@@ -1,5 +1,6 @@
 <script setup>
   import { ref, watch, toRefs, defineEmits, nextTick, inject } from 'vue'
+  import { useRouter } from 'vue-router'
   import { createStore as createMutation, updateStore as updateMutation } from '@/graphql/mutations'
 
   const props = defineProps({
@@ -14,6 +15,7 @@
   const { store } = toRefs(props)
   const clone = ref(null)
   const isDirty = ref(false)
+  const router = useRouter()
 
   const setIsDirty = () => isDirty.value = true
   const onResetClick = (newVal) => {
@@ -58,6 +60,14 @@
     }
   }
   const displayDate = (isoStr) => new Date(isoStr).toLocaleString()
+  const onEstablishClick = () => {
+    const url = router.resolve({
+      name: 'establish',
+      params: { id: store.value.id },
+    }).href
+
+    window.open(url, '_blank')
+  }
 
   watch(store, (newVal) => newVal && onResetClick())
 </script>
@@ -196,6 +206,21 @@
             >{{ $t('Save') }}</v-btn>
           </v-col>
         </v-row>
+        <v-col
+          v-if="clone.id"
+          cols="12"
+          class="d-flex justify-start"
+        >
+          <v-btn
+            color="success"
+            block
+            size="x-large"
+            @click="onEstablishClick"
+          >
+            <span class="mr-2">{{ $t('Establish') }}</span>
+            <v-icon icon="mdi-home-import-outline" size="32"></v-icon>
+          </v-btn>
+        </v-col>
       </v-row>
     </v-container>
   </v-form>

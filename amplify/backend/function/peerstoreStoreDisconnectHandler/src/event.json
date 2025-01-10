@@ -1,0 +1,20 @@
+{
+  "requestContext": {
+    "routeKey": "$disconnect",
+    "eventType": "DISCONNECT",
+    "extendedRequestId": "UJJV_GvGNjMFWgQ=",
+    "requestTime": "05/Mar/2024:06:31:02 +0000",
+    "messageDirection": "IN",
+    "stage": "dev",
+    "connectedAt": 1709620262008,
+    "requestTimeEpoch": 1709620262010,
+    "identity": {
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+        "sourceIp": "36.226.145.42"
+    },
+    "requestId": "UJJV_GvGNjMFWgQ=",
+    "domainName": "k64wydzchi.execute-api.ap-northeast-1.amazonaws.com",
+    "connectionId": "UJJV_d3yNjMCJNw=",
+    "apiId": "k64wydzchi"
+  }
+}

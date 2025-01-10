@@ -45,7 +45,7 @@
         :to="item.path"
       >
         <template v-slot:prepend>
-          <v-icon :icon="item.icon"></v-icon>
+          <v-icon size="32" :icon="item.icon"></v-icon>
         </template>
 
         <v-list-item-title v-text="item.text"></v-list-item-title>

@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "auth": {
+      "peerstorea570dc98": [
+        "read"
+      ]
+    },
+    "storage": {
+      "Position:@model(appsync)": [
+        "create",
+        "read"
+      ],
+      "StoreConnection:@model(appsync)": [
+        "create",
+        "read"
+      ],
+      "Store:@model(appsync)": [
+        "read",
+        "update"
+      ]
+    }
+  },
+  "lambdaLayers": [
+    {
+      "type": "ProjectLayer",
+      "resourceName": "peerstoreconfigure",
+      "env": "dev",
+      "version": "Always choose latest version",
+      "isLatestVersionSelected": true
+    }
+  ]
+}

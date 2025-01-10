@@ -17,6 +17,24 @@
       },
       "api": {
         "peerstore": {}
+      },
+      "function": {
+        "peerstoreStoreConnectHandler": {
+          "deploymentBucketName": "amplify-peerstore-dev-54370-deployment",
+          "s3Key": "amplify-builds/peerstoreStoreConnectHandler-734677346b75594c4471-build.zip"
+        },
+        "peerstoreconfigure": {
+          "deploymentBucketName": "amplify-peerstore-dev-54370-deployment",
+          "s3Key": "amplify-builds/peerstoreconfigure-LambdaLayerVersion3f1f204d-build.zip"
+        },
+        "peerstoreStoreDisconnectHandler": {
+          "deploymentBucketName": "amplify-peerstore-dev-54370-deployment",
+          "s3Key": "amplify-builds/peerstoreStoreDisconnectHandler-6842526c5975694a6848-build.zip"
+        },
+        "peerstoreStoreMessageHandler": {
+          "deploymentBucketName": "amplify-peerstore-dev-54370-deployment",
+          "s3Key": "amplify-builds/peerstoreStoreMessageHandler-74757876465350507373-build.zip"
+        }
       }
     }
   }

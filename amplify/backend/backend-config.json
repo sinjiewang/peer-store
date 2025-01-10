@@ -15,11 +15,18 @@
           "additionalAuthenticationProviders": [
             {
               "apiKeyConfig": {
-                "apiKeyExpirationDate": "2026-01-08T06:10:21.379Z",
+                "apiKeyExpirationDate": "2026-01-13T01:43:14.362Z",
                 "apiKeyExpirationDays": 365,
                 "description": ""
               },
               "authenticationType": "API_KEY"
+            },
+            {
+              "authenticationType": "AWS_LAMBDA",
+              "lambdaAuthorizerConfig": {
+                "lambdaFunction": "peerstoreStoreConnectHandler",
+                "ttlSeconds": "300"
+              }
             }
           ],
           "defaultAuthentication": {
@@ -60,6 +67,149 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "Cognito"
+    }
+  },
+  "function": {
+    "peerstoreStoreConnectHandler": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "peerstorea570dc98"
+        },
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "peerstore"
+        },
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "peerstoreconfigure"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "peerstoreStoreDisconnectHandler": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "peerstore"
+        },
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "peerstoreconfigure"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "peerstoreStoreMessageHandler": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "peerstoreconfigure"
+        },
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "peerstore"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "peerstoreconfigure": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "LambdaLayer"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_peerstoreStoreConnectHandler_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "peerstoreStoreConnectHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_peerstoreStoreConnectHandler_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "peerstoreStoreConnectHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_peerstoreStoreDisconnectHandler_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "peerstoreStoreDisconnectHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_peerstoreStoreDisconnectHandler_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "peerstoreStoreDisconnectHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_peerstoreStoreMessageHandler_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "peerstoreStoreMessageHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_peerstoreStoreMessageHandler_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "peerstoreStoreMessageHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_peerstoreconfigure_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "peerstoreconfigure"
+        }
+      ]
+    },
+    "AMPLIFY_function_peerstoreconfigure_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "peerstoreconfigure"
+        }
+      ]
     }
   }
 }

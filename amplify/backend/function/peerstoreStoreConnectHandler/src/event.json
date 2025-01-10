@@ -1,0 +1,105 @@
+{
+  "headers": {
+      "Accept-Encoding": "gzip, deflate, br, zstd",
+      "Accept-Language": "zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7",
+      "Cache-Control": "no-cache",
+      "Host": "k64wydzchi.execute-api.ap-northeast-1.amazonaws.com",
+      "Origin": "http://localhost:5173",
+      "Pragma": "no-cache",
+      "Sec-WebSocket-Extensions": "permessage-deflate; client_max_window_bits",
+      "Sec-WebSocket-Key": "P0kDO1jarhu7ic6wlGuvqQ==",
+      "Sec-WebSocket-Version": "13",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+      "X-Amzn-Trace-Id": "Root=1-65e6bc25-52ebf73b68f3ec0478aeb0d4",
+      "X-Forwarded-For": "36.226.145.42",
+      "X-Forwarded-Port": "443",
+      "X-Forwarded-Proto": "https"
+  },
+  "multiValueHeaders": {
+      "Accept-Encoding": [
+          "gzip, deflate, br, zstd"
+      ],
+      "Accept-Language": [
+          "zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7"
+      ],
+      "Cache-Control": [
+          "no-cache"
+      ],
+      "Host": [
+          "k64wydzchi.execute-api.ap-northeast-1.amazonaws.com"
+      ],
+      "Origin": [
+          "http://localhost:5173"
+      ],
+      "Pragma": [
+          "no-cache"
+      ],
+      "Sec-WebSocket-Extensions": [
+          "permessage-deflate; client_max_window_bits"
+      ],
+      "Sec-WebSocket-Key": [
+          "P0kDO1jarhu7ic6wlGuvqQ=="
+      ],
+      "Sec-WebSocket-Version": [
+          "13"
+      ],
+      "User-Agent": [
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+      ],
+      "X-Amzn-Trace-Id": [
+          "Root=1-65e6bc25-52ebf73b68f3ec0478aeb0d4"
+      ],
+      "X-Forwarded-For": [
+          "36.226.145.42"
+      ],
+      "X-Forwarded-Port": [
+          "443"
+      ],
+      "X-Forwarded-Proto": [
+          "https"
+      ]
+  },
+  "queryStringParameters": {
+      "lat": "25.0489289",
+      "lng": "121.44939",
+      "storeId": "50092644-9f73-412b-861c-935bb0b29f5b",
+      "clientId": "78o34531d01e4q6imp6ujn099l",
+      "token": "eyJraWQiOiI4bFZxb3V6ZWRGQXdOUnFudndkYzM2N1Z0NXpyZDZTXC91NzNMSFJJMTFQQT0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJlNzk0OWExOC1kMDIxLTcwMjYtZDQ1MS02NWVhNWFmYWEyOGMiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLmFwLW5vcnRoZWFzdC0xLmFtYXpvbmF3cy5jb21cL2FwLW5vcnRoZWFzdC0xX1lia0xRR2FVMiIsImNvZ25pdG86dXNlcm5hbWUiOiJlNzk0OWExOC1kMDIxLTcwMjYtZDQ1MS02NWVhNWFmYWEyOGMiLCJvcmlnaW5fanRpIjoiZTE2MWJlYmYtMmJkOS00MzUxLTk1OTYtNThlZDdkZDViY2M5IiwiYXVkIjoiNzhvMzQ1MzFkMDFlNHE2aW1wNnVqbjA5OWwiLCJldmVudF9pZCI6ImQxMzk2MmZmLTBiZWUtNGJiYi1hMmQ5LTAzZGMxYzEyMTRmZiIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNzM2MjM2ODYyLCJleHAiOjE3MzY3NDIwMzAsImlhdCI6MTczNjczODQzMCwianRpIjoiZjdlMmYwMmQtOTdkOS00ZWYwLWFiZWQtZWU5NmUxNWViNWU5IiwiZW1haWwiOiJhYWFAdGVzdC5jb20ifQ.YZZ1p6Jog0vd0SW7vryFt3v_C3xYg-W9qUUaGRihdtGQGSLQ6rKDftTkkAsYGVF1kLr6-YpeYj0xMuplVuFcZOZPfaI_B__RFTJcFkHaMp2dTp04jxFV6fpvQhOySp3njwAeL_3Nwh0WUtsLLi8NgZ0wR7g0clCiUyJ9Gmu7cXf4IESWVinFJUgAKygRwURO0TrEbQhiqPVoO0DQJ2bePZXGH7Pu8jpT_YELmsove3iVpVmVlYpTsKOu2MK4YT78Fe7QL4bDDSzMmPRCq0ssCS3d1LKWxydIkV8KhfL6SCSS-Qf15-rZHC742PFQ3qXnVAKEB0VeZ_mx2Gtiye7pAg"
+  },
+  "multiValueQueryStringParameters": {
+      "lat": [
+          "25.0489289"
+      ],
+      "lng": [
+          "121.44939"
+      ],
+      "storeId": [
+          "50092644-9f73-412b-861c-935bb0b29f5b"
+      ],
+      "clientId": [
+          "78o34531d01e4q6imp6ujn099l"
+      ],
+      "token": [
+          "eyJraWQiOiI4bFZxb3V6ZWRGQXdOUnFudndkYzM2N1Z0NXpyZDZTXC91NzNMSFJJMTFQQT0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJlNzk0OWExOC1kMDIxLTcwMjYtZDQ1MS02NWVhNWFmYWEyOGMiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLmFwLW5vcnRoZWFzdC0xLmFtYXpvbmF3cy5jb21cL2FwLW5vcnRoZWFzdC0xX1lia0xRR2FVMiIsImNvZ25pdG86dXNlcm5hbWUiOiJlNzk0OWExOC1kMDIxLTcwMjYtZDQ1MS02NWVhNWFmYWEyOGMiLCJvcmlnaW5fanRpIjoiZTE2MWJlYmYtMmJkOS00MzUxLTk1OTYtNThlZDdkZDViY2M5IiwiYXVkIjoiNzhvMzQ1MzFkMDFlNHE2aW1wNnVqbjA5OWwiLCJldmVudF9pZCI6ImQxMzk2MmZmLTBiZWUtNGJiYi1hMmQ5LTAzZGMxYzEyMTRmZiIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNzM2MjM2ODYyLCJleHAiOjE3MzY3NDIwMzAsImlhdCI6MTczNjczODQzMCwianRpIjoiZjdlMmYwMmQtOTdkOS00ZWYwLWFiZWQtZWU5NmUxNWViNWU5IiwiZW1haWwiOiJhYWFAdGVzdC5jb20ifQ.YZZ1p6Jog0vd0SW7vryFt3v_C3xYg-W9qUUaGRihdtGQGSLQ6rKDftTkkAsYGVF1kLr6-YpeYj0xMuplVuFcZOZPfaI_B__RFTJcFkHaMp2dTp04jxFV6fpvQhOySp3njwAeL_3Nwh0WUtsLLi8NgZ0wR7g0clCiUyJ9Gmu7cXf4IESWVinFJUgAKygRwURO0TrEbQhiqPVoO0DQJ2bePZXGH7Pu8jpT_YELmsove3iVpVmVlYpTsKOu2MK4YT78Fe7QL4bDDSzMmPRCq0ssCS3d1LKWxydIkV8KhfL6SCSS-Qf15-rZHC742PFQ3qXnVAKEB0VeZ_mx2Gtiye7pAg"
+      ]
+  },
+  "requestContext": {
+      "routeKey": "$connect",
+      "eventType": "CONNECT",
+      "extendedRequestId": "UJJV_GvGNjMFWgQ=",
+      "requestTime": "05/Mar/2024:06:31:02 +0000",
+      "messageDirection": "IN",
+      "stage": "dev",
+      "connectedAt": 1709620262008,
+      "requestTimeEpoch": 1709620262010,
+      "identity": {
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+          "sourceIp": "36.226.145.42"
+      },
+      "requestId": "UJJV_GvGNjMFWgQ=",
+      "domainName": "k64wydzchi.execute-api.ap-northeast-1.amazonaws.com",
+      "connectionId": "UJJV_d3yNjMCJNw=",
+      "apiId": "k64wydzchi"
+  },
+  "isBase64Encoded": false
+}

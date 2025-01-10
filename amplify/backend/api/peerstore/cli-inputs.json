@@ -11,8 +11,13 @@
       {
         "mode": "API_KEY",
         "expirationTime": 365,
-        "apiKeyExpirationDate": "2026-01-08T06:10:21.379Z",
+        "apiKeyExpirationDate": "2026-01-13T01:43:14.362Z",
         "keyDescription": ""
+      },
+      {
+        "mode": "AWS_LAMBDA",
+        "lambdaFunction": "peerstoreStoreConnectHandler",
+        "ttlSeconds": "300"
       }
     ],
     "conflictResolution": {}
