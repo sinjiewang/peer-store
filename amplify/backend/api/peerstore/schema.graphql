@@ -24,7 +24,10 @@ type StoreConnection
   position: Position @belongsTo(fields: ["positionID"])
 }
 
-type ClientConnection @model {
+type VisitorConnection
+  @model
+  @auth(rules: [{ allow: custom, provider: function }])
+{
   id: ID!
   connectionID: String! @index
   lat: Float!

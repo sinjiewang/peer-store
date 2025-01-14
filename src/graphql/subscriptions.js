@@ -1,54 +1,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateClientConnection = /* GraphQL */ `
-  subscription OnCreateClientConnection(
-    $filter: ModelSubscriptionClientConnectionFilterInput
-  ) {
-    onCreateClientConnection(filter: $filter) {
-      id
-      connectionID
-      lat
-      lng
-      zone
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const onUpdateClientConnection = /* GraphQL */ `
-  subscription OnUpdateClientConnection(
-    $filter: ModelSubscriptionClientConnectionFilterInput
-  ) {
-    onUpdateClientConnection(filter: $filter) {
-      id
-      connectionID
-      lat
-      lng
-      zone
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const onDeleteClientConnection = /* GraphQL */ `
-  subscription OnDeleteClientConnection(
-    $filter: ModelSubscriptionClientConnectionFilterInput
-  ) {
-    onDeleteClientConnection(filter: $filter) {
-      id
-      connectionID
-      lat
-      lng
-      zone
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
 export const onCreateStore = /* GraphQL */ `
   subscription OnCreateStore(
     $filter: ModelSubscriptionStoreFilterInput
@@ -301,6 +253,54 @@ export const onDeleteStoreConnection = /* GraphQL */ `
         updatedAt
         __typename
       }
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onCreateVisitorConnection = /* GraphQL */ `
+  subscription OnCreateVisitorConnection(
+    $filter: ModelSubscriptionVisitorConnectionFilterInput
+  ) {
+    onCreateVisitorConnection(filter: $filter) {
+      id
+      connectionID
+      lat
+      lng
+      zone
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateVisitorConnection = /* GraphQL */ `
+  subscription OnUpdateVisitorConnection(
+    $filter: ModelSubscriptionVisitorConnectionFilterInput
+  ) {
+    onUpdateVisitorConnection(filter: $filter) {
+      id
+      connectionID
+      lat
+      lng
+      zone
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteVisitorConnection = /* GraphQL */ `
+  subscription OnDeleteVisitorConnection(
+    $filter: ModelSubscriptionVisitorConnectionFilterInput
+  ) {
+    onDeleteVisitorConnection(filter: $filter) {
+      id
+      connectionID
+      lat
+      lng
+      zone
       createdAt
       updatedAt
       __typename

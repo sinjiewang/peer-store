@@ -67,7 +67,7 @@
     }
   }
   const onDisconnectClick = () => {
-    vStore.dispatch('cloud/storeDisconnect')
+    vStore.dispatch('cloud/disconnect')
 
     cloudConnection.value = null
 

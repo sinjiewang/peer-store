@@ -1,46 +1,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getClientConnection = /* GraphQL */ `
-  query GetClientConnection($id: ID!) {
-    getClientConnection(id: $id) {
-      id
-      connectionID
-      lat
-      lng
-      zone
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const listClientConnections = /* GraphQL */ `
-  query ListClientConnections(
-    $filter: ModelClientConnectionFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listClientConnections(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        connectionID
-        lat
-        lng
-        zone
-        createdAt
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
 export const getStore = /* GraphQL */ `
   query GetStore($id: ID!) {
     getStore(id: $id) {
@@ -90,66 +50,6 @@ export const listStores = /* GraphQL */ `
         createdAt
         updatedAt
         owner
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-export const clientConnectionsByConnectionID = /* GraphQL */ `
-  query ClientConnectionsByConnectionID(
-    $connectionID: String!
-    $sortDirection: ModelSortDirection
-    $filter: ModelClientConnectionFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    clientConnectionsByConnectionID(
-      connectionID: $connectionID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        connectionID
-        lat
-        lng
-        zone
-        createdAt
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-export const clientConnectionsByZone = /* GraphQL */ `
-  query ClientConnectionsByZone(
-    $zone: String!
-    $sortDirection: ModelSortDirection
-    $filter: ModelClientConnectionFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    clientConnectionsByZone(
-      zone: $zone
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        connectionID
-        lat
-        lng
-        zone
-        createdAt
-        updatedAt
         __typename
       }
       nextToken
@@ -401,6 +301,106 @@ export const storeConnectionsByPositionID = /* GraphQL */ `
         connectionID
         storeID
         positionID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const getVisitorConnection = /* GraphQL */ `
+  query GetVisitorConnection($id: ID!) {
+    getVisitorConnection(id: $id) {
+      id
+      connectionID
+      lat
+      lng
+      zone
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const listVisitorConnections = /* GraphQL */ `
+  query ListVisitorConnections(
+    $filter: ModelVisitorConnectionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listVisitorConnections(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        connectionID
+        lat
+        lng
+        zone
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const visitorConnectionsByConnectionID = /* GraphQL */ `
+  query VisitorConnectionsByConnectionID(
+    $connectionID: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelVisitorConnectionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    visitorConnectionsByConnectionID(
+      connectionID: $connectionID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        connectionID
+        lat
+        lng
+        zone
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const visitorConnectionsByZone = /* GraphQL */ `
+  query VisitorConnectionsByZone(
+    $zone: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelVisitorConnectionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    visitorConnectionsByZone(
+      zone: $zone
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        connectionID
+        lat
+        lng
+        zone
         createdAt
         updatedAt
         __typename

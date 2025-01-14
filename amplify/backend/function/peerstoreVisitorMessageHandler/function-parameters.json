@@ -1,7 +1,7 @@
 {
   "permissions": {
     "storage": {
-      "VisitorConnection:@model(appsync)": [
+      "StoreConnection:@model(appsync)": [
         "read"
       ]
     }

@@ -55,12 +55,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "peerstoreStoreMessageHandler",
+            "peerstoreVisitorConnectHandler",
             {
               "Fn::Join": [
                 "",
                 [
-                  "peerstoreStoreMessageHandler",
+                  "peerstoreVisitorConnectHandler",
                   "-",
                   {
                     "Ref": "env"
@@ -77,9 +77,6 @@
             },
             "REGION": {
               "Ref": "AWS::Region"
-            },
-            "API_PEERSTORE_GRAPHQLAPIIDOUTPUT": {
-              "Ref": "apipeerstoreGraphQLAPIIdOutput"
             },
             "API_PEERSTORE_VISITORCONNECTIONTABLE_NAME": {
               "Fn::ImportValue": {
@@ -102,6 +99,35 @@
                   {
                     "Fn::ImportValue": {
                       "Fn::Sub": "${apipeerstoreGraphQLAPIIdOutput}:GetAtt:VisitorConnectionTable:Name"
+                    }
+                  }
+                ]
+              ]
+            },
+            "API_PEERSTORE_GRAPHQLAPIIDOUTPUT": {
+              "Ref": "apipeerstoreGraphQLAPIIdOutput"
+            },
+            "API_PEERSTORE_STORETABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apipeerstoreGraphQLAPIIdOutput}:GetAtt:StoreTable:Name"
+              }
+            },
+            "API_PEERSTORE_STORETABLE_ARN": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:dynamodb:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":table/",
+                  {
+                    "Fn::ImportValue": {
+                      "Fn::Sub": "${apipeerstoreGraphQLAPIIdOutput}:GetAtt:StoreTable:Name"
                     }
                   }
                 ]
@@ -130,12 +156,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "peerstoreLambdaRoled0f479b5",
+            "peerstoreLambdaRole30226983",
             {
               "Fn::Join": [
                 "",
                 [
-                  "peerstoreLambdaRoled0f479b5",
+                  "peerstoreLambdaRole30226983",
                   "-",
                   {
                     "Ref": "env"
@@ -224,13 +250,10 @@
             {
               "Effect": "Allow",
               "Action": [
-                "dynamodb:Get*",
-                "dynamodb:BatchGetItem",
-                "dynamodb:List*",
-                "dynamodb:Describe*",
-                "dynamodb:Scan",
-                "dynamodb:Query",
-                "dynamodb:PartiQLSelect"
+                "dynamodb:Put*",
+                "dynamodb:Create*",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PartiQLInsert"
               ],
               "Resource": [
                 {
@@ -270,6 +293,63 @@
                       {
                         "Fn::ImportValue": {
                           "Fn::Sub": "${apipeerstoreGraphQLAPIIdOutput}:GetAtt:VisitorConnectionTable:Name"
+                        }
+                      },
+                      "/index/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:Get*",
+                "dynamodb:BatchGetItem",
+                "dynamodb:List*",
+                "dynamodb:Describe*",
+                "dynamodb:Scan",
+                "dynamodb:Query",
+                "dynamodb:PartiQLSelect"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apipeerstoreGraphQLAPIIdOutput}:GetAtt:StoreTable:Name"
+                        }
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apipeerstoreGraphQLAPIIdOutput}:GetAtt:StoreTable:Name"
                         }
                       },
                       "/index/*"

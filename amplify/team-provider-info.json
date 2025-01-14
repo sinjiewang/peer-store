@@ -33,7 +33,19 @@
         },
         "peerstoreStoreMessageHandler": {
           "deploymentBucketName": "amplify-peerstore-dev-54370-deployment",
-          "s3Key": "amplify-builds/peerstoreStoreMessageHandler-74757876465350507373-build.zip"
+          "s3Key": "amplify-builds/peerstoreStoreMessageHandler-6373542f3978597a4b56-build.zip"
+        },
+        "peerstoreVisitorConnectHandler": {
+          "deploymentBucketName": "amplify-peerstore-dev-54370-deployment",
+          "s3Key": "amplify-builds/peerstoreVisitorConnectHandler-4568686b446932587070-build.zip"
+        },
+        "peerstoreVisitorDisconnectHandler": {
+          "deploymentBucketName": "amplify-peerstore-dev-54370-deployment",
+          "s3Key": "amplify-builds/peerstoreVisitorDisconnectHandler-5244776b584d624f4878-build.zip"
+        },
+        "peerstoreVisitorMessageHandler": {
+          "deploymentBucketName": "amplify-peerstore-dev-54370-deployment",
+          "s3Key": "amplify-builds/peerstoreVisitorMessageHandler-334d6d68794b55434b51-build.zip"
         }
       }
     }

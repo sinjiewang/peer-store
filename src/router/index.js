@@ -2,10 +2,13 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Browse from '@/pages/Browse.vue'
 import Auth from '@/pages/Auth.vue'
 import Store from '@/pages/Store/index.vue'
+
 import Establish from '@/pages/Establish/index.vue'
 import Connect from '@/pages/Establish/Connect.vue'
 import Edit from '@/pages/Establish/Edit.vue'
 import Preview from '@/pages/Establish/Preview.vue'
+
+import Visit from '@/pages/Visit/index.vue'
 import { useStore } from 'vuex'
 
 const routes = [
@@ -58,6 +61,14 @@ const routes = [
         component: Preview,
       },
     ]
+  },
+  {
+    path: '/visit/:id',
+    name: 'visit',
+    component: Visit,
+    meta: {
+      layout: false,
+    },
   },
   {
     path: '/:pathMatch(.*)*',

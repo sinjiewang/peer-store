@@ -1,7 +1,7 @@
 import awsconfig from '@/aws-exports'
 import CloudConnection from '@/utils/APIGatewayConnection'
 
-const { VITE_AWS_API_GATEWAY_STORE_URL } = import.meta.env
+const { VITE_AWS_API_GATEWAY_STORE_URL, VITE_AWS_API_GATEWAY_VISITOR_URL } = import.meta.env
 const { aws_user_pools_web_client_id: WEB_CLIENT_ID } = awsconfig
 
 export default {
@@ -35,12 +35,29 @@ export default {
 
       return cloudConnection
     },
-    storeDisconnect({ state, commit }) {
+    async visitorConnect({ commit, dispatch }, { lat=0, lng=0, }={}) {
+      const genToken = () => ({
+        lat,
+        lng,
+      })
+
+      const cloudConnection = new CloudConnection({
+        url: VITE_AWS_API_GATEWAY_VISITOR_URL,
+        genToken,
+      })
+
+      await cloudConnection.connect()
+
+      commit('SET_CONNECTION', cloudConnection)
+
+      return cloudConnection
+    },
+    disconnect({ state, commit }) {
       const { connection } = state
 
       connection?.disconnect()
 
       commit('SET_CONNECTION', null)
-    }
+    },
   },
 }

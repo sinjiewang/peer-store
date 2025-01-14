@@ -124,17 +124,80 @@
       "dependsOn": [
         {
           "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "peerstore"
+        },
+        {
+          "attributes": [
             "Arn"
           ],
           "category": "function",
           "resourceName": "peerstoreconfigure"
-        },
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "peerstoreVisitorConnectHandler": {
+      "build": true,
+      "dependsOn": [
         {
           "attributes": [
             "GraphQLAPIIdOutput"
           ],
           "category": "api",
           "resourceName": "peerstore"
+        },
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "peerstoreconfigure"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "peerstoreVisitorDisconnectHandler": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "peerstore"
+        },
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "peerstoreconfigure"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "peerstoreVisitorMessageHandler": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "peerstore"
+        },
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "peerstoreconfigure"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -192,6 +255,54 @@
         {
           "category": "function",
           "resourceName": "peerstoreStoreMessageHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_peerstoreVisitorConnectHandler_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "peerstoreVisitorConnectHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_peerstoreVisitorConnectHandler_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "peerstoreVisitorConnectHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_peerstoreVisitorDisconnectHandler_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "peerstoreVisitorDisconnectHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_peerstoreVisitorDisconnectHandler_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "peerstoreVisitorDisconnectHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_peerstoreVisitorMessageHandler_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "peerstoreVisitorMessageHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_peerstoreVisitorMessageHandler_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "peerstoreVisitorMessageHandler"
         }
       ]
     },

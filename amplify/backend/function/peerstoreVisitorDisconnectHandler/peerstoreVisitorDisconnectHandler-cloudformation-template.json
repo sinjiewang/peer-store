@@ -55,12 +55,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "peerstoreStoreMessageHandler",
+            "peerstoreVisitorDisconnectHandler",
             {
               "Fn::Join": [
                 "",
                 [
-                  "peerstoreStoreMessageHandler",
+                  "peerstoreVisitorDisconnectHandler",
                   "-",
                   {
                     "Ref": "env"
@@ -77,9 +77,6 @@
             },
             "REGION": {
               "Ref": "AWS::Region"
-            },
-            "API_PEERSTORE_GRAPHQLAPIIDOUTPUT": {
-              "Ref": "apipeerstoreGraphQLAPIIdOutput"
             },
             "API_PEERSTORE_VISITORCONNECTIONTABLE_NAME": {
               "Fn::ImportValue": {
@@ -106,6 +103,9 @@
                   }
                 ]
               ]
+            },
+            "API_PEERSTORE_GRAPHQLAPIIDOUTPUT": {
+              "Ref": "apipeerstoreGraphQLAPIIdOutput"
             }
           }
         },
@@ -130,12 +130,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "peerstoreLambdaRoled0f479b5",
+            "peerstoreLambdaRoled55e7a4d",
             {
               "Fn::Join": [
                 "",
                 [
-                  "peerstoreLambdaRoled0f479b5",
+                  "peerstoreLambdaRoled55e7a4d",
                   "-",
                   {
                     "Ref": "env"
@@ -230,7 +230,9 @@
                 "dynamodb:Describe*",
                 "dynamodb:Scan",
                 "dynamodb:Query",
-                "dynamodb:PartiQLSelect"
+                "dynamodb:PartiQLSelect",
+                "dynamodb:Delete*",
+                "dynamodb:PartiQLDelete"
               ],
               "Resource": [
                 {

@@ -2,7 +2,8 @@
   "permissions": {
     "storage": {
       "VisitorConnection:@model(appsync)": [
-        "read"
+        "read",
+        "delete"
       ]
     }
   },

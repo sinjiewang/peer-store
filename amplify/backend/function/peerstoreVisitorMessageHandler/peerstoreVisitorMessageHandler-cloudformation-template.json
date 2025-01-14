@@ -55,12 +55,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "peerstoreStoreMessageHandler",
+            "peerstoreVisitorMessageHandler",
             {
               "Fn::Join": [
                 "",
                 [
-                  "peerstoreStoreMessageHandler",
+                  "peerstoreVisitorMessageHandler",
                   "-",
                   {
                     "Ref": "env"
@@ -78,15 +78,12 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "API_PEERSTORE_GRAPHQLAPIIDOUTPUT": {
-              "Ref": "apipeerstoreGraphQLAPIIdOutput"
-            },
-            "API_PEERSTORE_VISITORCONNECTIONTABLE_NAME": {
+            "API_PEERSTORE_STORECONNECTIONTABLE_NAME": {
               "Fn::ImportValue": {
-                "Fn::Sub": "${apipeerstoreGraphQLAPIIdOutput}:GetAtt:VisitorConnectionTable:Name"
+                "Fn::Sub": "${apipeerstoreGraphQLAPIIdOutput}:GetAtt:StoreConnectionTable:Name"
               }
             },
-            "API_PEERSTORE_VISITORCONNECTIONTABLE_ARN": {
+            "API_PEERSTORE_STORECONNECTIONTABLE_ARN": {
               "Fn::Join": [
                 "",
                 [
@@ -101,11 +98,14 @@
                   ":table/",
                   {
                     "Fn::ImportValue": {
-                      "Fn::Sub": "${apipeerstoreGraphQLAPIIdOutput}:GetAtt:VisitorConnectionTable:Name"
+                      "Fn::Sub": "${apipeerstoreGraphQLAPIIdOutput}:GetAtt:StoreConnectionTable:Name"
                     }
                   }
                 ]
               ]
+            },
+            "API_PEERSTORE_GRAPHQLAPIIDOUTPUT": {
+              "Ref": "apipeerstoreGraphQLAPIIdOutput"
             }
           }
         },
@@ -130,12 +130,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "peerstoreLambdaRoled0f479b5",
+            "peerstoreLambdaRoleb75e54fc",
             {
               "Fn::Join": [
                 "",
                 [
-                  "peerstoreLambdaRoled0f479b5",
+                  "peerstoreLambdaRoleb75e54fc",
                   "-",
                   {
                     "Ref": "env"
@@ -248,7 +248,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apipeerstoreGraphQLAPIIdOutput}:GetAtt:VisitorConnectionTable:Name"
+                          "Fn::Sub": "${apipeerstoreGraphQLAPIIdOutput}:GetAtt:StoreConnectionTable:Name"
                         }
                       }
                     ]
@@ -269,7 +269,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apipeerstoreGraphQLAPIIdOutput}:GetAtt:VisitorConnectionTable:Name"
+                          "Fn::Sub": "${apipeerstoreGraphQLAPIIdOutput}:GetAtt:StoreConnectionTable:Name"
                         }
                       },
                       "/index/*"

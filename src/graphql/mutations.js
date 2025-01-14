@@ -58,57 +58,6 @@ export const deletePosition = /* GraphQL */ `
     }
   }
 `;
-export const createClientConnection = /* GraphQL */ `
-  mutation CreateClientConnection(
-    $input: CreateClientConnectionInput!
-    $condition: ModelClientConnectionConditionInput
-  ) {
-    createClientConnection(input: $input, condition: $condition) {
-      id
-      connectionID
-      lat
-      lng
-      zone
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const updateClientConnection = /* GraphQL */ `
-  mutation UpdateClientConnection(
-    $input: UpdateClientConnectionInput!
-    $condition: ModelClientConnectionConditionInput
-  ) {
-    updateClientConnection(input: $input, condition: $condition) {
-      id
-      connectionID
-      lat
-      lng
-      zone
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const deleteClientConnection = /* GraphQL */ `
-  mutation DeleteClientConnection(
-    $input: DeleteClientConnectionInput!
-    $condition: ModelClientConnectionConditionInput
-  ) {
-    deleteClientConnection(input: $input, condition: $condition) {
-      id
-      connectionID
-      lat
-      lng
-      zone
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
 export const createStore = /* GraphQL */ `
   mutation CreateStore(
     $input: CreateStoreInput!
@@ -316,6 +265,57 @@ export const deleteStoreConnection = /* GraphQL */ `
         updatedAt
         __typename
       }
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const createVisitorConnection = /* GraphQL */ `
+  mutation CreateVisitorConnection(
+    $input: CreateVisitorConnectionInput!
+    $condition: ModelVisitorConnectionConditionInput
+  ) {
+    createVisitorConnection(input: $input, condition: $condition) {
+      id
+      connectionID
+      lat
+      lng
+      zone
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const updateVisitorConnection = /* GraphQL */ `
+  mutation UpdateVisitorConnection(
+    $input: UpdateVisitorConnectionInput!
+    $condition: ModelVisitorConnectionConditionInput
+  ) {
+    updateVisitorConnection(input: $input, condition: $condition) {
+      id
+      connectionID
+      lat
+      lng
+      zone
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const deleteVisitorConnection = /* GraphQL */ `
+  mutation DeleteVisitorConnection(
+    $input: DeleteVisitorConnectionInput!
+    $condition: ModelVisitorConnectionConditionInput
+  ) {
+    deleteVisitorConnection(input: $input, condition: $condition) {
+      id
+      connectionID
+      lat
+      lng
+      zone
       createdAt
       updatedAt
       __typename
