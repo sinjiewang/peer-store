@@ -119,16 +119,23 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "peerstoreStoreMessageHandler": {
+    "peerstoreStoreIceServersHandler": {
       "build": true,
       "dependsOn": [
         {
           "attributes": [
-            "GraphQLAPIIdOutput"
+            "Arn"
           ],
-          "category": "api",
-          "resourceName": "peerstore"
-        },
+          "category": "function",
+          "resourceName": "peerstoreconfigure"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "peerstoreStoreMessageHandler": {
+      "build": true,
+      "dependsOn": [
         {
           "attributes": [
             "Arn"
@@ -182,22 +189,36 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "peerstoreVisitorMessageHandler": {
+    "peerstoreVisitorIceServersHandler": {
       "build": true,
       "dependsOn": [
-        {
-          "attributes": [
-            "GraphQLAPIIdOutput"
-          ],
-          "category": "api",
-          "resourceName": "peerstore"
-        },
         {
           "attributes": [
             "Arn"
           ],
           "category": "function",
           "resourceName": "peerstoreconfigure"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "peerstoreVisitorMessageHandler": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "peerstoreconfigure"
+        },
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "peerstore"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -239,6 +260,22 @@
         {
           "category": "function",
           "resourceName": "peerstoreStoreDisconnectHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_peerstoreStoreIceServersHandler_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "peerstoreStoreIceServersHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_peerstoreStoreIceServersHandler_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "peerstoreStoreIceServersHandler"
         }
       ]
     },
@@ -287,6 +324,22 @@
         {
           "category": "function",
           "resourceName": "peerstoreVisitorDisconnectHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_peerstoreVisitorIceServersHandler_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "peerstoreVisitorIceServersHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_peerstoreVisitorIceServersHandler_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "peerstoreVisitorIceServersHandler"
         }
       ]
     },

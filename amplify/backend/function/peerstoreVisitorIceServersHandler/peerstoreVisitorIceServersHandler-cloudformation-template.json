@@ -16,10 +16,6 @@
     "s3Key": {
       "Type": "String"
     },
-    "apipeerstoreGraphQLAPIIdOutput": {
-      "Type": "String",
-      "Default": "apipeerstoreGraphQLAPIIdOutput"
-    },
     "functionpeerstoreconfigureArn": {
       "Type": "String",
       "Default": "functionpeerstoreconfigureArn"
@@ -55,12 +51,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "peerstoreStoreMessageHandler",
+            "peerstoreVisitorIceServersHandler",
             {
               "Fn::Join": [
                 "",
                 [
-                  "peerstoreStoreMessageHandler",
+                  "peerstoreVisitorIceServersHandler",
                   "-",
                   {
                     "Ref": "env"
@@ -77,9 +73,6 @@
             },
             "REGION": {
               "Ref": "AWS::Region"
-            },
-            "API_PEERSTORE_GRAPHQLAPIIDOUTPUT": {
-              "Ref": "apipeerstoreGraphQLAPIIdOutput"
             }
           }
         },
@@ -104,12 +97,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "peerstoreLambdaRoled0f479b5",
+            "peerstoreLambdaRole2406050c",
             {
               "Fn::Join": [
                 "",
                 [
-                  "peerstoreLambdaRoled0f479b5",
+                  "peerstoreLambdaRole2406050c",
                   "-",
                   {
                     "Ref": "env"

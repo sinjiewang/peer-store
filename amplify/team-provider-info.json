@@ -25,7 +25,7 @@
         },
         "peerstoreconfigure": {
           "deploymentBucketName": "amplify-peerstore-dev-54370-deployment",
-          "s3Key": "amplify-builds/peerstoreconfigure-LambdaLayerVersion3f1f204d-build.zip"
+          "s3Key": "amplify-builds/peerstoreconfigure-LambdaLayerVersion408284ed-build.zip"
         },
         "peerstoreStoreDisconnectHandler": {
           "deploymentBucketName": "amplify-peerstore-dev-54370-deployment",
@@ -33,11 +33,11 @@
         },
         "peerstoreStoreMessageHandler": {
           "deploymentBucketName": "amplify-peerstore-dev-54370-deployment",
-          "s3Key": "amplify-builds/peerstoreStoreMessageHandler-6373542f3978597a4b56-build.zip"
+          "s3Key": "amplify-builds/peerstoreStoreMessageHandler-6c487450315279474b58-build.zip"
         },
         "peerstoreVisitorConnectHandler": {
           "deploymentBucketName": "amplify-peerstore-dev-54370-deployment",
-          "s3Key": "amplify-builds/peerstoreVisitorConnectHandler-4568686b446932587070-build.zip"
+          "s3Key": "amplify-builds/peerstoreVisitorConnectHandler-5768535a6b3431437979-build.zip"
         },
         "peerstoreVisitorDisconnectHandler": {
           "deploymentBucketName": "amplify-peerstore-dev-54370-deployment",
@@ -45,7 +45,15 @@
         },
         "peerstoreVisitorMessageHandler": {
           "deploymentBucketName": "amplify-peerstore-dev-54370-deployment",
-          "s3Key": "amplify-builds/peerstoreVisitorMessageHandler-334d6d68794b55434b51-build.zip"
+          "s3Key": "amplify-builds/peerstoreVisitorMessageHandler-6f65305154744747374e-build.zip"
+        },
+        "peerstoreStoreIceServersHandler": {
+          "deploymentBucketName": "amplify-peerstore-dev-54370-deployment",
+          "s3Key": "amplify-builds/peerstoreStoreIceServersHandler-4e32434f41334e694c38-build.zip"
+        },
+        "peerstoreVisitorIceServersHandler": {
+          "deploymentBucketName": "amplify-peerstore-dev-54370-deployment",
+          "s3Key": "amplify-builds/peerstoreVisitorIceServersHandler-6f63797a476b52357850-build.zip"
         }
       }
     }

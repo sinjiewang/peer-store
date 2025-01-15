@@ -32,6 +32,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Name": "string",
       "Region": "string"
     },
+    "peerstoreStoreIceServersHandler": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "peerstoreStoreMessageHandler": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
@@ -47,6 +54,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Region": "string"
     },
     "peerstoreVisitorDisconnectHandler": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "peerstoreVisitorIceServersHandler": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",

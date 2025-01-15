@@ -1,15 +1,15 @@
 {
   "dev": {
-    "CLIENT_WEBSOCKET_API_URL": "https://vv3z4ral1k.execute-api.ap-northeast-1.amazonaws.com/dev/",
-    "SITE_WEBSOCKET_API_URL": "https://k64wydzchi.execute-api.ap-northeast-1.amazonaws.com/dev/",
+    "VISITOR_WEBSOCKET_API_URL": "https://4djcqas3d8.execute-api.ap-northeast-1.amazonaws.com/dev/",
+    "STORE_WEBSOCKET_API_URL": "https://hx9as48i52.execute-api.ap-northeast-1.amazonaws.com/dev/",
     "TURN_SECRET_KEY": "SJW",
     "TURN_SERVER_LIST": [
       "turn:54.65.250.74:3478"
     ]
   },
   "prod": {
-    "CLIENT_WEBSOCKET_API_URL": "https://jabscdfa2j.execute-api.ap-northeast-1.amazonaws.com/prod/",
-    "SITE_WEBSOCKET_API_URL": "https://t462iga5g7.execute-api.ap-northeast-1.amazonaws.com/prod/",
+    "VISITOR_WEBSOCKET_API_URL": "https://jabscdfa2j.execute-api.ap-northeast-1.amazonaws.com/prod/",
+    "STORE_WEBSOCKET_API_URL": "https://t462iga5g7.execute-api.ap-northeast-1.amazonaws.com/prod/",
     "TURN_SECRET_KEY": "SJW",
     "TURN_SERVER_LIST": [
       "turn:54.65.250.74:3478"

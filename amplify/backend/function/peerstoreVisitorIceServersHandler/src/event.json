@@ -15,7 +15,7 @@
       },
       "requestId": "TKx-VFHxNjMFekA=",
       "domainName": "vv3z4ral1k.execute-api.ap-northeast-1.amazonaws.com",
-      "connectionId": "Eak8fdIhNjMCFoQ=",
+      "connectionId": "TKxMZcyPNjMCFwQ=",
       "apiId": "vv3z4ral1k"
   },
   "body": "{\"action\":\"offer\",\"storeId\":\"50092644-9f73-412b-861c-935bb0b29f5b\",\"data\":{\"sdp\":\"brabra\",\"type\":\"offer\"}}",

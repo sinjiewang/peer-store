@@ -1,23 +1,23 @@
 {
   "requestContext": {
       "routeKey": "$default",
-      "messageId": "EXAkCemSNjMCFBw=",
+      "messageId": "TKx-Vd7GNjMCFwQ=",
       "eventType": "MESSAGE",
-      "extendedRequestId": "EXAkCE-1tjMFslw=",
-      "requestTime": "14/Jan/2025:04:00:12 +0000",
+      "extendedRequestId": "TKx-VFHxNjMFekA=",
+      "requestTime": "15/Feb/2024:08:23:17 +0000",
       "messageDirection": "IN",
       "stage": "dev",
-      "connectedAt": 1736827165882,
-      "requestTimeEpoch": 1736827212614,
+      "connectedAt": 1707985077400,
+      "requestTimeEpoch": 1707985397052,
       "identity": {
-          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-          "sourceIp": "61.228.167.131"
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+          "sourceIp": "114.37.113.162"
       },
-      "requestId": "EXAkCE-1tjMFslw=",
-      "domainName": "hx9as48i52.execute-api.ap-northeast-1.amazonaws.com",
-      "connectionId": "EXAcueZgtjMCFBw=",
-      "apiId": "hx9as48i52"
+      "requestId": "TKx-VFHxNjMFekA=",
+      "domainName": "vv3z4ral1k.execute-api.ap-northeast-1.amazonaws.com",
+      "connectionId": "Eak7hd7wtjMCLmQ=",
+      "apiId": "vv3z4ral1k"
   },
-  "body": "{\"action\":\"keep-alive\"}",
+  "body": "{\"action\":\"anwser\",\"clientId\":\"Eak8fdIhNjMCFoQ=\",\"data\":{\"sdp\":\"brabra\",\"type\":\"anwser\"}}",
   "isBase64Encoded": false
 }
