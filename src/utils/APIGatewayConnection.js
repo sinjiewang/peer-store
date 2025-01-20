@@ -98,7 +98,7 @@ export default class APIGatewayConnection extends EventEmitter {
     this.websocket = null
     this.clearKeepAlive()
 
-    setTimeout(() => websocket?.close(), 100)
+    websocket?.close()
   }
 
   reconnect() {
@@ -151,6 +151,7 @@ export default class APIGatewayConnection extends EventEmitter {
       this._reject(event)
     }
 
+    this.disconnect()
     this.emit('error', event)
   }
 

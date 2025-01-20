@@ -4,6 +4,7 @@
   import { useI18n } from 'vue-i18n'
   import { useStore } from 'vuex'
   import { getStore } from '@/graphql/queries'
+  import Service from '@/utils/Service/StoreService.js'
 
   import Header from './Header.vue'
 
@@ -19,9 +20,9 @@
   const showAlert = ref(false)
   const showProgress = ref(false)
   const store = ref(null)
+  const service = ref(null)
   const position = ref(null)
   const isConnecting = ref(false)
-  const cloudConnection = ref(null)
 
   const getStoreInfo = async (id) => {
     showProgress.value = true
@@ -47,6 +48,9 @@
       : await vStore.dispatch('geolocation/getCurrentPosition')
     return center
   }
+  const connectTunnel = async ({ storeId, lat, lng }) => vStore.dispatch('cloud/storeConnect', { storeId, lat, lng })
+  const createService = ({ storeId, tunnel }) => new Service({ storeId, tunnel })
+
   const onConnectClick = async () => {
     const { id: storeId } = store.value
     const { lat, lng } = position.value
@@ -54,9 +58,10 @@
     isConnecting.value = true
 
     try {
-      const connection = await vStore.dispatch('cloud/storeConnect', { storeId, lat, lng })
+      const tunnel = await connectTunnel({ storeId, lat, lng })
+      const service = createService({ storeId, tunnel })
 
-      cloudConnection.value = connection
+      service.value = service
       store.value.state = 'online'
       alertMessage.value = DO_NOT_CLOSE_TAB_PAGE
       showAlert.value = true
@@ -69,8 +74,8 @@
   const onDisconnectClick = () => {
     vStore.dispatch('cloud/disconnect')
 
-    cloudConnection.value = null
-
+    service.value?.close()
+    service.value = null
     store.value.state = null
     showAlert.value = false
   }

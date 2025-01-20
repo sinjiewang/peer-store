@@ -35,10 +35,9 @@ export default {
 
       return cloudConnection
     },
-    async visitorConnect({ commit, dispatch }, { lat=0, lng=0, }={}) {
+    async visitorConnect({ commit, dispatch }, { storeId='' }={}) {
       const genToken = () => ({
-        lat,
-        lng,
+        storeId,
       })
 
       const cloudConnection = new CloudConnection({
