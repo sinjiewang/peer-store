@@ -1,6 +1,5 @@
 <script setup>
-  import { ref, computed } from 'vue'
-  import { useI18n } from 'vue-i18n'
+  import { computed } from 'vue'
   import { useStore } from 'vuex'
 
   defineProps({
@@ -35,13 +34,19 @@
 
 <template>
   <v-btn
-    class="add-button"
-    prepend-icon="mdi-store-plus"
+    class="h-80"
     variant="outlined"
     block
     @click="onCreateClick"
   >
-    <span class="hidden-sm">{{ $t('New Store') }}</span>
+    <template v-slot:prepend>
+      <v-icon
+        icon="mdi-store-plus"
+        size="36"
+      >
+      </v-icon>
+    </template>
+    <span class="hidden-sm add-text">{{ $t('New Store') }}</span>
   </v-btn>
   <v-list class="text-left">
     <v-hover v-for="(store, index) in stores" :key="store.id">
@@ -78,8 +83,10 @@
 </template>
 
 <style scoped lang="scss">
-.add-button {
+.h-80 {
   height: 80px;
-  font-size: 1.5rem;
+}
+.add-text {
+  font-size: 1.2rem;
 }
 </style>

@@ -1,15 +1,35 @@
 import EventEmitter from 'events'
-import Server from './Server.js'
 import Protocol from './Protocol.js'
 
 export default class StoreService extends EventEmitter {
-  constructor({ storeId, tunnel }) {
+  constructor({ server, repository }={}) {
     super()
 
     this.connections = {}
-    this.server = new Server({ storeId, tunnel })
-    this.server.on('connect', (event) => this.onconnect(event))
-    this.server.on('disconnect', (event) => this.ondisconnect(event))
+    this.server = null
+    this.repository = repository
+
+    this.$onconnect = (event) => this.onconnect(event)
+    this.$ondisconnect = (event) => this.ondisconnect(event)
+
+    if (server) this.setServer(server)
+  }
+
+  setServer(server) {
+    this.server = server
+    this.server.on('connect', this.$onconnect)
+    this.server.on('disconnect', this.$ondisconnect)
+  }
+
+  removeServer() {
+    const { server } = this
+
+    server?.off('connect', this.$onconnect)
+    server?.off('disconnect', this.$ondisconnect)
+
+    this.server = null
+
+    return server
   }
 
   onconnect({ clientId, dataChannel }) {
@@ -49,7 +69,25 @@ export default class StoreService extends EventEmitter {
   }
 
   destroy() {
-    this.server.close()
+    this.server?.close()
     this.server = null
+    this.repository?.close()
+    this.repository = null
+  }
+
+  async listProducts(data) {
+    return this.repository.listProducts(data)
+  }
+
+  async createProduct(data) {
+    return this.repository.createProduct(data)
+  }
+
+  async updateProduct(id, data) {
+    return this.repository.updateProduct(id, data)
+  }
+
+  deleteProduct(id) {
+    return this.repository.deleteProduct(id)
   }
 }

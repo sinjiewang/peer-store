@@ -1,5 +1,6 @@
 <script setup>
-  import { useRouter } from 'vue-router'
+  import { computed } from 'vue'
+  import { useRoute, useRouter } from 'vue-router'
 
   defineProps({
     store: {
@@ -9,7 +10,10 @@
   })
 
   const router = useRouter()
+  const route = useRoute()
   const handleBtnClick = (name) => router.push({ name })
+
+  const routeNames = computed(() => route.matched.map(({ name }) => name ).filter((name) => name ))
 </script>
 
 <template>
@@ -27,16 +31,10 @@
 
     <v-btn
       class="mr-4"
-      icon="mdi-connection"
-      variant="outlined"
-      :title="$t('Connect')"
-      @click="handleBtnClick('establishConnect')"
-    ></v-btn>
-    <v-btn
-      class="mr-4"
       icon="mdi-store-edit"
       variant="outlined"
       :title="$t('Edit')"
+      :active="routeNames.includes('establishEdit')"
       @click="handleBtnClick('establishEdit')"
     ></v-btn>
     <v-btn
@@ -44,7 +42,16 @@
       icon="mdi-storefront"
       variant="outlined"
       :title="$t('Preview')"
+      :active="routeNames.includes('establishPreview')"
       @click="handleBtnClick('establishPreview')"
+    ></v-btn>
+    <v-btn
+      class="mr-4"
+      icon="mdi-connection"
+      variant="outlined"
+      :title="$t('Connect')"
+      :active="routeNames.includes('establishConnect')"
+      @click="handleBtnClick('establishConnect')"
     ></v-btn>
   </v-app-bar>
 </template>

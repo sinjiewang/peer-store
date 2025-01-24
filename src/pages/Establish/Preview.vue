@@ -1,12 +1,10 @@
 <script setup>
-  import { ref } from 'vue'
+  import { inject } from 'vue'
+  import { useI18n } from 'vue-i18n'
 
-  defineProps({
-    store: {
-      type: Object,
-      required: true,
-    },
-  })
+  const { t: $t } = useI18n()
+  const service = inject('storeService')
+
 </script>
 
 <template>

@@ -1,8 +1,12 @@
 <script setup>
-  import { ref, defineExpose } from 'vue'
+  import { ref } from 'vue'
   import { useI18n } from 'vue-i18n'
 
   const props = defineProps({
+    item: {
+      type: Object,
+      default: null,
+    },
     confirmBtn: {
       type: Object,
       default: () => ({
@@ -23,7 +27,7 @@
     showLoading.value = true
 
     try {
-      await props.confirmBtn.callback()
+      await props.confirmBtn.callback(props.item)
 
       dialog.value = false
     } catch (err) {

@@ -1,5 +1,5 @@
 <script setup>
-  import { ref, computed, mergeProps } from 'vue'
+  import { computed } from 'vue'
   import { useRouter } from 'vue-router'
   import { useStore } from 'vuex'
   import { useTheme } from 'vuetify'

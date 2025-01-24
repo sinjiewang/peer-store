@@ -6,6 +6,10 @@ import Store from '@/pages/Store/index.vue'
 import Establish from '@/pages/Establish/index.vue'
 import Connect from '@/pages/Establish/Connect.vue'
 import Edit from '@/pages/Establish/Edit.vue'
+import ListProduct from '@/pages/Establish/Edit/ListProduct.vue'
+import AddProduct from '@/pages/Establish/Edit/AddProduct.vue'
+import Categories from '@/pages/Establish/Edit/Categories.vue'
+import Tags from '@/pages/Establish/Edit/Tags.vue'
 import Preview from '@/pages/Establish/Preview.vue'
 
 import Visit from '@/pages/Visit/index.vue'
@@ -54,6 +58,28 @@ const routes = [
         path: 'edit',
         name: 'establishEdit',
         component: Edit,
+        children: [
+          {
+            path: 'listProduct',
+            name: 'listProduct',
+            component: ListProduct,
+          },
+          {
+            path: 'addProduct',
+            name: 'addProduct',
+            component: AddProduct,
+          },
+          {
+            path: 'categories',
+            name: 'categories',
+            component: Categories,
+          },
+          {
+            path: 'tags',
+            name: 'tags',
+            component: Tags,
+          },
+        ],
       },
       {
         path: 'preview',

@@ -1,10 +1,12 @@
 <script setup>
-  import { inject, ref, onMounted } from 'vue'
+  import { inject, provide, ref, onMounted } from 'vue'
   import { useRoute } from 'vue-router'
   import { useI18n } from 'vue-i18n'
   import { useStore } from 'vuex'
   import { getStore } from '@/graphql/queries'
+
   import Service from '@/utils/Service/StoreService.js'
+  import IDBRepository from '@/utils/IndexedDB/IDBRepository.js'
 
   import Header from './Header.vue'
 
@@ -22,7 +24,10 @@
   const store = ref(null)
   const service = ref(null)
   const position = ref(null)
-  const isConnecting = ref(false)
+
+  provide('storeInfo', store)
+  provide('storePosition', position)
+  provide('storeService', service)
 
   const getStoreInfo = async (id) => {
     showProgress.value = true
@@ -42,51 +47,41 @@
       showProgress.value = false
     }
   }
-  const getAddressPosition = async ({ address, zip }={}) => {
-    const center = address
-      ? await vStore.dispatch('geolocation/getAddressFromPosition', { address, zip })
-      : await vStore.dispatch('geolocation/getCurrentPosition')
-    return center
+  const getAddressPosition = async ({ address, zip }={}) => address
+    ? await vStore.dispatch('geolocation/getAddressFromPosition', { address, zip })
+    : await vStore.dispatch('geolocation/getCurrentPosition')
+  const createRepository = async (storeId) => {
+    const repository = new IDBRepository({ storeId })
+
+    await repository.connect()
+
+    return repository
   }
-  const connectTunnel = async ({ storeId, lat, lng }) => vStore.dispatch('cloud/storeConnect', { storeId, lat, lng })
-  const createService = ({ storeId, tunnel }) => new Service({ storeId, tunnel })
+  const createService = ({ repository }) => new Service({ repository })
 
-  const onConnectClick = async () => {
-    const { id: storeId } = store.value
-    const { lat, lng } = position.value
-
-    isConnecting.value = true
-
-    try {
-      const tunnel = await connectTunnel({ storeId, lat, lng })
-      const service = createService({ storeId, tunnel })
-
-      service.value = service
-      store.value.state = 'online'
-      alertMessage.value = DO_NOT_CLOSE_TAB_PAGE
-      showAlert.value = true
-    } catch (err) {
-      console.error('CloudConnection connect fail:', err)
-    } finally {
-      isConnecting.value = false
-    }
+  const onConnect = async (server) => {
+    service.value?.setServer(server)
+    store.value.state = 'online'
+    alertMessage.value = DO_NOT_CLOSE_TAB_PAGE
+    showAlert.value = true
   }
-  const onDisconnectClick = () => {
-    vStore.dispatch('cloud/disconnect')
-
-    service.value?.close()
-    service.value = null
+  const onDisconnect = () => {
+    service.value?.removeServer()
     store.value.state = null
     showAlert.value = false
   }
 
   onMounted(async () => {
-    const { id } = route.params
+    const { id: storeId } = route.params
 
-    if (id) {
-      const storeInfo = await getStoreInfo(id)
+    if (storeId) {
+      const storeInfo = await getStoreInfo(storeId)
 
       position.value = await getAddressPosition(storeInfo)
+
+      const repository = await createRepository(storeId)
+      // proxy/service instance
+      service.value = createService({ repository })
       store.value = storeInfo
     } else {
       showAlert.value = true
@@ -95,7 +90,7 @@
 </script>
 
 <template>
-  <v-container class="h-100 pa-0">
+  <v-container fluid class="h-100 pa-0">
     <v-alert
       v-model="showAlert"
       :text="alertMessage"
@@ -117,13 +112,9 @@
     <Header v-if="store" :store="store"></Header>
 
     <router-view
-      class="pt-4"
       v-if="store"
-      :store="store"
-      :position="position"
-      :connecting="isConnecting"
-      @connect="onConnectClick"
-      @disconnect="onDisconnectClick"
+      @connect="onConnect"
+      @disconnect="onDisconnect"
     ></router-view>
   </v-container>
 </template>

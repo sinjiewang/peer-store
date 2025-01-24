@@ -19,6 +19,9 @@ import router from './router'
 import '@/assets/styles/main.scss'
 import '@/assets/styles/amplify.scss'
 
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
+
 import i18n from './i18n'
 
 Amplify.configure(awsconfig)
@@ -56,6 +59,7 @@ const initializeApp = async () => {
   }
   const graphqlClient = generateClient({ authMode: 'userPool' })
   const app = createApp(App)
+    .component('QuillEditor', QuillEditor)
     .use(store)
     .use(AmplifyVue)
     .use(vuetify)

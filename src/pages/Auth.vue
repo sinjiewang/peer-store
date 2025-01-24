@@ -2,7 +2,7 @@
   import '@aws-amplify/ui-vue/styles.css'
   import { onMounted, onUnmounted, ref } from 'vue'
   import { Hub } from 'aws-amplify/utils'
-  import { useRouter, useRoute } from 'vue-router';
+  import { useRouter, useRoute } from 'vue-router'
 
   const router = useRouter()
   const route = useRoute()

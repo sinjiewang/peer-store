@@ -1,5 +1,5 @@
 <script setup>
-  import { ref, watch, toRefs, defineEmits, nextTick, inject } from 'vue'
+  import { ref, watch, toRefs, inject } from 'vue'
   import { useRouter } from 'vue-router'
   import { createStore as createMutation, updateStore as updateMutation } from '@/graphql/mutations'
 
