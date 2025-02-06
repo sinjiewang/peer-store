@@ -10,6 +10,7 @@
   const showDisable = ref(false)
   const showLoading = ref(false)
   const showSuccess = ref(false)
+  const containerRef = ref(null)
 
   const onAddClick = async () => {
     const data = toRaw(product.value)
@@ -20,17 +21,24 @@
     try {
       await service.value.createProduct(data)
     } catch (err) {
-      console.warn('service.createProduct failed', err)
+      return console.warn('service.createProduct failed', err)
     } finally {
       showDisable.value = false
       showLoading.value = false
     }
 
-    valid.value = false
     showSuccess.value = true
-    form.value?.clean()
-    product.value = {}
-    setTimeout(() => showSuccess.value = false, 4000)
+
+    setTimeout(() => {
+      form.value?.clean()
+      product.value = {}
+      showSuccess.value = false
+      valid.value = false
+      containerRef.value.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      })
+    }, 3000)
 
   }
   const onChange = () => {
@@ -39,7 +47,7 @@
 </script>
 
 <template>
-  <v-form>
+  <v-form ref="containerRef">
     <Form
       ref="form"
       v-model:product="product"

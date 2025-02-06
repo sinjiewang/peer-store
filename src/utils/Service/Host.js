@@ -3,7 +3,7 @@ import EventEmitter from 'events';
 import Signaling from '@/utils/Signaling/ServerSignaling.js';
 import RTCPeerServer from '@/utils/RTCPeer/RTCPeerServer.js';
 
-export default class Server extends EventEmitter {
+export default class Host extends EventEmitter {
   constructor({ tunnel }={}) {
     super();
 

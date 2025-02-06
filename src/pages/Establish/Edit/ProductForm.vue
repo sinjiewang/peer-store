@@ -15,20 +15,20 @@
   const { product } = toRefs(props)
   const tab = ref('tab-1')
   const productDesc = ref('')
-  const productSortDesc = ref('')
+  const productShortDesc = ref('')
   const quantityRadios = ref(null)
   const productQuantity = ref(null)
   const productDescEditor = ref(null)
-  const productSortDescEditor = ref(null)
+  const productShortDescEditor = ref(null)
 
   const clean = () => {
     tab.value = 'tab-1'
     productDesc.value = ''
-    productSortDesc.value = ''
+    productShortDesc.value = ''
     quantityRadios.value = null
     productQuantity.value = null
     productDescEditor.value?.clean()
-    productSortDescEditor.value?.clean()
+    productShortDescEditor.value?.clean()
   }
 
   watch(productDesc, (value) => {
@@ -38,10 +38,10 @@
     })
     emit('change:product')
   })
-  watch(productSortDesc, (value) => {
+  watch(productShortDesc, (value) => {
     emit('update:product', {
       ...product.value,
-      sortDesc: DOMPurify.sanitize(value, { USE_PROFILES: { html: true } }),
+      shortDesc: DOMPurify.sanitize(value, { USE_PROFILES: { html: true } }),
     })
     emit('change:product')
   })
@@ -75,7 +75,7 @@
       quantityRadios.value = 'infinity'
     }
     productDescEditor.value?.set(product.value.desc)
-    productSortDescEditor.value?.set(product.value.sortDesc)
+    productShortDescEditor.value?.set(product.value.shortDesc)
   })
 </script>
 
@@ -222,8 +222,8 @@
             cols="12"
           >
             <Editor
-              ref="productSortDescEditor"
-              v-model:content="productSortDesc"
+              ref="productShortDescEditor"
+              v-model:content="productShortDesc"
               class="product-short-desc-editor"
             />
           </v-col>

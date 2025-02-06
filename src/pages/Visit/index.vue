@@ -1,8 +1,9 @@
 <script setup>
-  import { inject, ref, onMounted } from 'vue'
+  import { ref, onMounted } from 'vue'
   import { useRoute } from 'vue-router'
   import { useStore } from 'vuex'
 
+  import List from './List.vue'
   import Service from '@/utils/Service/VisitorService.js'
 
   const route = useRoute()
@@ -11,6 +12,7 @@
 
   const showProgress = ref(false)
   const dialog = ref(false)
+  const service = ref(null)
 
   const connectTunnel = (storeId) => vStore.dispatch('cloud/visitorConnect', { storeId })
   const disconnectTunnel = () => vStore.dispatch('cloud/disconnect')
@@ -20,13 +22,13 @@
     try {
       const { id: storeId } = route.params
       const tunnel = await connectTunnel(storeId)
-      const service = new Service()
+      const proxy = new Service({ storeId })
 
-      await service.connect({ storeId, tunnel })
+      await proxy.connect({ storeId, tunnel })
 
       disconnectTunnel()
 
-      service.sendMessage('hello!!')
+      service.value = proxy
     } catch (err) {
       console.error('CloudConnection connect fail:', err)
 
@@ -43,7 +45,8 @@
 
   onMounted(async () => {
     // const { id: storeId } = route.params
-    dialog.value = true
+    // dialog.value = true
+    connect()
   })
 </script>
 
@@ -58,6 +61,12 @@
         color="primary"
         indeterminate
       ></v-progress-circular>
+    </div>
+
+    <div v-if="service">
+      <List
+        :service="service"
+      />
     </div>
 
     <v-dialog

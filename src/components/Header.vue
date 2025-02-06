@@ -18,6 +18,7 @@
   const store = useStore()
   const theme = useTheme()
   const isAuthenticated = computed(() => store.getters['auth/isAuthenticated'])
+  const user = computed(() => store.getters['auth/user'])
 
   function onLoginClick() {
     router.push('/login')
@@ -55,6 +56,7 @@
       class="app-bar-button"
       variant="outlined"
       @click="onLogoutClick"
+      :title="user?.email"
     >
       {{ $t('Logout') }}
     </v-btn>

@@ -3,14 +3,16 @@ import ClientSignaling from '@/utils/Signaling/ClientSignaling.js'
 import RTCPeerClient from '@/utils/RTCPeer/RTCPeerClient.js'
 
 export default class Client extends EventEmitter {
-  constructor() {
+  constructor({ storeId='' }={}) {
     super();
 
     this.rtcClient = null
     this.dataChannel = null
+    this.storeId = storeId
   }
 
-  async connect({ tunnel, storeId }={}) {
+  async connect({ tunnel }={}) {
+    const { storeId } = this
     const signaling = new ClientSignaling({ tunnel })
     const rtcClient = new RTCPeerClient({
       signaling,
@@ -31,6 +33,8 @@ export default class Client extends EventEmitter {
 
   onclose() {
     this.dataChannel = null
+
+    console.warn('datachannel disconnect')
   }
 
   close() {

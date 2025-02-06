@@ -56,17 +56,19 @@ export default class Protocol extends EventEmitter {
 
     if (!res) return;
 
+    console.warn(response)
+
     if (response.error) {
       return res.reject(new Error(response.error));
     }
 
     if (response.body && response.contentLength) {
-      const { content, contentLength } = response;
+      const { body, contentLength } = response;
 
       if (res.body) {
-        res.body += content;
+        res.body += body;
       } else {
-        res.body = content;
+        res.body = body;
       }
 
       console.log('received', res.body.length, Math.round(res.body.length / contentLength * 100) + '%')
@@ -79,11 +81,11 @@ export default class Protocol extends EventEmitter {
     }
   }
 
-  sendRequest(content={}, timeout=30) {
+  async sendRequest(content={}, timeout=30) {
     const messageId = uuidv4()
+    let $timeout
 
     return new Promise(( resolve, reject ) => {
-      let $timeout
 
       if (timeout >= 0) {
         $timeout = setTimeout(() => reject(new Error('Request Timeout')), timeout * 1000)

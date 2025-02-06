@@ -3,16 +3,18 @@ import Server from './Client.js'
 import Protocol from './Protocol.js'
 
 export default class VisitorService extends EventEmitter {
-  constructor() {
+  constructor({ storeId }={}) {
     super()
 
-    this.server = new Server()
+    this.storeId = storeId
+    this.server = new Server({ storeId })
     this.channel = null
     this.$onmessage = (data) => this.onmessage(data)
     this.$onclose = () => this.onclose()
   }
 
-  async connect({ storeId, tunnel }) {
+  async connect({ tunnel }) {
+    const { storeId } = this
     const dataChannel = await this.server.connect({ storeId, tunnel })
     const channel = new Protocol({ dataChannel })
 
@@ -23,6 +25,8 @@ export default class VisitorService extends EventEmitter {
   }
 
   onmessage(event) {
+    const { clientId, data } = event
+
     console.log('onmessage', clientId, data)
   }
 
@@ -39,10 +43,19 @@ export default class VisitorService extends EventEmitter {
     this.server = null
   }
 
-  sendMessage(data) {
-    this.channel.send({
-      type: 'message',
-      data,
+  // sendMessage(data) {
+  //   this.channel.send({
+  //     type: 'message',
+  //     data,
+  //   })
+  // }
+
+  async listProducts(payload={}) {
+    const res = await this.channel.sendRequest({
+      action: 'listProducts',
+      payload,
     })
+
+    return JSON.parse(res)
   }
 }

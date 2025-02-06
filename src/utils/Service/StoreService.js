@@ -59,10 +59,15 @@ export default class StoreService extends EventEmitter {
   async onrequest(event) {
     const { clientId, messageId, action, payload } = event
     const connection = this.connections[clientId]
+    let response
 
     console.log('onrequest', clientId, messageId, action, payload)
 
     switch (action) {
+      case 'listProducts':
+        response = await this.listProducts(payload)
+
+        return connection.sendResponse(messageId, response)
       default:
         return connection.sendReject(messageId)
     }
