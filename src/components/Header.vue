@@ -2,7 +2,6 @@
   import { computed } from 'vue'
   import { useRouter } from 'vue-router'
   import { useStore } from 'vuex'
-  import { useTheme } from 'vuetify'
   import LocalesBtn from './header/LocalesBtn.vue'
   import ThemeBtn from './header/ThemeBtn.vue'
 
@@ -16,7 +15,6 @@
 
   const router = useRouter()
   const store = useStore()
-  const theme = useTheme()
   const isAuthenticated = computed(() => store.getters['auth/isAuthenticated'])
   const user = computed(() => store.getters['auth/user'])
 

@@ -1,11 +1,19 @@
+import Cart from './Cart.js'
 import File from "./File.js"
 import Product from './Product.js'
 
+import { Config as CartTableConfig } from './Cart.js'
+import { Config as FileTableConfig } from './File.js'
+import { Config as ProductTableConfig } from './Product.js'
+
+const CACHE_TIMEOUT = import.meta.env.VITE_INDEXEDDB_CACHE_TIMEOUT
+
 export default class IDBRepository {
   constructor({ storeId='guest' }={}) {
-    this.version = 5
+    this.version = 6
     this.storeId = storeId
     this.db = null
+    this.$productStore = null
     this.$fileStore = null
   }
 
@@ -14,92 +22,20 @@ export default class IDBRepository {
   }
 
   get storeConfigure() {
-    return {
-      // account: {
-      //   options: { keyPath: 'id' },
-      // },
-      // history: {
-      //   options: { keyPath: 'id' },
-      //   indexes: [
-      //     {
-      //       indexName: 'byAction',
-      //       keyPath: 'action',
-      //       options: { unique: false },
-      //     },
-      //     {
-      //       indexName: 'byUpdatedTime',
-      //       keyPath: 'updatedTime',
-      //       options: { unique: false },
-      //     },
-      //   ]
-      // },
-      // chat: {
-      //   options: {
-      //     keyPath: 'id',
-      //     autoIncrement: true,
-      //   },
-      //   indexes: [
-      //     {
-      //       indexName: 'byHistoryId',
-      //       keyPath: 'historyId',
-      //       options: { unique: false },
-      //     },
-      //   ],
-      // },
-      // post: {
-      //   options: {
-      //     keyPath: 'id',
-      //   },
-      //   indexes: [
-      //     {
-      //       indexName: 'byHistoryId',
-      //       keyPath: 'historyId',
-      //       options: { unique: false },
-      //     },
-      //   ],
-      // },
-      // comment: {
-      //   options: {
-      //     keyPath: 'id',
-      //   },
-      //   indexes: [
-      //     {
-      //       indexName: 'byPostId',
-      //       keyPath: 'postId',
-      //       options: { unique: false },
-      //     },
-      //   ],
-      // },
-      file: {
-        options: { keyPath: 'id' },
-        indexes: [
-          {
-            indexName: 'byUpdatedTime',
-            keyPath: 'updatedTime',
-            options: { unique: false },
-          },
-        ]
-      },
-      product: {
-        options: { keyPath: 'id' },
-        indexes: [
-          {
-            indexName: 'byCreatedTime',
-            keyPath: 'createdTime',
-            options: { unique: false },
-          },
-          {
-            indexName: 'byUpdatedTime',
-            keyPath: 'updatedTime',
-            options: { unique: false },
-          },
-        ]
-      },
+    const guestDBConfig = {
+      file: FileTableConfig,
+      cart: CartTableConfig,
     }
+    const storeDBConfig = {
+      file: FileTableConfig,
+      product: ProductTableConfig,
+    }
+
+    return this.storeId === 'guest' ? guestDBConfig : storeDBConfig
   }
 
   async connect() {
-    const { dbName, version } = this
+    const { dbName, version, storeId } = this
     const db = await new Promise((resolve, reject) => {
       const request = indexedDB.open(dbName, version)
 
@@ -111,13 +47,26 @@ export default class IDBRepository {
     this.db = db
     this.$productStore = new Product({ db })
     this.$fileStore = new File({ db })
+    this.$cartStore = new Cart({ db })
+
+    if (storeId === 'guest') {
+      this.$fileStore
+        .getAll()
+        .then(({ items }) => {
+          const expireTime = Date.now() - Number(CACHE_TIMEOUT)
+
+          items.filter((item) => item.createdTime < expireTime)
+            .forEach((item) => this.$fileStore.delete(item.id))
+        })
+    }
 
     return this
   }
 
   close() {
     this.db?.close()
-    this.bd = null
+    this.db = null
+    this.$productStore = null
     this.$fileStore = null
   }
 
@@ -165,7 +114,43 @@ export default class IDBRepository {
     return this.$productStore?.delete(id)
   }
 
-  async createImage(data) {
+  async createImage(file, options={}) {
+    return this.$fileStore?.createImage(file, options)
+  }
+
+  async deleteImage(id) {
+    return this.$fileStore?.deleteImage(id)
+  }
+
+  async createFile(data) {
     return this.$fileStore?.create(data)
+  }
+
+  async getFile(id) {
+    return this.$fileStore?.queryById(id)
+  }
+
+  async getFile(id) {
+    return this.$fileStore?.queryById(id)
+  }
+
+  async createCart(data) {
+    return this.$cartStore.create(data)
+  }
+
+  async updateCart(id, data) {
+    return this.$cartStore.update(id, data)
+  }
+
+  async deleteCart(id) {
+    return this.$cartStore.delete(id)
+  }
+
+  async queryCartByProductId(productId) {
+    return this.$cartStore.queryByProductId({ productId })
+  }
+
+  async queryCartByStoreId(storeId) {
+    return this.$cartStore.queryByStoreId({ storeId })
   }
 }

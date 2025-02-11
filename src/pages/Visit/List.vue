@@ -1,5 +1,5 @@
 <script setup>
-  import { ref, toRefs, onMounted } from 'vue'
+  import { ref, toRefs, onMounted, nextTick, inject } from 'vue'
 
   const props = defineProps({
     service: {
@@ -8,17 +8,32 @@
     },
   })
 
+  const storeInfo = inject('storeInfo')
+  const cart = inject('cart')
+
   const { service } = toRefs(props)
   const products = ref([])
   const containerRef = ref(null)
   const selectedProduct = ref(null)
   const tab = ref('list')
 
-  const LIMIT = 12
+  const LIMIT = 8
   let nextToken
 
   const queryProducts = async ({ limit=LIMIT }={}) => {
     const { items, next } = await service.value.listProducts({ limit, next: nextToken })
+
+    items.map((item) => ref(item))
+      .filter((item) => item.value.thumbnail)
+      .forEach(async (item) => {
+        try {
+          const { src } = await service.value.getImage(item.value.thumbnail)
+
+          item.value.thumbnailSrc = src
+        } catch (err) {
+          console.warn('service.getImage failed', item.value.thumbnail, err)
+        }
+      })
 
     products.value = [
       ...products.value,
@@ -36,8 +51,37 @@
   const onMoreClick = (item) => {
     selectedProduct.value = item
     tab.value = 'item'
+
+    if (item.image && !item.imageSrc) {
+      nextTick(async () => {
+        try {
+          const { src } = await service.value.getImage(item.image)
+
+          selectedProduct.value.imageSrc = src
+        } catch (err) {
+          console.warn('service.getImage failed', item.image, err)
+        }
+      })
+    }
   }
   const onReturnClick = () => tab.value = 'list'
+  const onAddToCartClick = async (item) => {
+    const { id: productId, thumbnail, price } = item
+    const storeId = storeInfo.value.id
+
+    await service.value.increaseToCart({
+      storeId,
+      productId,
+      thumbnail,
+      price,
+    })
+
+    onReturnClick()
+
+    const { items } = await service.value.getCartItemsByStoreId(storeId)
+
+    cart.value = items
+  }
 
   onMounted(async () => {
     await queryProducts()
@@ -53,16 +97,17 @@
   <v-tabs-window v-model="tab">
     <v-tabs-window-item value="list">
       <v-row>
-        <v-col cols="12" md="4"
+        <v-col cols="12" md="4" sm="6"
           v-for="item in products"
           :key=item.id
         >
           <v-card
             variant="tonal"
           >
-            <v-img v-if="item.thumbnail"
-              :src="item.thumbnail"
-              height="150px"
+            <v-img
+              v-if="item.thumbnailSrc"
+              :src="item.thumbnailSrc"
+              height="180px"
               aspect-ratio="16/9"
               cover
             ></v-img>
@@ -118,14 +163,14 @@
           <v-card-text v-if="selectedProduct">
             <v-row class="pt-3">
               <v-col col="12" sm="6">
-                <v-img v-if="selectedProduct.image"
-                  :src="selectedProduct.image"
-                  height="400px"
+                <v-img v-if="selectedProduct.imageSrc"
+                  :src="selectedProduct.imageSrc"
+                  height="500px"
                   aspect-ratio="16/9"
-                  cover
+                  contain
                 ></v-img>
                 <v-img v-else
-                  height="400px"
+                  height="500px"
                   aspect-ratio="16/9"
                   class="d-flex align-center justify-center img-detail-border"
                   cover
@@ -152,13 +197,15 @@
                   </v-col>
                   <v-col cols="12" v-html="selectedProduct.desc"></v-col>
                   <v-col cols="6">
-                    <div v-if="selectedProduct.quantity === Infinity">{{ $t('In stock') }}</div>
-                    <div v-else-if="selectedProduct.quantity !== undefined">{{ $t('Stock') + ': ' + selectedProduct.quantity }}</div>
+                    <div v-if="selectedProduct.quantity === 'Infinity'">{{ $t('In stock') }}</div>
+                    <div v-else-if="selectedProduct.quantity > 0">{{ $t('Stock') + ': ' + selectedProduct.quantity }}</div>
+                    <div v-else>{{ $t('Out of stock') }}</div>
                   </v-col>
                   <v-col cols="6">
                     <v-btn
-                      :text="$t('Buy')"
-                      @click="onBuyClick(item)"
+                      :text="$t('Add to cart')"
+                      :disabled="selectedProduct.quantity <= 0"
+                      @click="onAddToCartClick(selectedProduct)"
                       variant="tonal"
                       width="200"
                       color="primary"

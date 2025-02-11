@@ -1,50 +1,76 @@
-import short from 'short-uuid'
 import IDBStoreOperator from "./IDBStoreOperator"
 
 export const Config = {
-  options: { keyPath: 'id' },
+  options: {
+    keyPath: 'id',
+    autoIncrement: true,
+  },
   indexes: [
     {
-      indexName: 'byCreatedTime',
-      keyPath: 'createdTime',
+      indexName: 'byStoreId',
+      keyPath: 'storeId',
       options: { unique: false },
     },
     {
-      indexName: 'byUpdatedTime',
-      keyPath: 'updatedTime',
+      indexName: 'byProductId',
+      keyPath: 'productId',
       options: { unique: false },
     },
-  ]
+  ],
 }
 
-export default class Product extends IDBStoreOperator {
-  constructor({ db, storeName='product' }={}) {
+export default class Cart extends IDBStoreOperator {
+  constructor({ db, storeName='cart' }={}) {
     super({ db, storeName })
   }
 
-  create(data) {
-    const id = short.generate()
-
-    return super.create({
-      id,
-      ...data,
-    })
-  }
-
-  queryByCreatedTime({
+  async queryByStoreId({
     next=null,
     limit=Infinity,
     order='prev', // next/prev/nextunique/prevunique
+    storeId,
+  }={}) {
+    return this.queryByConditions({
+      next, limit, order,
+      condition: {
+        index: 'byStoreId',
+        value: storeId,
+      }
+    })
+  }
+
+  async queryByProductId({
+    next=null,
+    limit=Infinity,
+    order='prev', // next/prev/nextunique/prevunique
+    productId,
+  }={}) {
+    return this.queryByConditions({
+      next, limit, order,
+      condition: {
+        index: 'byProductId',
+        value: productId,
+      }
+    })
+  }
+
+  async queryByConditions({
+    next=null,
+    limit=Infinity,
+    order='prev', // next/prev/nextunique/prevunique
+    condition={}
   }={}) {
     const { db, storeName } = this
     const items = []
     let startFrom = next ? atob(next) : null
+    const { index, value } = condition
 
     return new Promise((resolve, reject) => {
+      const range = IDBKeyRange.only(value)
       const request = db.transaction(storeName)
         .objectStore(storeName)
-        .index('byCreatedTime')
-        .openCursor(null, order)
+        .index(index)
+        .openCursor(range, order)
 
       request.onsuccess = (event) => {
         const cursor = event.target.result

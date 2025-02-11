@@ -1,6 +1,7 @@
 <script setup>
-  import { ref, toRefs, watch, onMounted } from 'vue'
+  import { ref, toRefs, inject, watch, onMounted } from 'vue'
   import DOMPurify from 'dompurify'
+  import formatBytes from '@/utils/formatBytes.js'
 
   import Editor from '@/components/Editor.vue'
 
@@ -12,6 +13,7 @@
   })
   const emit = defineEmits(['update:product', 'change:product'])
 
+  const service = inject('storeService')
   const { product } = toRefs(props)
   const tab = ref('tab-1')
   const productDesc = ref('')
@@ -20,9 +22,12 @@
   const productQuantity = ref(null)
   const productDescEditor = ref(null)
   const productShortDescEditor = ref(null)
+  const inputFile = ref()
+  const productImage = ref(null)
 
   const clean = () => {
     tab.value = 'tab-1'
+    productImage.value = null
     productDesc.value = ''
     productShortDesc.value = ''
     quantityRadios.value = null
@@ -30,7 +35,23 @@
     productDescEditor.value?.clean()
     productShortDescEditor.value?.clean()
   }
+  const onAddImageClick = () => inputFile.value.click()
+  const onFileSelected = async (event) => {
+    const file = event.target.files[0]
+    const fileInStore = await service.value.createImage(file)
 
+    productImage.value = fileInStore
+  }
+  const onRemoveImageClick = () => productImage.value = null
+
+  watch(productImage, (value) => {
+    emit('update:product', {
+      ...product.value,
+      image: value?.id,
+      thumbnail: value?.thumbnailId,
+    })
+    emit('change:product')
+  })
   watch(productDesc, (value) => {
     emit('update:product', {
       ...product.value,
@@ -46,7 +67,7 @@
     emit('change:product')
   })
   watch(quantityRadios, (value) => {
-    const quantity = value === 'infinity' ? Infinity : Number(productQuantity.value)
+    const quantity = value === 'Infinity' ? value : Number(productQuantity.value)
 
     emit('update:product', {
       ...product.value,
@@ -68,14 +89,19 @@
     clean,
   })
 
-  onMounted(() => {
-    if (product.value.quantity === Infinity) {
-      quantityRadios.value = 'infinity'
-    } else if (product.value.quantity !== undefined) {
-      quantityRadios.value = 'infinity'
+  onMounted(async () => {
+    if (product.value.quantity === 'Infinity' || product.value.quantity === undefined) {
+      quantityRadios.value = 'Infinity'
+    } else {
+      quantityRadios.value = 'finity'
+      productQuantity.value = product.value.quantity
     }
     productDescEditor.value?.set(product.value.desc)
     productShortDescEditor.value?.set(product.value.shortDesc)
+
+    if (product.value.image) {
+      productImage.value = await service.value.getImage(product.value.image)
+    }
   })
 </script>
 
@@ -87,23 +113,63 @@
         md="4"
         :order-md="2"
       >
-        <v-card variant="tonal">
+        <v-card>
           <v-card-text>
             <v-row>
               <v-col cols="4" md="12">
-                <v-btn
-                  class="img-add-btn"
-                  variant="outlined"
-                  block
-                >
-                  <template v-slot:prepend>
+                <template v-if="productImage">
+                  <v-hover v-slot="{ isHovering, props }">
+                    <v-card v-bind="props">
+                      <v-img :src="productImage?.src" cover>
+                        <div
+                          v-if="isHovering"
+                          class="d-flex justify-center align-center"
+                          style="height: 100%;"
+                        >
+                          <v-icon
+                            icon="mdi-image-remove"
+                            color="red-accent-4"
+                            size="36"
+                            @click="onRemoveImageClick"
+                          >
+                          </v-icon>
+                        </div>
+                      </v-img>
+                    </v-card>
+                  </v-hover>
+                  <v-row class="mt-0">
+                    <v-col cols="12">
+                      <span class="mr-1">{{ $t('File') }}:</span>
+                      {{ productImage.name }}
+                      <br>
+                      <span class="mr-1">{{ $t('Size') }}:</span>
+                      {{ formatBytes(productImage.size) }}
+                      <br>
+                      <span class="mr-1">{{ $t('Resolution') }}:</span>
+                      {{ `${productImage.width} * ${productImage.height}` }}
+                    </v-col>
+                  </v-row>
+                </template>
+                <template v-else>
+                  <v-btn
+                    @click="onAddImageClick"
+                    class="h-56"
+                    variant="outlined"
+                    block
+                  >
                     <v-icon
                       icon="mdi-image-plus"
                       size="36"
                     >
                     </v-icon>
-                  </template>
-                </v-btn>
+                    <input
+                      class="d-none"
+                      type="file"
+                      ref="inputFile"
+                      @change="onFileSelected"
+                    />
+                  </v-btn>
+                </template>
               </v-col>
               <v-col cols="8" md="12"></v-col>
             </v-row>
@@ -192,7 +258,7 @@
                           v-model="quantityRadios"
                         >
                           <v-radio
-                            value="infinity"
+                            value="Infinity"
                             :label="$t('In stock')"
                           ></v-radio>
                           <v-radio
@@ -242,5 +308,8 @@
 }
 :deep(.product-short-desc-editor) {
   height: 100px;
+}
+.h-56 {
+  height: 56px;
 }
 </style>

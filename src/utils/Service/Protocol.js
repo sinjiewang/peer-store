@@ -56,8 +56,6 @@ export default class Protocol extends EventEmitter {
 
     if (!res) return;
 
-    console.warn(response)
-
     if (response.error) {
       return res.reject(new Error(response.error));
     }

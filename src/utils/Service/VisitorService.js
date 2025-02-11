@@ -3,10 +3,11 @@ import Server from './Client.js'
 import Protocol from './Protocol.js'
 
 export default class VisitorService extends EventEmitter {
-  constructor({ storeId }={}) {
+  constructor({ storeId, repository }={}) {
     super()
 
     this.storeId = storeId
+    this.repository = repository
     this.server = new Server({ storeId })
     this.channel = null
     this.$onmessage = (data) => this.onmessage(data)
@@ -50,6 +51,14 @@ export default class VisitorService extends EventEmitter {
   //   })
   // }
 
+  async getStoreInfo() {
+    const res = await this.channel.sendRequest({
+      action: 'info',
+    })
+
+    return JSON.parse(res)
+  }
+
   async listProducts(payload={}) {
     const res = await this.channel.sendRequest({
       action: 'listProducts',
@@ -57,5 +66,92 @@ export default class VisitorService extends EventEmitter {
     })
 
     return JSON.parse(res)
+  }
+
+  async getImage(id) {
+    const image = await this.repository.getFile(id)
+
+    if (image) return image
+
+    const res = await this.channel.sendRequest({
+      action: 'image',
+      payload: { id },
+    })
+    const data = JSON.parse(res)
+
+    this.repository.createFile(data)
+
+    return data
+  }
+
+  async increaseToCart(data) {
+    const { productId } = data
+    const { items } = await this.getCartItemsByProductId(productId)
+    let item
+
+    if (items.length) {
+      item = items.pop()
+
+      item.count += 1
+
+      this.updateCart(item.id, item)
+
+      return item
+    } else {
+      return this.createCart({
+        ...data,
+        count: 1,
+      })
+    }
+  }
+
+  async decreaseFromCart({ productId }) {
+    const { items } = await this.getCartItemsByProductId(productId)
+    let item
+
+    if (items.length) {
+      item = items.pop()
+
+      item.count -= 1
+
+      if (item.count) this.updateCart(item.id, item)
+      else this.deleteCart(item.id)
+
+      return item
+    }
+
+    return null
+  }
+
+  createCart(data) {
+    return this.repository.createCart(data)
+  }
+
+  updateCart(id, data) {
+    return this.repository.updateCart(id, data)
+  }
+
+  deleteCart(id) {
+    return this.repository.deleteCart(id)
+  }
+
+  async getCartItemsByProductId(productId) {
+    try {
+      return this.repository.queryCartByProductId(productId)
+    } catch (err) {
+      console.warn('repository.queryByProductId failed', err)
+    }
+
+    return { items: [], next: null}
+  }
+
+  async getCartItemsByStoreId(storeId) {
+    try {
+      return this.repository.queryCartByStoreId(storeId)
+    } catch (err) {
+      console.warn('repository.queryByStoreId failed', err)
+    }
+
+    return { items: [], next: null}
   }
 }

@@ -1,34 +1,54 @@
 <script setup>
-  import { ref, onMounted } from 'vue'
+  import { ref, onMounted, provide } from 'vue'
   import { useRoute } from 'vue-router'
   import { useStore } from 'vuex'
 
-  import List from './List.vue'
+  import Header from './Header.vue'
   import Service from '@/utils/Service/VisitorService.js'
+  import IDBRepository from '@/utils/IndexedDB/IDBRepository.js'
 
   const route = useRoute()
   const vStore = useStore()
-  // const client = inject('graphqlClient')
 
   const showProgress = ref(false)
   const dialog = ref(false)
   const service = ref(null)
+  const storeInfo = ref({})
+  const cart = ref([])
+
+  provide('storeInfo', storeInfo)
+  provide('cart', cart)
 
   const connectTunnel = (storeId) => vStore.dispatch('cloud/visitorConnect', { storeId })
   const disconnectTunnel = () => vStore.dispatch('cloud/disconnect')
+  const createRepository = async () => {
+    const repository = new IDBRepository()
+
+    await repository.connect()
+
+    return repository
+  }
   const connect = async () => {
     showProgress.value = true
 
     try {
       const { id: storeId } = route.params
       const tunnel = await connectTunnel(storeId)
-      const proxy = new Service({ storeId })
+      const repository = await createRepository()
+      const proxy = new Service({ storeId, repository })
 
       await proxy.connect({ storeId, tunnel })
 
       disconnectTunnel()
 
       service.value = proxy
+      storeInfo.value = await proxy.getStoreInfo()
+
+      const { items } = await proxy.getCartItemsByStoreId(storeId)
+
+      console.log(items)
+
+      cart.value = items
     } catch (err) {
       console.error('CloudConnection connect fail:', err)
 
@@ -63,11 +83,17 @@
       ></v-progress-circular>
     </div>
 
-    <div v-if="service">
-      <List
+    <template v-if="service">
+      <Header
+        :storeInfo="storeInfo"
+      ></Header>
+      <!-- <List
         :service="service"
-      />
-    </div>
+      /> -->
+      <router-view
+        :service="service"
+      ></router-view>
+    </template>
 
     <v-dialog
       v-model="dialog"

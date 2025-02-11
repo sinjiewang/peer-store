@@ -11,9 +11,10 @@
 
   const router = useRouter()
   const route = useRoute()
-  const handleBtnClick = (name) => router.push({ name })
 
   const routeNames = computed(() => route.matched.map(({ name }) => name ).filter((name) => name ))
+
+  const onNavBtnClick = (name) => router.push({ name })
 </script>
 
 <template>
@@ -35,7 +36,7 @@
       variant="outlined"
       :title="$t('Edit')"
       :active="routeNames.includes('establishEdit')"
-      @click="handleBtnClick('establishEdit')"
+      @click="onNavBtnClick('establishEdit')"
     ></v-btn>
     <v-btn
       class="mr-4"
@@ -43,7 +44,7 @@
       variant="outlined"
       :title="$t('Preview')"
       :active="routeNames.includes('establishPreview')"
-      @click="handleBtnClick('establishPreview')"
+      @click="onNavBtnClick('establishPreview')"
     ></v-btn>
     <v-btn
       class="mr-4"
@@ -51,7 +52,7 @@
       variant="outlined"
       :title="$t('Connect')"
       :active="routeNames.includes('establishConnect')"
-      @click="handleBtnClick('establishConnect')"
+      @click="onNavBtnClick('establishConnect')"
     ></v-btn>
   </v-app-bar>
 </template>

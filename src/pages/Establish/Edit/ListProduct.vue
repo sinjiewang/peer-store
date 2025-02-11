@@ -122,7 +122,7 @@
             <div class="text-start">{{ item.name }}</div>
           </template>
           <template v-slot:[`item.quantity`]="{ item }">
-            <div>{{ item.quantity === Infinity ? $t('In stock') : item.quantity }}</div>
+            <div>{{ item.quantity === 'Infinity' ? $t('In stock') : item.quantity }}</div>
           </template>
           <template v-slot:[`item.operate`]="{ item }">
             <v-btn

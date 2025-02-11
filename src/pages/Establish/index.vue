@@ -57,7 +57,11 @@
 
     return repository
   }
-  const createService = ({ repository }) => new Service({ repository })
+  const createService = ({ repository, watermark, storeInfo }) => new Service({
+    repository,
+    watermark,
+    storeInfo,
+  })
 
   const onConnect = async (server) => {
     service.value?.setServer(server)
@@ -79,9 +83,20 @@
 
       position.value = await getAddressPosition(storeInfo)
 
+      const { id, name, email, phone, address } = storeInfo
+      const watermark = `@${ storeInfo.name }`
       const repository = await createRepository(storeId)
       // proxy/service instance
-      service.value = createService({ repository })
+      service.value = createService({
+        repository,
+        watermark,
+        storeInfo: {
+          id, name, email, phone, address,
+          position: {
+            ...position.value
+          },
+        },
+      })
       store.value = storeInfo
     } else {
       showAlert.value = true

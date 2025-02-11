@@ -13,6 +13,7 @@ import Tags from '@/pages/Establish/Edit/Tags.vue'
 import Preview from '@/pages/Establish/Preview.vue'
 
 import Visit from '@/pages/Visit/index.vue'
+import VisitProducts from '@/pages/Visit/List.vue'
 import { useStore } from 'vuex'
 
 const routes = [
@@ -90,11 +91,26 @@ const routes = [
   },
   {
     path: '/visit/:id',
-    name: 'visit',
     component: Visit,
     meta: {
       layout: false,
     },
+    children: [
+      {
+        path: '',
+        name: 'visit',
+        redirect: (to) => {
+          const appendEnd = to.path[to.path.length - 1] === '/' ? '' : '/'
+
+          return to.path + appendEnd + 'products';
+        },
+      },
+      {
+        path: 'products',
+        name: 'visitProducts',
+        component: VisitProducts,
+      },
+    ]
   },
   {
     path: '/:pathMatch(.*)*',
