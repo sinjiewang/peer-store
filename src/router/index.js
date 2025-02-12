@@ -14,6 +14,7 @@ import Preview from '@/pages/Establish/Preview.vue'
 
 import Visit from '@/pages/Visit/index.vue'
 import VisitProducts from '@/pages/Visit/List.vue'
+import VisitCart from '@/pages/Visit/Cart.vue'
 import { useStore } from 'vuex'
 
 const routes = [
@@ -109,6 +110,11 @@ const routes = [
         path: 'products',
         name: 'visitProducts',
         component: VisitProducts,
+      },
+      {
+        path: 'cart',
+        name: 'visitCart',
+        component: VisitCart,
       },
     ]
   },

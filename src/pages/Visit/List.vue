@@ -6,6 +6,10 @@
       type: Object,
       required: true,
     },
+    refreshCart: {
+      type: Function,
+      required: true
+    },
   })
 
   const storeInfo = inject('storeInfo')
@@ -13,7 +17,6 @@
 
   const { service } = toRefs(props)
   const products = ref([])
-  const containerRef = ref(null)
   const selectedProduct = ref(null)
   const tab = ref('list')
 
@@ -66,21 +69,25 @@
   }
   const onReturnClick = () => tab.value = 'list'
   const onAddToCartClick = async (item) => {
-    const { id: productId, thumbnail, price } = item
+    const { id: productId, name, thumbnail, price } = item
     const storeId = storeInfo.value.id
 
     await service.value.increaseToCart({
       storeId,
       productId,
+      name,
       thumbnail,
       price,
     })
 
     onReturnClick()
 
-    const { items } = await service.value.getCartItemsByStoreId(storeId)
+    // const { items } = await service.value.getCartItemsByStoreId(storeId)
 
-    cart.value = items
+    // items.map((item) => ref(item))
+
+    // cart.value = items
+    props.refreshCart()
   }
 
   onMounted(async () => {
@@ -91,7 +98,6 @@
 <template>
   <v-container
     class="h-100 overflow-y-auto"
-    ref="containerRef"
     @scroll="onScroll"
   >
   <v-tabs-window v-model="tab">
@@ -104,8 +110,7 @@
           <v-card
             variant="tonal"
           >
-            <v-img
-              v-if="item.thumbnailSrc"
+            <v-img v-if="item.thumbnailSrc"
               :src="item.thumbnailSrc"
               height="180px"
               aspect-ratio="16/9"

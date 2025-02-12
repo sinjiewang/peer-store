@@ -19,7 +19,7 @@
   const user = computed(() => store.getters['auth/user'])
   const isAuthenticated = computed(() => store.getters['auth/isAuthenticated'])
   const routeNames = computed(() => route.matched.map(({ name }) => name ).filter((name) => name ))
-  const cartCount = computed(() => cart.value?.reduce((acc, curr) => acc + curr.count, 0))
+  const cartCount = computed(() => cart.value?.reduce((acc, curr) => acc + Number(curr.count), 0))
 
   const onNavBtnClick = (name) => router.push({ name })
   const onLoginClick = () => router.push('/login')

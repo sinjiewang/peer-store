@@ -41,14 +41,17 @@
 
       disconnectTunnel()
 
-      service.value = proxy
       storeInfo.value = await proxy.getStoreInfo()
 
-      const { items } = await proxy.getCartItemsByStoreId(storeId)
+      // const { items } = await proxy.getCartItemsByStoreId(storeId)
 
-      console.log(items)
+      // items.map((item) => ref(item))
 
-      cart.value = items
+      // cart.value = items
+
+      service.value = proxy
+
+      refreshCart()
     } catch (err) {
       console.error('CloudConnection connect fail:', err)
 
@@ -61,6 +64,14 @@
     dialog.value = false
 
     connect()
+  }
+  const refreshCart = async () => {
+    const { id: storeId } = route.params
+    const { items } = await service.value.getCartItemsByStoreId(storeId)
+
+    items.map((item) => ref(item))
+
+    cart.value = items
   }
 
   onMounted(async () => {
@@ -92,6 +103,7 @@
       /> -->
       <router-view
         :service="service"
+        :refreshCart="refreshCart"
       ></router-view>
     </template>
 
