@@ -307,3 +307,186 @@ export const onDeleteVisitorConnection = /* GraphQL */ `
     }
   }
 `;
+export const onCreateOrder = /* GraphQL */ `
+  subscription OnCreateOrder(
+    $filter: ModelSubscriptionOrderFilterInput
+    $owner: String
+  ) {
+    onCreateOrder(filter: $filter, owner: $owner) {
+      id
+      storeID
+      totalAmount
+      detail
+      status
+      expired
+      billingID
+      paymentID
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onUpdateOrder = /* GraphQL */ `
+  subscription OnUpdateOrder(
+    $filter: ModelSubscriptionOrderFilterInput
+    $owner: String
+  ) {
+    onUpdateOrder(filter: $filter, owner: $owner) {
+      id
+      storeID
+      totalAmount
+      detail
+      status
+      expired
+      billingID
+      paymentID
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onDeleteOrder = /* GraphQL */ `
+  subscription OnDeleteOrder(
+    $filter: ModelSubscriptionOrderFilterInput
+    $owner: String
+  ) {
+    onDeleteOrder(filter: $filter, owner: $owner) {
+      id
+      storeID
+      totalAmount
+      detail
+      status
+      expired
+      billingID
+      paymentID
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onCreateBilling = /* GraphQL */ `
+  subscription OnCreateBilling(
+    $filter: ModelSubscriptionBillingFilterInput
+    $owner: String
+  ) {
+    onCreateBilling(filter: $filter, owner: $owner) {
+      id
+      tradeNo
+      orderID
+      order {
+        id
+        storeID
+        totalAmount
+        detail
+        status
+        expired
+        billingID
+        paymentID
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onUpdateBilling = /* GraphQL */ `
+  subscription OnUpdateBilling(
+    $filter: ModelSubscriptionBillingFilterInput
+    $owner: String
+  ) {
+    onUpdateBilling(filter: $filter, owner: $owner) {
+      id
+      tradeNo
+      orderID
+      order {
+        id
+        storeID
+        totalAmount
+        detail
+        status
+        expired
+        billingID
+        paymentID
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onDeleteBilling = /* GraphQL */ `
+  subscription OnDeleteBilling(
+    $filter: ModelSubscriptionBillingFilterInput
+    $owner: String
+  ) {
+    onDeleteBilling(filter: $filter, owner: $owner) {
+      id
+      tradeNo
+      orderID
+      order {
+        id
+        storeID
+        totalAmount
+        detail
+        status
+        expired
+        billingID
+        paymentID
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onCreatePaymnet = /* GraphQL */ `
+  subscription OnCreatePaymnet($filter: ModelSubscriptionPaymnetFilterInput) {
+    onCreatePaymnet(filter: $filter) {
+      id
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onUpdatePaymnet = /* GraphQL */ `
+  subscription OnUpdatePaymnet($filter: ModelSubscriptionPaymnetFilterInput) {
+    onUpdatePaymnet(filter: $filter) {
+      id
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onDeletePaymnet = /* GraphQL */ `
+  subscription OnDeletePaymnet($filter: ModelSubscriptionPaymnetFilterInput) {
+    onDeletePaymnet(filter: $filter) {
+      id
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;

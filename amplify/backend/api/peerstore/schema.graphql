@@ -61,3 +61,59 @@ type Store @model @auth(rules: [{ allow: owner }]) {
   hashKey: String
   hashIV: String
 }
+
+type Order
+  @model
+  @auth(rules: [
+    { allow: owner, operations: [create, read] },
+    { allow: custom, provider: function }
+  ])
+{
+  id: ID!
+  storeID: ID!
+  totalAmount: Float!
+  detail: String!
+  status: OrderStatus!
+  expired: AWSDateTime
+  billingID: ID
+  paymentID: ID
+}
+
+enum OrderStatus {
+  PENDING       # 訂單已建立，但未付款
+  PAID          # 已付款
+  PROCESSING    # 訂單處理中
+  SHIPPED       # 已發貨
+  DELIVERED     # 已送達
+  CANCELED      # 訂單已取消
+  REFUNDED      # 已退款
+  FAILED        # 付款失敗
+}
+
+type Billing
+  @model
+  @auth(rules: [
+    { allow: owner, operations: [create, read] },
+    { allow: custom, provider: function }
+  ])
+{
+  id: ID!
+  tradeNo: String! @index(name: "byTradeNo")
+  orderID: ID!
+  order: Order @hasOne(fields: ["orderID"])
+}
+
+type Paymnet
+  @model
+  @auth(rules: [
+    { allow: custom, provider: function }
+  ])
+{
+  id: ID!
+}
+
+type Query {
+  getOrderByID(id: ID!): Order
+    @function(name: "ddbGetOrderByID-${env}")
+    @auth(rules: [{ allow: private, provider: userPools }])
+}

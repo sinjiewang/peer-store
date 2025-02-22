@@ -59,10 +59,10 @@ export default class VisitorService extends EventEmitter {
     return JSON.parse(res)
   }
 
-  async listProducts(payload={}) {
+  async listProducts({ limit, next }={}) {
     const res = await this.channel.sendRequest({
       action: 'listProducts',
-      payload,
+      payload: { limit, next },
     })
 
     return JSON.parse(res)
@@ -153,5 +153,20 @@ export default class VisitorService extends EventEmitter {
     }
 
     return { items: [], next: null}
+  }
+
+  async createOrder(items=[]) {
+    try {
+      const res = await this.channel.sendRequest({
+        action: 'order',
+        payload: { items },
+      })
+
+      return JSON.parse(res)
+    } catch (err) {
+      console.warn('createOrder failed', err)
+
+      return JSON.parse(err.message)
+    }
   }
 }

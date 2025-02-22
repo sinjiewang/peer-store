@@ -4,6 +4,7 @@
   import { useI18n } from 'vue-i18n'
   import { useStore } from 'vuex'
   import { getStore } from '@/graphql/queries'
+  import { createOrder } from '@/graphql/mutations'
 
   import Service from '@/utils/Service/StoreService.js'
   import IDBRepository from '@/utils/IndexedDB/IDBRepository.js'
@@ -61,6 +62,7 @@
     repository,
     watermark,
     storeInfo,
+    createOrderFromCloud,
   })
 
   const onConnect = async (server) => {
@@ -73,6 +75,20 @@
     service.value?.removeServer()
     store.value.state = null
     showAlert.value = false
+  }
+  const createOrderFromCloud = async ({ storeId, totalAmount, detail, expired, status }) => {
+    const input = { totalAmount, detail, expired, status, storeID: storeId }
+
+    try {
+      return client.graphql({
+        query: createOrder,
+        variables: { input },
+      })
+    } catch (err) {
+      console.error('createOrder failed', err)
+
+      throw err
+    }
   }
 
   onMounted(async () => {

@@ -1,5 +1,19 @@
 {
   "api": {
+    "apiPaymentCallback": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "apigatewayPaymentCallback"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    },
     "peerstore": {
       "dependsOn": [
         {
@@ -70,6 +84,48 @@
     }
   },
   "function": {
+    "apigatewayPaymentCallback": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "peerstore"
+        },
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "peerstoreconfigure"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "ddbGetOrderByID": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "peerstore"
+        },
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "peerstoreconfigure"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "peerstoreStoreConnectHandler": {
       "build": true,
       "dependsOn": [
@@ -224,13 +280,72 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "peerstoreVisitorPaymentHandler": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "peerstoreconfigure"
+        },
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "peerstore"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "peerstoreconfigure": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "LambdaLayer"
     }
   },
+  "hosting": {
+    "S3AndCloudFront": {
+      "providerPlugin": "awscloudformation",
+      "service": "S3AndCloudFront"
+    }
+  },
   "parameters": {
+    "AMPLIFY_function_apigatewayPaymentCallback_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "apigatewayPaymentCallback"
+        }
+      ]
+    },
+    "AMPLIFY_function_apigatewayPaymentCallback_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "apigatewayPaymentCallback"
+        }
+      ]
+    },
+    "AMPLIFY_function_ddbGetOrderByID_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ddbGetOrderByID"
+        }
+      ]
+    },
+    "AMPLIFY_function_ddbGetOrderByID_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ddbGetOrderByID"
+        }
+      ]
+    },
     "AMPLIFY_function_peerstoreStoreConnectHandler_deploymentBucketName": {
       "usedBy": [
         {
@@ -356,6 +471,22 @@
         {
           "category": "function",
           "resourceName": "peerstoreVisitorMessageHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_peerstoreVisitorPaymentHandler_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "peerstoreVisitorPaymentHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_peerstoreVisitorPaymentHandler_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "peerstoreVisitorPaymentHandler"
         }
       ]
     },

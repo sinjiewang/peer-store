@@ -1,0 +1,23 @@
+{
+  "requestContext": {
+      "routeKey": "payment",
+      "messageId": "GUmDffpytjMCJWQ=",
+      "eventType": "MESSAGE",
+      "extendedRequestId": "GUmDfHeJtjMEQ5Q=",
+      "requestTime": "21/Feb/2025:06:29:29 +0000",
+      "messageDirection": "IN",
+      "stage": "dev",
+      "connectedAt": 1740119368874,
+      "requestTimeEpoch": 1740119369169,
+      "identity": {
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "sourceIp": "61.228.132.133"
+      },
+      "requestId": "GUmDfHeJtjMEQ5Q=",
+      "domainName": "4djcqas3d8.execute-api.ap-northeast-1.amazonaws.com",
+      "connectionId": "GUmDcfpstjMCJWQ=",
+      "apiId": "4djcqas3d8"
+  },
+  "body": "{\"action\":\"payment\",\"data\":{\"orderId\":\"a6513b9b-e2b3-49cb-9966-e6c73462a350\"},\"vendor\":\"ECPay\"}",
+  "isBase64Encoded": false
+}

@@ -1,0 +1,120 @@
+{
+    "resource": "/payments/{proxy+}",
+    "path": "/payments/ecpay",
+    "httpMethod": "POST",
+    "headers": {
+        "Accept": "text/html",
+        "CloudFront-Forwarded-Proto": "https",
+        "CloudFront-Is-Desktop-Viewer": "true",
+        "CloudFront-Is-Mobile-Viewer": "false",
+        "CloudFront-Is-SmartTV-Viewer": "false",
+        "CloudFront-Is-Tablet-Viewer": "false",
+        "CloudFront-Viewer-ASN": "9924",
+        "CloudFront-Viewer-Country": "TW",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Host": "onth6ndet4.execute-api.ap-northeast-1.amazonaws.com",
+        "Referer": "http://ecpay.com.tw",
+        "User-Agent": "Mozilla/4.0 (compatible; MSIE 9.0; Windows NT 5.0)",
+        "Via": "1.1 4709f0462082796362199a53f4a2cf60.cloudfront.net (CloudFront)",
+        "X-Amz-Cf-Id": "ZlcvS4e4nRxHXvxcbVfLuUs1IyVEle9dud4Ha4lSitt5ag6_MFVUMQ==",
+        "X-Amzn-Trace-Id": "Root=1-67b591ed-04086d925ba8d5a22b6bb236",
+        "X-Forwarded-For": "175.99.72.41, 52.46.62.72",
+        "X-Forwarded-Port": "443",
+        "X-Forwarded-Proto": "https"
+    },
+    "multiValueHeaders": {
+        "Accept": [
+            "text/html"
+        ],
+        "CloudFront-Forwarded-Proto": [
+            "https"
+        ],
+        "CloudFront-Is-Desktop-Viewer": [
+            "true"
+        ],
+        "CloudFront-Is-Mobile-Viewer": [
+            "false"
+        ],
+        "CloudFront-Is-SmartTV-Viewer": [
+            "false"
+        ],
+        "CloudFront-Is-Tablet-Viewer": [
+            "false"
+        ],
+        "CloudFront-Viewer-ASN": [
+            "9924"
+        ],
+        "CloudFront-Viewer-Country": [
+            "TW"
+        ],
+        "Content-Type": [
+            "application/x-www-form-urlencoded"
+        ],
+        "Host": [
+            "onth6ndet4.execute-api.ap-northeast-1.amazonaws.com"
+        ],
+        "Referer": [
+            "http://ecpay.com.tw"
+        ],
+        "User-Agent": [
+            "Mozilla/4.0 (compatible; MSIE 9.0; Windows NT 5.0)"
+        ],
+        "Via": [
+            "1.1 4709f0462082796362199a53f4a2cf60.cloudfront.net (CloudFront)"
+        ],
+        "X-Amz-Cf-Id": [
+            "ZlcvS4e4nRxHXvxcbVfLuUs1IyVEle9dud4Ha4lSitt5ag6_MFVUMQ=="
+        ],
+        "X-Amzn-Trace-Id": [
+            "Root=1-67b591ed-04086d925ba8d5a22b6bb236"
+        ],
+        "X-Forwarded-For": [
+            "175.99.72.41, 52.46.62.72"
+        ],
+        "X-Forwarded-Port": [
+            "443"
+        ],
+        "X-Forwarded-Proto": [
+            "https"
+        ]
+    },
+    "queryStringParameters": null,
+    "multiValueQueryStringParameters": null,
+    "pathParameters": {
+        "proxy": "ecpay"
+    },
+    "stageVariables": null,
+    "requestContext": {
+        "resourceId": "2wlqty",
+        "resourcePath": "/payments/{proxy+}",
+        "httpMethod": "POST",
+        "extendedRequestId": "GOO9KGi0tjMEJaw=",
+        "requestTime": "19/Feb/2025:08:10:21 +0000",
+        "path": "/dev/payments/ecpay",
+        "accountId": "301856136276",
+        "protocol": "HTTP/1.1",
+        "stage": "dev",
+        "domainPrefix": "onth6ndet4",
+        "requestTimeEpoch": 1739952621412,
+        "requestId": "11d3c568-7704-4a36-8c16-a1f40fb8a645",
+        "identity": {
+            "cognitoIdentityPoolId": null,
+            "accountId": null,
+            "cognitoIdentityId": null,
+            "caller": null,
+            "sourceIp": "175.99.72.41",
+            "principalOrgId": null,
+            "accessKey": null,
+            "cognitoAuthenticationType": null,
+            "cognitoAuthenticationProvider": null,
+            "userArn": null,
+            "userAgent": "Mozilla/4.0 (compatible; MSIE 9.0; Windows NT 5.0)",
+            "user": null
+        },
+        "domainName": "onth6ndet4.execute-api.ap-northeast-1.amazonaws.com",
+        "deploymentId": "qgmgz8",
+        "apiId": "onth6ndet4"
+    },
+    "body": "CustomField1=&CustomField2=&CustomField3=&CustomField4=&MerchantID=3002607&MerchantTradeNo=G839xF3kgbOhnmFxM6yY&PaymentDate=2025/02/19 16:10:20&PaymentType=Credit_CreditCard&PaymentTypeChargeFee=10&RtnCode=1&RtnMsg=交易成功&SimulatePaid=0&StoreID=&TradeAmt=413&TradeDate=2025/02/19 16:07:37&TradeNo=2502191607371195&CheckMacValue=30D6AC82D571A6B81D154EC2414C2E8FF34B138BB0645BE9FFFF7A10A2400195",
+    "isBase64Encoded": false
+}

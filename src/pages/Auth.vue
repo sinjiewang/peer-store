@@ -1,6 +1,6 @@
 <script setup>
   import '@aws-amplify/ui-vue/styles.css'
-  import { onMounted, onUnmounted, ref } from 'vue'
+  import { onMounted, onUnmounted } from 'vue'
   import { Hub } from 'aws-amplify/utils'
   import { useRouter, useRoute } from 'vue-router'
 

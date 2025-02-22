@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "storage": {
+      "StoreConnection:@model(appsync)": [
+        "read"
+      ],
+      "Store:@model(appsync)": [
+        "read"
+      ],
+      "Order:@model(appsync)": [
+        "read",
+        "update"
+      ],
+      "Billing:@model(appsync)": [
+        "read",
+        "update"
+      ],
+      "Paymnet:@model(appsync)": [
+        "create"
+      ]
+    }
+  },
+  "lambdaLayers": [
+    {
+      "type": "ProjectLayer",
+      "resourceName": "peerstoreconfigure",
+      "env": "dev",
+      "version": "Always choose latest version",
+      "isLatestVersionSelected": true
+    }
+  ]
+}

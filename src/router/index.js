@@ -15,6 +15,8 @@ import Preview from '@/pages/Establish/Preview.vue'
 import Visit from '@/pages/Visit/index.vue'
 import VisitProducts from '@/pages/Visit/List.vue'
 import VisitCart from '@/pages/Visit/Cart.vue'
+import VisitCheckout from '@/pages/Visit/Checkout.vue'
+import VisitReceived from '@/pages/Visit/Received.vue'
 import { useStore } from 'vuex'
 
 const routes = [
@@ -115,6 +117,22 @@ const routes = [
         path: 'cart',
         name: 'visitCart',
         component: VisitCart,
+      },
+      {
+        path: 'checkout/:orderId',
+        name: 'visitCheckout',
+        component: VisitCheckout,
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: 'received/:orderId',
+        name: 'visitReceived',
+        component: VisitReceived,
+        meta: {
+          requiresAuth: true,
+        },
       },
     ]
   },

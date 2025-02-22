@@ -322,3 +322,195 @@ export const deleteVisitorConnection = /* GraphQL */ `
     }
   }
 `;
+export const createOrder = /* GraphQL */ `
+  mutation CreateOrder(
+    $input: CreateOrderInput!
+    $condition: ModelOrderConditionInput
+  ) {
+    createOrder(input: $input, condition: $condition) {
+      id
+      storeID
+      totalAmount
+      detail
+      status
+      expired
+      billingID
+      paymentID
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const updateOrder = /* GraphQL */ `
+  mutation UpdateOrder(
+    $input: UpdateOrderInput!
+    $condition: ModelOrderConditionInput
+  ) {
+    updateOrder(input: $input, condition: $condition) {
+      id
+      storeID
+      totalAmount
+      detail
+      status
+      expired
+      billingID
+      paymentID
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const deleteOrder = /* GraphQL */ `
+  mutation DeleteOrder(
+    $input: DeleteOrderInput!
+    $condition: ModelOrderConditionInput
+  ) {
+    deleteOrder(input: $input, condition: $condition) {
+      id
+      storeID
+      totalAmount
+      detail
+      status
+      expired
+      billingID
+      paymentID
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const createBilling = /* GraphQL */ `
+  mutation CreateBilling(
+    $input: CreateBillingInput!
+    $condition: ModelBillingConditionInput
+  ) {
+    createBilling(input: $input, condition: $condition) {
+      id
+      tradeNo
+      orderID
+      order {
+        id
+        storeID
+        totalAmount
+        detail
+        status
+        expired
+        billingID
+        paymentID
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const updateBilling = /* GraphQL */ `
+  mutation UpdateBilling(
+    $input: UpdateBillingInput!
+    $condition: ModelBillingConditionInput
+  ) {
+    updateBilling(input: $input, condition: $condition) {
+      id
+      tradeNo
+      orderID
+      order {
+        id
+        storeID
+        totalAmount
+        detail
+        status
+        expired
+        billingID
+        paymentID
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const deleteBilling = /* GraphQL */ `
+  mutation DeleteBilling(
+    $input: DeleteBillingInput!
+    $condition: ModelBillingConditionInput
+  ) {
+    deleteBilling(input: $input, condition: $condition) {
+      id
+      tradeNo
+      orderID
+      order {
+        id
+        storeID
+        totalAmount
+        detail
+        status
+        expired
+        billingID
+        paymentID
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const createPaymnet = /* GraphQL */ `
+  mutation CreatePaymnet(
+    $input: CreatePaymnetInput!
+    $condition: ModelPaymnetConditionInput
+  ) {
+    createPaymnet(input: $input, condition: $condition) {
+      id
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const updatePaymnet = /* GraphQL */ `
+  mutation UpdatePaymnet(
+    $input: UpdatePaymnetInput!
+    $condition: ModelPaymnetConditionInput
+  ) {
+    updatePaymnet(input: $input, condition: $condition) {
+      id
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const deletePaymnet = /* GraphQL */ `
+  mutation DeletePaymnet(
+    $input: DeletePaymnetInput!
+    $condition: ModelPaymnetConditionInput
+  ) {
+    deletePaymnet(input: $input, condition: $condition) {
+      id
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;

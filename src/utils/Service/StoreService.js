@@ -1,8 +1,11 @@
 import EventEmitter from 'events'
 import Protocol from './Protocol.js'
+import roundTo from '@/utils/roundTo.js'
+
+const ORDER_EXPIRT = 1000 * 60 * 10
 
 export default class StoreService extends EventEmitter {
-  constructor({ server, repository, watermark, storeInfo }={}) {
+  constructor({ server, repository, watermark, storeInfo, createOrderFromCloud }={}) {
     super()
 
     this.connections = {}
@@ -10,6 +13,7 @@ export default class StoreService extends EventEmitter {
     this.repository = repository
     this.watermark = watermark
     this.info = storeInfo // { id, name, email, phone, address, position }
+    this.createOrderFromCloud = createOrderFromCloud || function () {return Promise.reject(new Error('GraphQL unset'))}
 
     this.$onconnect = (event) => this.onconnect(event)
     this.$ondisconnect = (event) => this.ondisconnect(event)
@@ -73,8 +77,6 @@ export default class StoreService extends EventEmitter {
       case 'listProducts':
         response = await this.listProducts(payload)
 
-        console.log(response)
-
         return connection.sendResponse(messageId, response)
       case 'image':
         try {
@@ -83,6 +85,14 @@ export default class StoreService extends EventEmitter {
           return connection.sendResponse(messageId, response)
         } catch (err) {
           console.warn('getImage failed', payload.id)
+        }
+      case 'order':
+        try {
+          const order = await this.createOrder(payload.items)
+
+          return connection.sendResponse(messageId, { orderId: order.id })
+        } catch (err) {
+          return connection.sendReject(messageId, 422, err.message)
         }
       default:
         return connection.sendReject(messageId)
@@ -98,6 +108,10 @@ export default class StoreService extends EventEmitter {
 
   async listProducts(data) {
     return this.repository.listProducts(data)
+  }
+
+  async getProduct(id) {
+    return this.repository.getProduct(id)
   }
 
   async createProduct(data) {
@@ -124,5 +138,41 @@ export default class StoreService extends EventEmitter {
 
   async deleteImage(id) {
     return this.repository.deleteImage(id)
+  }
+
+  async createOrder(items=[]) {
+    const products = await Promise.all(items.map((item) => this.getProduct(item.id)))
+    const errors = products.reduce((acc, curr, index) => {
+        if (!curr || (curr.quantity !== 'Infinity' && curr.quantity < items[index].count)) {
+          acc.push({
+            id: curr.id,
+            message: 'quantity error',
+            remaining: curr?.quantity || 0,
+          })
+        }
+        return acc
+      }, [])
+
+    if (errors.length) {
+      throw new Error(JSON.stringify({ errors }))
+    }
+
+    const totalAmount = roundTo(products.reduce((acc, curr, index) => acc + items[index].count * Number(curr.price), 0))
+    const detail = products.map(({ id, name, price, sku, gui }, index) => ({
+      id, name, price, sku, gui,
+      quantity: items[index].count,
+    }))
+    // const expired = new Date(Date.now() + ORDER_EXPIRT).toISOString()
+    const storeId = this.info.id
+    const order = {
+      storeId,
+      totalAmount,
+      detail: JSON.stringify(detail),
+      status: 'PENDING',
+      // expired,
+    }
+    const { data } = await this.createOrderFromCloud(order)
+
+    return data.createOrder
   }
 }

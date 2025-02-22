@@ -1,5 +1,5 @@
 <script setup>
-  import { inject, ref, watch, onMounted } from 'vue'
+  import { inject, ref, onMounted } from 'vue'
   import { listStores } from '@/graphql/queries'
   import { deleteStore } from '@/graphql/mutations'
   import { useI18n } from 'vue-i18n'

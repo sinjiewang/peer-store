@@ -1,5 +1,7 @@
 <script setup>
   import { ref, toRefs, inject, computed, watch, onMounted } from 'vue'
+  import { useRouter } from 'vue-router'
+  import roundTo from '@/utils/roundTo.js'
 
   const props = defineProps({
     service: {
@@ -12,16 +14,13 @@
     },
   })
 
+  const router = useRouter()
+
   const cart = inject('cart')
 
   const { service } = toRefs(props)
   const showLoading = ref(false)
 
-  const roundTo = (num, decimals=2) => {
-    const factor = Math.pow(10, decimals)
-
-    return Math.round(num * factor) / factor
-  }
   const total = computed(() => roundTo(cart.value.reduce((acc, curr) =>
     (curr.count > 0) ? (acc + Number(curr.count) * (curr.price || 0)) : acc, 0)))
   const disableCheckout = computed(() => cart.value.length <= 0)
@@ -54,6 +53,24 @@
           console.warn('service.getImage failed', item.thumbnail, err)
         }
       })
+  }
+  const onCheckoutClick = async () => {
+    const items = cart.value.map(({ productId, count }) => ({ id: productId, count }))
+    const res = await service.value.createOrder(items)
+
+    if (res.errors) {
+      return res.errors.forEach(({ id, remaining, message }) =>  {
+        if (message === 'quantity error') {
+          const itemInCart = cart.value.find(({ productId }) => productId === id)
+
+          itemInCart.remaining = remaining
+        }
+      })
+    } else if (res.orderId) {
+      const { orderId } = res
+
+      router.push({ name: 'visitCheckout', params: { orderId }})
+    }
   }
 
   watch(cart, () => updateItemsThumbnail())
@@ -100,6 +117,11 @@
             <v-list-item-subtitle class="ml-4 text-left">NTD {{ item.price }}</v-list-item-subtitle>
 
             <template v-slot:append>
+              <span
+                v-if="item.remaining !== undefined && item.count > item.remaining"
+                class="mr-5 remaining-text"
+              >{{ $t('Remaining') }}: {{ item.remaining }}</span>
+
               <v-text-field
                 class="mr-8"
                 v-model="item.count"
@@ -157,6 +179,7 @@
                 <v-btn
                   :loading="showLoading"
                   :disabled="disableCheckout"
+                  @click="onCheckoutClick"
                   variant="outlined"
                   color="green"
                   block
@@ -169,3 +192,10 @@
     </v-row>
   </v-container>
 </template>
+
+<style lang="scss" scoped>
+.remaining-text {
+  color: #F44336;
+  opacity: 0.5;
+}
+</style>

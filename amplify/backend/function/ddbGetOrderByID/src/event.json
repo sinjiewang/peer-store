@@ -1,0 +1,75 @@
+{
+  "typeName": "Query",
+  "fieldName": "getOrderByID",
+  "arguments": {
+      "id": "faa01012-cf55-4ed7-a57d-7b688197ed59"
+  },
+  "identity": {
+      "claims": {
+          "sub": "e7949a18-d021-7026-d451-65ea5afaa28c",
+          "email_verified": true,
+          "iss": "https://cognito-idp.ap-northeast-1.amazonaws.com/ap-northeast-1_YbkLQGaU2",
+          "cognito:username": "e7949a18-d021-7026-d451-65ea5afaa28c",
+          "origin_jti": "07035353-cbca-45d9-b24e-fc5535a15207",
+          "aud": "78o34531d01e4q6imp6ujn099l",
+          "event_id": "0fa619d9-e4ac-4309-9850-f8edde405639",
+          "token_use": "id",
+          "auth_time": 1739513898,
+          "exp": 1739517498,
+          "iat": 1739513898,
+          "jti": "8fbcad1c-85a4-4e3c-8bfb-854411df6120",
+          "email": "aaa@test.com"
+      },
+      "defaultAuthStrategy": "ALLOW",
+      "groups": null,
+      "issuer": "https://cognito-idp.ap-northeast-1.amazonaws.com/ap-northeast-1_YbkLQGaU2",
+      "sourceIp": [
+          "61.228.167.193"
+      ],
+      "sub": "e7949a18-d021-7026-d451-65ea5afaa28c",
+      "username": "e7949a18-d021-7026-d451-65ea5afaa28c"
+  },
+  "source": null,
+  "request": {
+      "headers": {
+          "x-forwarded-for": "61.228.167.193, 3.172.47.50",
+          "sec-ch-ua-mobile": "?0",
+          "cloudfront-viewer-country": "TW",
+          "cloudfront-is-tablet-viewer": "false",
+          "x-amzn-requestid": "d58d1861-7325-41c3-bfeb-5e4d46dd099f",
+          "via": "2.0 9bf29fc95c7cc6d5199f85d4c38ceaae.cloudfront.net (CloudFront)",
+          "cloudfront-forwarded-proto": "https",
+          "origin": "https://ap-northeast-1.console.aws.amazon.com",
+          "content-length": "133",
+          "x-forwarded-proto": "https",
+          "accept-language": "zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7",
+          "host": "zkjsogxrlngyvec22wy62dbfeq.appsync-api.ap-northeast-1.amazonaws.com",
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "cloudfront-is-mobile-viewer": "false",
+          "accept": "application/json, text/plain, */*",
+          "priority": "u=1, i",
+          "cloudfront-viewer-asn": "3462",
+          "cloudfront-is-smarttv-viewer": "false",
+          "x-amzn-appsync-is-vpce-request": "false",
+          "accept-encoding": "gzip, deflate, br, zstd",
+          "referer": "https://ap-northeast-1.console.aws.amazon.com/",
+          "x-amzn-remote-ip": "61.228.167.193",
+          "content-type": "application/json",
+          "sec-fetch-mode": "cors",
+          "x-amzn-trace-id": "Root=1-67aee0a4-4f69d4a0301b5ef350be268f",
+          "x-amz-cf-id": "kcD9yTHP4GYA1egqEG_fCKQmnTr7A-kPUHys9GPQsWN-o4xtWsbwCg==",
+          "authorization": "eyJraWQiOiI4bFZxb3V6ZWRGQXdOUnFudndkYzM2N1Z0NXpyZDZTXC91NzNMSFJJMTFQQT0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJlNzk0OWExOC1kMDIxLTcwMjYtZDQ1MS02NWVhNWFmYWEyOGMiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLmFwLW5vcnRoZWFzdC0xLmFtYXpvbmF3cy5jb21cL2FwLW5vcnRoZWFzdC0xX1lia0xRR2FVMiIsImNvZ25pdG86dXNlcm5hbWUiOiJlNzk0OWExOC1kMDIxLTcwMjYtZDQ1MS02NWVhNWFmYWEyOGMiLCJvcmlnaW5fanRpIjoiMDcwMzUzNTMtY2JjYS00NWQ5LWIyNGUtZmM1NTM1YTE1MjA3IiwiYXVkIjoiNzhvMzQ1MzFkMDFlNHE2aW1wNnVqbjA5OWwiLCJldmVudF9pZCI6IjBmYTYxOWQ5LWU0YWMtNDMwOS05ODUwLWY4ZWRkZTQwNTYzOSIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNzM5NTEzODk4LCJleHAiOjE3Mzk1MTc0OTgsImlhdCI6MTczOTUxMzg5OCwianRpIjoiOGZiY2FkMWMtODVhNC00ZTNjLThiZmItODU0NDExZGY2MTIwIiwiZW1haWwiOiJhYWFAdGVzdC5jb20ifQ.N5s9Uzv42bOYgT_E_GJXX84Ib4DFGrohuKgsszAqpPAZUMg4JHgykpTXsnfJ-LdUy35nd7MF_eyYLWvyVJjxQ-41beNkO4rGh65lAyl4SZqox8eXWA8a7KRW2j-JB8kvmH56wkNnR0mP9SaYlTiNqIsSWzgZz7LKmeSTMFUVKO0_oadLA64RJTZ-3jkCq8AyQWy1tSQ9iw38GTBTsHTVH8Bxo01OTBpHdjQUfdfbMNb2pf9d2AYrtaSmXzCWVtMQR05W5VDz7Y2o7AmVS3-M7aHIQ1nhIauMUHd0x_q5xydF-3mewgg2rsOYtt9ijljSikPcnjqkLgJvSImwaAhmzg",
+          "sec-fetch-dest": "empty",
+          "x-amz-user-agent": "AWS-Console-AppSync/",
+          "sec-ch-ua-platform": "\"Windows\"",
+          "cloudfront-is-desktop-viewer": "true",
+          "sec-fetch-site": "cross-site",
+          "sec-ch-ua": "\"Not(A:Brand\";v=\"99\", \"Google Chrome\";v=\"133\", \"Chromium\";v=\"133\"",
+          "x-forwarded-port": "443"
+      },
+      "domainName": null
+  },
+  "prev": {
+      "result": {}
+  }
+}

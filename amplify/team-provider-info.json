@@ -9,14 +9,16 @@
       "UnauthRoleName": "amplify-peerstore-dev-54370-unauthRole",
       "StackName": "amplify-peerstore-dev-54370",
       "StackId": "arn:aws:cloudformation:ap-northeast-1:301856136276:stack/amplify-peerstore-dev-54370/ad8bae20-c96f-11ef-87b2-0aa8e213cc2d",
-      "AmplifyAppId": "d3rm64c4fy6i0s"
+      "AmplifyAppId": "d3rm64c4fy6i0s",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-peerstore-dev-54370-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     },
     "categories": {
       "auth": {
         "peerstorea570dc98": {}
       },
       "api": {
-        "peerstore": {}
+        "peerstore": {},
+        "apiPaymentCallback": {}
       },
       "function": {
         "peerstoreStoreConnectHandler": {
@@ -25,7 +27,7 @@
         },
         "peerstoreconfigure": {
           "deploymentBucketName": "amplify-peerstore-dev-54370-deployment",
-          "s3Key": "amplify-builds/peerstoreconfigure-LambdaLayerVersion408284ed-build.zip"
+          "s3Key": "amplify-builds/peerstoreconfigure-LambdaLayerVersionb7658d45-build.zip"
         },
         "peerstoreStoreDisconnectHandler": {
           "deploymentBucketName": "amplify-peerstore-dev-54370-deployment",
@@ -54,7 +56,22 @@
         "peerstoreVisitorIceServersHandler": {
           "deploymentBucketName": "amplify-peerstore-dev-54370-deployment",
           "s3Key": "amplify-builds/peerstoreVisitorIceServersHandler-6f63797a476b52357850-build.zip"
+        },
+        "ddbGetOrderByID": {
+          "deploymentBucketName": "amplify-peerstore-dev-54370-deployment",
+          "s3Key": "amplify-builds/ddbGetOrderByID-6f6939414e4f377a3039-build.zip"
+        },
+        "apigatewayPaymentCallback": {
+          "deploymentBucketName": "amplify-peerstore-dev-54370-deployment",
+          "s3Key": "amplify-builds/apigatewayPaymentCallback-32366532414648546e37-build.zip"
+        },
+        "peerstoreVisitorPaymentHandler": {
+          "deploymentBucketName": "amplify-peerstore-dev-54370-deployment",
+          "s3Key": "amplify-builds/peerstoreVisitorPaymentHandler-6f77682f676475635932-build.zip"
         }
+      },
+      "hosting": {
+        "S3AndCloudFront": {}
       }
     }
   }
