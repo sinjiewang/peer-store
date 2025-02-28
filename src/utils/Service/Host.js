@@ -13,6 +13,8 @@ export default class Host extends EventEmitter {
     host.on('connect', (event) => this.onconnect(event));
     host.on('disconnect', (event) => this.ondisconnect(event));
 
+    signaling.on('payment', (event) => this.onpayment(event));
+
     this.host = host;
     this.dataChannels = {};
   }
@@ -40,6 +42,11 @@ export default class Host extends EventEmitter {
 
       delete this.dataChannels[clientId];
     }
+  }
+
+  onpayment(data) {
+    console.log('onpayment', data) // { orderId, orderDetail, orderStatus, billingId, tradeNo }
+    this.emit('payment', data);
   }
 
   close() {

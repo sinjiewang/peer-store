@@ -25,6 +25,11 @@
   const genQRcode = async (url) => new Promise((resolve, reject) => QRCode.toDataURL(url, (err, dataUrl) => err ? reject(err) : resolve(dataUrl)))
   const connectTunnel = async ({ storeId, lat, lng }) => vStore.dispatch('cloud/storeConnect', { storeId, lat, lng })
   const createHost = ({ storeId, tunnel }) => new Host({ storeId, tunnel })
+  const genAppUrl = (id) => `${location.origin}${router.resolve({ name: 'visit', params: { id } }).href}`
+  const updateAppUrl = async (url=null) => {
+    appUrl.value = url
+    qrcodeUrl.value = await genQRcode(url)
+  }
   const onConnectClick = async () => {
     const { id: storeId } = store.value
     const { lat, lng } = position.value
@@ -37,11 +42,9 @@
 
       emit('connect', host)
 
-      const path = router.resolve({ name: 'visit', params: { id: storeId } }).href
-      const url = `${location.origin}${path}`
+      const url = genAppUrl(storeId)
 
-      appUrl.value = url
-      qrcodeUrl.value = await genQRcode(url)
+      updateAppUrl(url)
     } catch (err) {
       console.error('CloudConnection connect fail:', err)
     } finally {
@@ -53,11 +56,9 @@
 
     emit('disconnect')
 
-    appUrl.value = null
-    qrcodeUrl.value = null
+    updateAppUrl()
   }
   const onCopyClick = () => {
-    console.log('onCopyClick', appUrl.value)
     navigator.clipboard.writeText(appUrl.value)
       .then(() => {
         copyIcon.value = 'mdi-check-bold'
@@ -90,6 +91,12 @@
       position: position.value,
       content: markerRootElement,
     })
+
+    if (store.value.state) {
+      const url = genAppUrl(store.value.id)
+
+      updateAppUrl(url)
+    }
   })
 
   onUnmounted(() => {

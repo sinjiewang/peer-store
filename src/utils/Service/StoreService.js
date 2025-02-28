@@ -17,6 +17,7 @@ export default class StoreService extends EventEmitter {
 
     this.$onconnect = (event) => this.onconnect(event)
     this.$ondisconnect = (event) => this.ondisconnect(event)
+    this.$onpayment = (event) => this.onpayment(event)
 
     if (server) this.setServer(server)
   }
@@ -27,6 +28,7 @@ export default class StoreService extends EventEmitter {
     this.server = server
     this.server.on('connect', this.$onconnect)
     this.server.on('disconnect', this.$ondisconnect)
+    this.server.on('payment', this.$onpayment)
   }
 
   removeServer() {
@@ -56,6 +58,10 @@ export default class StoreService extends EventEmitter {
     if (connection) {
       delete this.connections[clientId]
     }
+  }
+
+  onpayment(event) {
+    console.log('onpayment', event)
   }
 
   onmessage(event) {
@@ -96,6 +102,25 @@ export default class StoreService extends EventEmitter {
         }
       default:
         return connection.sendReject(messageId)
+    }
+  }
+
+  onpayment(data={}) {
+    console.log('onpayment', data)
+
+    const { orderDetail, orderStatus } = data // { orderId, orderDetail, orderStatus, billingId, tradeNo }
+    const detail = JSON.parse(orderDetail)
+
+    if (orderStatus === 'PAID') {
+      detail.forEach(async ({ id, quantity }) => {
+        const item = await this.getProduct(id)
+
+        if (item.quantity !== 'Infinity') {
+          item.quantity = Math.max((item.quantity - quantity), 0)
+        }
+
+        await this.updateProduct(id, item)
+      })
     }
   }
 

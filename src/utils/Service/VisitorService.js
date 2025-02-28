@@ -111,11 +111,10 @@ export default class VisitorService extends EventEmitter {
 
     if (items.length) {
       item = items.pop()
-
       item.count -= 1
 
-      if (item.count) this.updateCart(item.id, item)
-      else this.deleteCart(item.id)
+      if (item.count) await this.updateCart(item.id, item)
+      else await this.deleteCart(item.id)
 
       return item
     }
@@ -123,15 +122,15 @@ export default class VisitorService extends EventEmitter {
     return null
   }
 
-  createCart(data) {
+  async createCart(data) {
     return this.repository.createCart(data)
   }
 
-  updateCart(id, data) {
+  async updateCart(id, data) {
     return this.repository.updateCart(id, data)
   }
 
-  deleteCart(id) {
+  async deleteCart(id) {
     return this.repository.deleteCart(id)
   }
 
