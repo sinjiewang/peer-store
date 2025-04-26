@@ -1,0 +1,794 @@
+type Position @aws_api_key {
+  positionID: String!
+  lat: Float!
+  lng: Float!
+  stores(filter: ModelStoreConnectionFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelStoreConnectionConnection
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type StoreConnection @aws_api_key @aws_lambda {
+  id: ID!
+  connectionID: String!
+  store: Store
+  storeID: ID!
+  positionID: String!
+  position: Position
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type VisitorConnection @aws_lambda {
+  id: ID!
+  connectionID: String!
+  lat: Float!
+  lng: Float!
+  zone: String!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Store @aws_lambda @aws_cognito_user_pools {
+  id: ID!
+  name: String!
+  description: String
+  address: String
+  city: String
+  state: String
+  zip: String
+  phone: String
+  email: String
+  image: String
+  tags: [String]
+  merchantID: String
+  hashKey: String
+  hashIV: String
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  owner: String
+}
+
+type Order @aws_lambda @aws_cognito_user_pools {
+  id: ID!
+  storeID: ID!
+  totalAmount: Float!
+  detail: String!
+  status: OrderStatus!
+  expired: AWSDateTime
+  billingID: ID
+  paymentID: ID
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  owner: String
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELED
+  REFUNDED
+  FAILED
+}
+
+type Billing @aws_lambda @aws_cognito_user_pools {
+  id: ID!
+  tradeNo: String!
+  orderID: ID!
+  order: Order
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  owner: String
+}
+
+type Paymnet @aws_lambda {
+  id: ID!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Query {
+  getOrderByID(id: ID!): Order
+  getStoreByID(id: ID!): StoreInfo
+  getPosition(positionID: String!): Position @aws_api_key
+  listPositions(positionID: String, filter: ModelPositionFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelPositionConnection @aws_api_key
+  positionsByLat(lat: Float!, sortDirection: ModelSortDirection, filter: ModelPositionFilterInput, limit: Int, nextToken: String): ModelPositionConnection @aws_api_key
+  positionsByLng(lng: Float!, sortDirection: ModelSortDirection, filter: ModelPositionFilterInput, limit: Int, nextToken: String): ModelPositionConnection @aws_api_key
+  getStoreConnection(id: ID!): StoreConnection @aws_api_key @aws_lambda
+  listStoreConnections(filter: ModelStoreConnectionFilterInput, limit: Int, nextToken: String): ModelStoreConnectionConnection @aws_api_key @aws_lambda
+  storeConnectionsByConnectionID(connectionID: String!, sortDirection: ModelSortDirection, filter: ModelStoreConnectionFilterInput, limit: Int, nextToken: String): ModelStoreConnectionConnection @aws_api_key @aws_lambda
+  storeConnectionsByStoreID(storeID: ID!, sortDirection: ModelSortDirection, filter: ModelStoreConnectionFilterInput, limit: Int, nextToken: String): ModelStoreConnectionConnection @aws_api_key @aws_lambda
+  storeConnectionsByPositionID(positionID: String!, sortDirection: ModelSortDirection, filter: ModelStoreConnectionFilterInput, limit: Int, nextToken: String): ModelStoreConnectionConnection @aws_api_key @aws_lambda
+  getVisitorConnection(id: ID!): VisitorConnection @aws_lambda
+  listVisitorConnections(filter: ModelVisitorConnectionFilterInput, limit: Int, nextToken: String): ModelVisitorConnectionConnection @aws_lambda
+  visitorConnectionsByConnectionID(connectionID: String!, sortDirection: ModelSortDirection, filter: ModelVisitorConnectionFilterInput, limit: Int, nextToken: String): ModelVisitorConnectionConnection @aws_lambda
+  visitorConnectionsByZone(zone: String!, sortDirection: ModelSortDirection, filter: ModelVisitorConnectionFilterInput, limit: Int, nextToken: String): ModelVisitorConnectionConnection @aws_lambda
+  getStore(id: ID!): Store @aws_cognito_user_pools @aws_lambda
+  listStores(filter: ModelStoreFilterInput, limit: Int, nextToken: String): ModelStoreConnection @aws_cognito_user_pools @aws_lambda
+  getOrder(id: ID!): Order @aws_cognito_user_pools @aws_lambda
+  listOrders(filter: ModelOrderFilterInput, limit: Int, nextToken: String): ModelOrderConnection @aws_cognito_user_pools @aws_lambda
+  getBilling(id: ID!): Billing @aws_cognito_user_pools @aws_lambda
+  listBillings(filter: ModelBillingFilterInput, limit: Int, nextToken: String): ModelBillingConnection @aws_cognito_user_pools @aws_lambda
+  billingsByTradeNo(tradeNo: String!, sortDirection: ModelSortDirection, filter: ModelBillingFilterInput, limit: Int, nextToken: String): ModelBillingConnection @aws_cognito_user_pools @aws_lambda
+  getPaymnet(id: ID!): Paymnet @aws_lambda
+  listPaymnets(filter: ModelPaymnetFilterInput, limit: Int, nextToken: String): ModelPaymnetConnection @aws_lambda
+}
+
+type StoreInfo {
+  id: ID!
+  name: String!
+  description: String
+  address: String
+  city: String
+  state: String
+  zip: String
+  phone: String
+  email: String
+  image: String
+  tags: [String]
+}
+
+input ModelStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelBooleanInput {
+  ne: Boolean
+  eq: Boolean
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelSubscriptionStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  in: [String]
+  notIn: [String]
+}
+
+input ModelSubscriptionIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  in: [Int]
+  notIn: [Int]
+}
+
+input ModelSubscriptionFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  in: [Float]
+  notIn: [Float]
+}
+
+input ModelSubscriptionBooleanInput {
+  ne: Boolean
+  eq: Boolean
+}
+
+input ModelSubscriptionIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  in: [ID]
+  notIn: [ID]
+}
+
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+input ModelSizeInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelPositionConnection @aws_api_key {
+  items: [Position]!
+  nextToken: String
+}
+
+input ModelPositionFilterInput {
+  positionID: ModelStringInput
+  lat: ModelFloatInput
+  lng: ModelFloatInput
+  id: ModelIDInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelPositionFilterInput]
+  or: [ModelPositionFilterInput]
+  not: ModelPositionFilterInput
+}
+
+input ModelPositionConditionInput {
+  lat: ModelFloatInput
+  lng: ModelFloatInput
+  and: [ModelPositionConditionInput]
+  or: [ModelPositionConditionInput]
+  not: ModelPositionConditionInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+}
+
+input CreatePositionInput {
+  positionID: String!
+  lat: Float!
+  lng: Float!
+}
+
+input UpdatePositionInput {
+  positionID: String!
+  lat: Float
+  lng: Float
+}
+
+input DeletePositionInput {
+  positionID: String!
+}
+
+type Mutation {
+  createPosition(input: CreatePositionInput!, condition: ModelPositionConditionInput): Position
+  updatePosition(input: UpdatePositionInput!, condition: ModelPositionConditionInput): Position
+  deletePosition(input: DeletePositionInput!, condition: ModelPositionConditionInput): Position
+  createStoreConnection(input: CreateStoreConnectionInput!, condition: ModelStoreConnectionConditionInput): StoreConnection @aws_lambda
+  updateStoreConnection(input: UpdateStoreConnectionInput!, condition: ModelStoreConnectionConditionInput): StoreConnection @aws_lambda
+  deleteStoreConnection(input: DeleteStoreConnectionInput!, condition: ModelStoreConnectionConditionInput): StoreConnection @aws_lambda
+  createVisitorConnection(input: CreateVisitorConnectionInput!, condition: ModelVisitorConnectionConditionInput): VisitorConnection @aws_lambda
+  updateVisitorConnection(input: UpdateVisitorConnectionInput!, condition: ModelVisitorConnectionConditionInput): VisitorConnection @aws_lambda
+  deleteVisitorConnection(input: DeleteVisitorConnectionInput!, condition: ModelVisitorConnectionConditionInput): VisitorConnection @aws_lambda
+  createStore(input: CreateStoreInput!, condition: ModelStoreConditionInput): Store @aws_cognito_user_pools @aws_lambda
+  updateStore(input: UpdateStoreInput!, condition: ModelStoreConditionInput): Store @aws_cognito_user_pools @aws_lambda
+  deleteStore(input: DeleteStoreInput!, condition: ModelStoreConditionInput): Store @aws_cognito_user_pools @aws_lambda
+  createOrder(input: CreateOrderInput!, condition: ModelOrderConditionInput): Order @aws_cognito_user_pools @aws_lambda
+  updateOrder(input: UpdateOrderInput!, condition: ModelOrderConditionInput): Order @aws_lambda
+  deleteOrder(input: DeleteOrderInput!, condition: ModelOrderConditionInput): Order @aws_lambda
+  createBilling(input: CreateBillingInput!, condition: ModelBillingConditionInput): Billing @aws_cognito_user_pools @aws_lambda
+  updateBilling(input: UpdateBillingInput!, condition: ModelBillingConditionInput): Billing @aws_lambda
+  deleteBilling(input: DeleteBillingInput!, condition: ModelBillingConditionInput): Billing @aws_lambda
+  createPaymnet(input: CreatePaymnetInput!, condition: ModelPaymnetConditionInput): Paymnet @aws_lambda
+  updatePaymnet(input: UpdatePaymnetInput!, condition: ModelPaymnetConditionInput): Paymnet @aws_lambda
+  deletePaymnet(input: DeletePaymnetInput!, condition: ModelPaymnetConditionInput): Paymnet @aws_lambda
+}
+
+input ModelSubscriptionPositionFilterInput {
+  positionID: ModelSubscriptionStringInput
+  lat: ModelSubscriptionFloatInput
+  lng: ModelSubscriptionFloatInput
+  id: ModelSubscriptionIDInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionPositionFilterInput]
+  or: [ModelSubscriptionPositionFilterInput]
+}
+
+type Subscription {
+  onCreatePosition(filter: ModelSubscriptionPositionFilterInput): Position @aws_subscribe(mutations: ["createPosition"]) @aws_api_key
+  onUpdatePosition(filter: ModelSubscriptionPositionFilterInput): Position @aws_subscribe(mutations: ["updatePosition"]) @aws_api_key
+  onDeletePosition(filter: ModelSubscriptionPositionFilterInput): Position @aws_subscribe(mutations: ["deletePosition"]) @aws_api_key
+  onCreateStoreConnection(filter: ModelSubscriptionStoreConnectionFilterInput): StoreConnection @aws_subscribe(mutations: ["createStoreConnection"]) @aws_api_key @aws_lambda
+  onUpdateStoreConnection(filter: ModelSubscriptionStoreConnectionFilterInput): StoreConnection @aws_subscribe(mutations: ["updateStoreConnection"]) @aws_api_key @aws_lambda
+  onDeleteStoreConnection(filter: ModelSubscriptionStoreConnectionFilterInput): StoreConnection @aws_subscribe(mutations: ["deleteStoreConnection"]) @aws_api_key @aws_lambda
+  onCreateVisitorConnection(filter: ModelSubscriptionVisitorConnectionFilterInput): VisitorConnection @aws_subscribe(mutations: ["createVisitorConnection"]) @aws_lambda
+  onUpdateVisitorConnection(filter: ModelSubscriptionVisitorConnectionFilterInput): VisitorConnection @aws_subscribe(mutations: ["updateVisitorConnection"]) @aws_lambda
+  onDeleteVisitorConnection(filter: ModelSubscriptionVisitorConnectionFilterInput): VisitorConnection @aws_subscribe(mutations: ["deleteVisitorConnection"]) @aws_lambda
+  onCreateStore(filter: ModelSubscriptionStoreFilterInput, owner: String): Store @aws_subscribe(mutations: ["createStore"]) @aws_cognito_user_pools @aws_lambda
+  onUpdateStore(filter: ModelSubscriptionStoreFilterInput, owner: String): Store @aws_subscribe(mutations: ["updateStore"]) @aws_cognito_user_pools @aws_lambda
+  onDeleteStore(filter: ModelSubscriptionStoreFilterInput, owner: String): Store @aws_subscribe(mutations: ["deleteStore"]) @aws_cognito_user_pools @aws_lambda
+  onCreateOrder(filter: ModelSubscriptionOrderFilterInput, owner: String): Order @aws_subscribe(mutations: ["createOrder"]) @aws_cognito_user_pools @aws_lambda
+  onUpdateOrder(filter: ModelSubscriptionOrderFilterInput, owner: String): Order @aws_subscribe(mutations: ["updateOrder"]) @aws_cognito_user_pools @aws_lambda
+  onDeleteOrder(filter: ModelSubscriptionOrderFilterInput, owner: String): Order @aws_subscribe(mutations: ["deleteOrder"]) @aws_cognito_user_pools @aws_lambda
+  onCreateBilling(filter: ModelSubscriptionBillingFilterInput, owner: String): Billing @aws_subscribe(mutations: ["createBilling"]) @aws_cognito_user_pools @aws_lambda
+  onUpdateBilling(filter: ModelSubscriptionBillingFilterInput, owner: String): Billing @aws_subscribe(mutations: ["updateBilling"]) @aws_cognito_user_pools @aws_lambda
+  onDeleteBilling(filter: ModelSubscriptionBillingFilterInput, owner: String): Billing @aws_subscribe(mutations: ["deleteBilling"]) @aws_cognito_user_pools @aws_lambda
+  onCreatePaymnet(filter: ModelSubscriptionPaymnetFilterInput): Paymnet @aws_subscribe(mutations: ["createPaymnet"]) @aws_lambda
+  onUpdatePaymnet(filter: ModelSubscriptionPaymnetFilterInput): Paymnet @aws_subscribe(mutations: ["updatePaymnet"]) @aws_lambda
+  onDeletePaymnet(filter: ModelSubscriptionPaymnetFilterInput): Paymnet @aws_subscribe(mutations: ["deletePaymnet"]) @aws_lambda
+}
+
+type ModelStoreConnectionConnection @aws_api_key @aws_lambda {
+  items: [StoreConnection]!
+  nextToken: String
+}
+
+input ModelStoreConnectionFilterInput {
+  id: ModelIDInput
+  connectionID: ModelStringInput
+  storeID: ModelIDInput
+  positionID: ModelStringInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelStoreConnectionFilterInput]
+  or: [ModelStoreConnectionFilterInput]
+  not: ModelStoreConnectionFilterInput
+}
+
+input ModelStoreConnectionConditionInput {
+  connectionID: ModelStringInput
+  storeID: ModelIDInput
+  positionID: ModelStringInput
+  and: [ModelStoreConnectionConditionInput]
+  or: [ModelStoreConnectionConditionInput]
+  not: ModelStoreConnectionConditionInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+}
+
+input CreateStoreConnectionInput {
+  id: ID
+  connectionID: String!
+  storeID: ID!
+  positionID: String!
+}
+
+input UpdateStoreConnectionInput {
+  id: ID!
+  connectionID: String
+  storeID: ID
+  positionID: String
+}
+
+input DeleteStoreConnectionInput {
+  id: ID!
+}
+
+input ModelSubscriptionStoreConnectionFilterInput {
+  id: ModelSubscriptionIDInput
+  connectionID: ModelSubscriptionStringInput
+  storeID: ModelSubscriptionIDInput
+  positionID: ModelSubscriptionStringInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionStoreConnectionFilterInput]
+  or: [ModelSubscriptionStoreConnectionFilterInput]
+}
+
+type ModelVisitorConnectionConnection @aws_lambda {
+  items: [VisitorConnection]!
+  nextToken: String
+}
+
+input ModelVisitorConnectionFilterInput {
+  id: ModelIDInput
+  connectionID: ModelStringInput
+  lat: ModelFloatInput
+  lng: ModelFloatInput
+  zone: ModelStringInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelVisitorConnectionFilterInput]
+  or: [ModelVisitorConnectionFilterInput]
+  not: ModelVisitorConnectionFilterInput
+}
+
+input ModelVisitorConnectionConditionInput {
+  connectionID: ModelStringInput
+  lat: ModelFloatInput
+  lng: ModelFloatInput
+  zone: ModelStringInput
+  and: [ModelVisitorConnectionConditionInput]
+  or: [ModelVisitorConnectionConditionInput]
+  not: ModelVisitorConnectionConditionInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+}
+
+input CreateVisitorConnectionInput {
+  id: ID
+  connectionID: String!
+  lat: Float!
+  lng: Float!
+  zone: String!
+}
+
+input UpdateVisitorConnectionInput {
+  id: ID!
+  connectionID: String
+  lat: Float
+  lng: Float
+  zone: String
+}
+
+input DeleteVisitorConnectionInput {
+  id: ID!
+}
+
+input ModelSubscriptionVisitorConnectionFilterInput {
+  id: ModelSubscriptionIDInput
+  connectionID: ModelSubscriptionStringInput
+  lat: ModelSubscriptionFloatInput
+  lng: ModelSubscriptionFloatInput
+  zone: ModelSubscriptionStringInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionVisitorConnectionFilterInput]
+  or: [ModelSubscriptionVisitorConnectionFilterInput]
+}
+
+type ModelStoreConnection @aws_cognito_user_pools @aws_lambda {
+  items: [Store]!
+  nextToken: String
+}
+
+input ModelStoreFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  description: ModelStringInput
+  address: ModelStringInput
+  city: ModelStringInput
+  state: ModelStringInput
+  zip: ModelStringInput
+  phone: ModelStringInput
+  email: ModelStringInput
+  image: ModelStringInput
+  tags: ModelStringInput
+  merchantID: ModelStringInput
+  hashKey: ModelStringInput
+  hashIV: ModelStringInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelStoreFilterInput]
+  or: [ModelStoreFilterInput]
+  not: ModelStoreFilterInput
+  owner: ModelStringInput
+}
+
+input ModelStoreConditionInput {
+  name: ModelStringInput
+  description: ModelStringInput
+  address: ModelStringInput
+  city: ModelStringInput
+  state: ModelStringInput
+  zip: ModelStringInput
+  phone: ModelStringInput
+  email: ModelStringInput
+  image: ModelStringInput
+  tags: ModelStringInput
+  merchantID: ModelStringInput
+  hashKey: ModelStringInput
+  hashIV: ModelStringInput
+  and: [ModelStoreConditionInput]
+  or: [ModelStoreConditionInput]
+  not: ModelStoreConditionInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  owner: ModelStringInput
+}
+
+input CreateStoreInput {
+  id: ID
+  name: String!
+  description: String
+  address: String
+  city: String
+  state: String
+  zip: String
+  phone: String
+  email: String
+  image: String
+  tags: [String]
+  merchantID: String
+  hashKey: String
+  hashIV: String
+}
+
+input UpdateStoreInput {
+  id: ID!
+  name: String
+  description: String
+  address: String
+  city: String
+  state: String
+  zip: String
+  phone: String
+  email: String
+  image: String
+  tags: [String]
+  merchantID: String
+  hashKey: String
+  hashIV: String
+}
+
+input DeleteStoreInput {
+  id: ID!
+}
+
+input ModelSubscriptionStoreFilterInput {
+  id: ModelSubscriptionIDInput
+  name: ModelSubscriptionStringInput
+  description: ModelSubscriptionStringInput
+  address: ModelSubscriptionStringInput
+  city: ModelSubscriptionStringInput
+  state: ModelSubscriptionStringInput
+  zip: ModelSubscriptionStringInput
+  phone: ModelSubscriptionStringInput
+  email: ModelSubscriptionStringInput
+  image: ModelSubscriptionStringInput
+  tags: ModelSubscriptionStringInput
+  merchantID: ModelSubscriptionStringInput
+  hashKey: ModelSubscriptionStringInput
+  hashIV: ModelSubscriptionStringInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionStoreFilterInput]
+  or: [ModelSubscriptionStoreFilterInput]
+  owner: ModelStringInput
+}
+
+type ModelOrderConnection @aws_cognito_user_pools @aws_lambda {
+  items: [Order]!
+  nextToken: String
+}
+
+input ModelOrderStatusInput {
+  eq: OrderStatus
+  ne: OrderStatus
+}
+
+input ModelOrderFilterInput {
+  id: ModelIDInput
+  storeID: ModelIDInput
+  totalAmount: ModelFloatInput
+  detail: ModelStringInput
+  status: ModelOrderStatusInput
+  expired: ModelStringInput
+  billingID: ModelIDInput
+  paymentID: ModelIDInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelOrderFilterInput]
+  or: [ModelOrderFilterInput]
+  not: ModelOrderFilterInput
+  owner: ModelStringInput
+}
+
+input ModelOrderConditionInput {
+  storeID: ModelIDInput
+  totalAmount: ModelFloatInput
+  detail: ModelStringInput
+  status: ModelOrderStatusInput
+  expired: ModelStringInput
+  billingID: ModelIDInput
+  paymentID: ModelIDInput
+  and: [ModelOrderConditionInput]
+  or: [ModelOrderConditionInput]
+  not: ModelOrderConditionInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  owner: ModelStringInput
+}
+
+input CreateOrderInput {
+  id: ID
+  storeID: ID!
+  totalAmount: Float!
+  detail: String!
+  status: OrderStatus!
+  expired: AWSDateTime
+  billingID: ID
+  paymentID: ID
+}
+
+input UpdateOrderInput {
+  id: ID!
+  storeID: ID
+  totalAmount: Float
+  detail: String
+  status: OrderStatus
+  expired: AWSDateTime
+  billingID: ID
+  paymentID: ID
+}
+
+input DeleteOrderInput {
+  id: ID!
+}
+
+input ModelSubscriptionOrderFilterInput {
+  id: ModelSubscriptionIDInput
+  storeID: ModelSubscriptionIDInput
+  totalAmount: ModelSubscriptionFloatInput
+  detail: ModelSubscriptionStringInput
+  status: ModelSubscriptionStringInput
+  expired: ModelSubscriptionStringInput
+  billingID: ModelSubscriptionIDInput
+  paymentID: ModelSubscriptionIDInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionOrderFilterInput]
+  or: [ModelSubscriptionOrderFilterInput]
+  owner: ModelStringInput
+}
+
+type ModelBillingConnection @aws_cognito_user_pools @aws_lambda {
+  items: [Billing]!
+  nextToken: String
+}
+
+input ModelBillingFilterInput {
+  id: ModelIDInput
+  tradeNo: ModelStringInput
+  orderID: ModelIDInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelBillingFilterInput]
+  or: [ModelBillingFilterInput]
+  not: ModelBillingFilterInput
+  owner: ModelStringInput
+}
+
+input ModelBillingConditionInput {
+  tradeNo: ModelStringInput
+  orderID: ModelIDInput
+  and: [ModelBillingConditionInput]
+  or: [ModelBillingConditionInput]
+  not: ModelBillingConditionInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  owner: ModelStringInput
+}
+
+input CreateBillingInput {
+  id: ID
+  tradeNo: String!
+  orderID: ID!
+}
+
+input UpdateBillingInput {
+  id: ID!
+  tradeNo: String
+  orderID: ID
+}
+
+input DeleteBillingInput {
+  id: ID!
+}
+
+input ModelSubscriptionBillingFilterInput {
+  id: ModelSubscriptionIDInput
+  tradeNo: ModelSubscriptionStringInput
+  orderID: ModelSubscriptionIDInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionBillingFilterInput]
+  or: [ModelSubscriptionBillingFilterInput]
+  owner: ModelStringInput
+}
+
+type ModelPaymnetConnection @aws_lambda {
+  items: [Paymnet]!
+  nextToken: String
+}
+
+input ModelPaymnetFilterInput {
+  id: ModelIDInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelPaymnetFilterInput]
+  or: [ModelPaymnetFilterInput]
+  not: ModelPaymnetFilterInput
+}
+
+input ModelPaymnetConditionInput {
+  and: [ModelPaymnetConditionInput]
+  or: [ModelPaymnetConditionInput]
+  not: ModelPaymnetConditionInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+}
+
+input CreatePaymnetInput {
+  id: ID
+}
+
+input UpdatePaymnetInput {
+  id: ID!
+}
+
+input DeletePaymnetInput {
+  id: ID!
+}
+
+input ModelSubscriptionPaymnetFilterInput {
+  id: ModelSubscriptionIDInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionPaymnetFilterInput]
+  or: [ModelSubscriptionPaymnetFilterInput]
+}

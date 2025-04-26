@@ -1,0 +1,14 @@
+{
+    "AppSyncApiName": "peerstore",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authpeerstorea570dc98",
+            "Outputs.UserPoolId"
+        ]
+    },
+    "AuthModeLastUpdated": "2025-01-13T01:43:33.560Z",
+    "S3DeploymentBucket": "amplify-peerstore-dev-54370-deployment",
+    "S3DeploymentRootKey": "amplify-appsync-files/da2ca31d7458c194383bfae3a78d0b742929791f"
+}

@@ -1,0 +1,1646 @@
+{
+  "Parameters": {
+    "DynamoDBModelTableReadIOPS": {
+      "Type": "Number",
+      "Default": 5,
+      "Description": "The number of read IOPS the table should support."
+    },
+    "DynamoDBModelTableWriteIOPS": {
+      "Type": "Number",
+      "Default": 5,
+      "Description": "The number of write IOPS the table should support."
+    },
+    "DynamoDBBillingMode": {
+      "Type": "String",
+      "Default": "PAY_PER_REQUEST",
+      "AllowedValues": [
+        "PAY_PER_REQUEST",
+        "PROVISIONED"
+      ],
+      "Description": "Configure @model types to create DynamoDB tables with PAY_PER_REQUEST or PROVISIONED billing modes."
+    },
+    "DynamoDBEnablePointInTimeRecovery": {
+      "Type": "String",
+      "Default": "false",
+      "AllowedValues": [
+        "true",
+        "false"
+      ],
+      "Description": "Whether to enable Point in Time Recovery on the table."
+    },
+    "DynamoDBEnableServerSideEncryption": {
+      "Type": "String",
+      "Default": "true",
+      "AllowedValues": [
+        "true",
+        "false"
+      ],
+      "Description": "Enable server side encryption powered by KMS."
+    },
+    "referencetotransformerrootstackenv10C5A902Ref": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackGraphQLAPI20497F53ApiId": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackS3DeploymentBucket7592718ARef": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackPositionNestedStackPositionNestedStackResource9A88757DOutputstransformerrootstackPositionQuerygetPositionpostAuth0FunctionQuerygetPositionpostAuth0FunctionAppSyncFunctionBF4DF3CAFunctionId": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackPositionNestedStackPositionNestedStackResource9A88757DOutputstransformerrootstackPositionMutationupdatePositioninit0FunctionMutationupdatePositioninit0FunctionAppSyncFunction97BD4B82FunctionId": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackPositionNestedStackPositionNestedStackResource9A88757DOutputstransformerrootstackPositionSubscriptionOnCreatePositionDataResolverFnSubscriptionOnCreatePositionDataResolverFnAppSyncFunction243540D7FunctionId": {
+      "Type": "String"
+    }
+  },
+  "Conditions": {
+    "HasEnvironmentParameter": {
+      "Fn::Not": [
+        {
+          "Fn::Equals": [
+            {
+              "Ref": "referencetotransformerrootstackenv10C5A902Ref"
+            },
+            "NONE"
+          ]
+        }
+      ]
+    },
+    "ShouldUseServerSideEncryption": {
+      "Fn::Equals": [
+        {
+          "Ref": "DynamoDBEnableServerSideEncryption"
+        },
+        "true"
+      ]
+    },
+    "ShouldUsePayPerRequestBilling": {
+      "Fn::Equals": [
+        {
+          "Ref": "DynamoDBBillingMode"
+        },
+        "PAY_PER_REQUEST"
+      ]
+    },
+    "ShouldUsePointInTimeRecovery": {
+      "Fn::Equals": [
+        {
+          "Ref": "DynamoDBEnablePointInTimeRecovery"
+        },
+        "true"
+      ]
+    }
+  },
+  "Resources": {
+    "StoreConnectionTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "connectionID",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "storeID",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "positionID",
+            "AttributeType": "S"
+          }
+        ],
+        "BillingMode": {
+          "Fn::If": [
+            "ShouldUsePayPerRequestBilling",
+            "PAY_PER_REQUEST",
+            {
+              "Ref": "AWS::NoValue"
+            }
+          ]
+        },
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "storeConnectionsByConnectionID",
+            "KeySchema": [
+              {
+                "AttributeName": "connectionID",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "ProvisionedThroughput": {
+              "Fn::If": [
+                "ShouldUsePayPerRequestBilling",
+                {
+                  "Ref": "AWS::NoValue"
+                },
+                {
+                  "ReadCapacityUnits": {
+                    "Ref": "DynamoDBModelTableReadIOPS"
+                  },
+                  "WriteCapacityUnits": {
+                    "Ref": "DynamoDBModelTableWriteIOPS"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "IndexName": "storeConnectionsByStoreID",
+            "KeySchema": [
+              {
+                "AttributeName": "storeID",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "ProvisionedThroughput": {
+              "Fn::If": [
+                "ShouldUsePayPerRequestBilling",
+                {
+                  "Ref": "AWS::NoValue"
+                },
+                {
+                  "ReadCapacityUnits": {
+                    "Ref": "DynamoDBModelTableReadIOPS"
+                  },
+                  "WriteCapacityUnits": {
+                    "Ref": "DynamoDBModelTableWriteIOPS"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "IndexName": "storeConnectionsByPositionID",
+            "KeySchema": [
+              {
+                "AttributeName": "positionID",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "ProvisionedThroughput": {
+              "Fn::If": [
+                "ShouldUsePayPerRequestBilling",
+                {
+                  "Ref": "AWS::NoValue"
+                },
+                {
+                  "ReadCapacityUnits": {
+                    "Ref": "DynamoDBModelTableReadIOPS"
+                  },
+                  "WriteCapacityUnits": {
+                    "Ref": "DynamoDBModelTableWriteIOPS"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "PointInTimeRecoverySpecification": {
+          "Fn::If": [
+            "ShouldUsePointInTimeRecovery",
+            {
+              "PointInTimeRecoveryEnabled": true
+            },
+            {
+              "Ref": "AWS::NoValue"
+            }
+          ]
+        },
+        "ProvisionedThroughput": {
+          "Fn::If": [
+            "ShouldUsePayPerRequestBilling",
+            {
+              "Ref": "AWS::NoValue"
+            },
+            {
+              "ReadCapacityUnits": {
+                "Ref": "DynamoDBModelTableReadIOPS"
+              },
+              "WriteCapacityUnits": {
+                "Ref": "DynamoDBModelTableWriteIOPS"
+              }
+            }
+          ]
+        },
+        "SSESpecification": {
+          "SSEEnabled": {
+            "Fn::If": [
+              "ShouldUseServerSideEncryption",
+              true,
+              false
+            ]
+          }
+        },
+        "StreamSpecification": {
+          "StreamViewType": "NEW_AND_OLD_IMAGES"
+        },
+        "TableName": {
+          "Fn::Join": [
+            "",
+            [
+              "StoreConnection-",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "-",
+              {
+                "Ref": "referencetotransformerrootstackenv10C5A902Ref"
+              }
+            ]
+          ]
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "StoreConnectionIAMRoleAA1F7AFF": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "appsync.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "dynamodb:BatchGetItem",
+                    "dynamodb:BatchWriteItem",
+                    "dynamodb:PutItem",
+                    "dynamodb:DeleteItem",
+                    "dynamodb:GetItem",
+                    "dynamodb:Scan",
+                    "dynamodb:Query",
+                    "dynamodb:UpdateItem",
+                    "dynamodb:ConditionCheckItem",
+                    "dynamodb:DescribeTable",
+                    "dynamodb:GetRecords",
+                    "dynamodb:GetShardIterator"
+                  ],
+                  "Effect": "Allow",
+                  "Resource": [
+                    {
+                      "Fn::Sub": [
+                        "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${tablename}",
+                        {
+                          "tablename": {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "StoreConnection-",
+                                {
+                                  "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+                                },
+                                "-",
+                                {
+                                  "Ref": "referencetotransformerrootstackenv10C5A902Ref"
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "Fn::Sub": [
+                        "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${tablename}/*",
+                        {
+                          "tablename": {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "StoreConnection-",
+                                {
+                                  "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+                                },
+                                "-",
+                                {
+                                  "Ref": "referencetotransformerrootstackenv10C5A902Ref"
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "Version": "2012-10-17"
+            },
+            "PolicyName": "DynamoDBAccess"
+          }
+        ],
+        "RoleName": {
+          "Fn::Join": [
+            "",
+            [
+              "StoreConnectionIAMRo58b304-",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "-",
+              {
+                "Ref": "referencetotransformerrootstackenv10C5A902Ref"
+              }
+            ]
+          ]
+        }
+      }
+    },
+    "StoreConnectionDataSource": {
+      "Type": "AWS::AppSync::DataSource",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "Name": "StoreConnectionTable",
+        "Type": "AMAZON_DYNAMODB",
+        "DynamoDBConfig": {
+          "AwsRegion": {
+            "Ref": "AWS::Region"
+          },
+          "TableName": {
+            "Ref": "StoreConnectionTable"
+          }
+        },
+        "ServiceRoleArn": {
+          "Fn::GetAtt": [
+            "StoreConnectionIAMRoleAA1F7AFF",
+            "Arn"
+          ]
+        }
+      },
+      "DependsOn": [
+        "StoreConnectionIAMRoleAA1F7AFF"
+      ]
+    },
+    "QuerygetStoreConnectionauth0FunctionQuerygetStoreConnectionauth0FunctionAppSyncFunction1120D39E": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name"
+        },
+        "Name": "QuerygetStoreConnectionauth0Function",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Query.getStoreConnection.auth.1.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson({})"
+      }
+    },
+    "QueryGetStoreConnectionDataResolverFnQueryGetStoreConnectionDataResolverFnAppSyncFunction139AFA3C": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Fn::GetAtt": [
+            "StoreConnectionDataSource",
+            "Name"
+          ]
+        },
+        "Name": "QueryGetStoreConnectionDataResolverFn",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Query.getStoreConnection.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Query.getStoreConnection.res.vtl"
+            ]
+          ]
+        }
+      },
+      "DependsOn": [
+        "StoreConnectionDataSource"
+      ]
+    },
+    "GetStoreConnectionResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "getStoreConnection",
+        "TypeName": "Query",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "QuerygetStoreConnectionauth0FunctionQuerygetStoreConnectionauth0FunctionAppSyncFunction1120D39E",
+                "FunctionId"
+              ]
+            },
+            {
+              "Ref": "referencetotransformerrootstackPositionNestedStackPositionNestedStackResource9A88757DOutputstransformerrootstackPositionQuerygetPositionpostAuth0FunctionQuerygetPositionpostAuth0FunctionAppSyncFunctionBF4DF3CAFunctionId"
+            },
+            {
+              "Fn::GetAtt": [
+                "QueryGetStoreConnectionDataResolverFnQueryGetStoreConnectionDataResolverFnAppSyncFunction139AFA3C",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"Query\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"getStoreConnection\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "StoreConnectionTable"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"ap-northeast-1:8e31875f-24f9-4528-9706-8018a270112f\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"peerstoreStoreConnectHandler-dev\",\"peerstoreStoreDisconnectHandler-dev\",\"peerstoreVisitorConnectHandler-dev\",\"peerstoreVisitorDisconnectHandler-dev\",\"peerstoreVisitorMessageHandler-dev\",\"ddbGetOrderByID-dev\",\"apigatewayPaymentCallback-dev\",\"peerstoreVisitorPaymentHandler-dev\",\"ddbPositionNotifyHandler-dev\",\"peerstoreVisitorPositionHandler-dev\",\"ddbGetStoreByID-dev\"]))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "QueryListStoreConnectionsDataResolverFnQueryListStoreConnectionsDataResolverFnAppSyncFunctionA93D4751": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Fn::GetAtt": [
+            "StoreConnectionDataSource",
+            "Name"
+          ]
+        },
+        "Name": "QueryListStoreConnectionsDataResolverFn",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Query.listStoreConnections.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Query.listStoreConnections.res.vtl"
+            ]
+          ]
+        }
+      },
+      "DependsOn": [
+        "StoreConnectionDataSource"
+      ]
+    },
+    "ListStoreConnectionResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "listStoreConnections",
+        "TypeName": "Query",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "QuerygetStoreConnectionauth0FunctionQuerygetStoreConnectionauth0FunctionAppSyncFunction1120D39E",
+                "FunctionId"
+              ]
+            },
+            {
+              "Ref": "referencetotransformerrootstackPositionNestedStackPositionNestedStackResource9A88757DOutputstransformerrootstackPositionQuerygetPositionpostAuth0FunctionQuerygetPositionpostAuth0FunctionAppSyncFunctionBF4DF3CAFunctionId"
+            },
+            {
+              "Fn::GetAtt": [
+                "QueryListStoreConnectionsDataResolverFnQueryListStoreConnectionsDataResolverFnAppSyncFunctionA93D4751",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"Query\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"listStoreConnections\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "StoreConnectionTable"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"ap-northeast-1:8e31875f-24f9-4528-9706-8018a270112f\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"peerstoreStoreConnectHandler-dev\",\"peerstoreStoreDisconnectHandler-dev\",\"peerstoreVisitorConnectHandler-dev\",\"peerstoreVisitorDisconnectHandler-dev\",\"peerstoreVisitorMessageHandler-dev\",\"ddbGetOrderByID-dev\",\"apigatewayPaymentCallback-dev\",\"peerstoreVisitorPaymentHandler-dev\",\"ddbPositionNotifyHandler-dev\",\"peerstoreVisitorPositionHandler-dev\",\"ddbGetStoreByID-dev\"]))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "MutationcreateStoreConnectioninit0FunctionMutationcreateStoreConnectioninit0FunctionAppSyncFunctionDD9A703F": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name"
+        },
+        "Name": "MutationcreateStoreConnectioninit0Function",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Mutation.createStoreConnection.init.1.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson({})"
+      }
+    },
+    "MutationcreateStoreConnectionauth0FunctionMutationcreateStoreConnectionauth0FunctionAppSyncFunction41678BFD": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name"
+        },
+        "Name": "MutationcreateStoreConnectionauth0Function",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Mutation.createStoreConnection.auth.1.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson({})"
+      }
+    },
+    "MutationCreateStoreConnectionDataResolverFnMutationCreateStoreConnectionDataResolverFnAppSyncFunctionC58E9A3E": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Fn::GetAtt": [
+            "StoreConnectionDataSource",
+            "Name"
+          ]
+        },
+        "Name": "MutationCreateStoreConnectionDataResolverFn",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Mutation.createStoreConnection.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Mutation.createStoreConnection.res.vtl"
+            ]
+          ]
+        }
+      },
+      "DependsOn": [
+        "StoreConnectionDataSource"
+      ]
+    },
+    "CreateStoreConnectionResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "createStoreConnection",
+        "TypeName": "Mutation",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "MutationcreateStoreConnectioninit0FunctionMutationcreateStoreConnectioninit0FunctionAppSyncFunctionDD9A703F",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
+                "MutationcreateStoreConnectionauth0FunctionMutationcreateStoreConnectionauth0FunctionAppSyncFunction41678BFD",
+                "FunctionId"
+              ]
+            },
+            {
+              "Ref": "referencetotransformerrootstackPositionNestedStackPositionNestedStackResource9A88757DOutputstransformerrootstackPositionQuerygetPositionpostAuth0FunctionQuerygetPositionpostAuth0FunctionAppSyncFunctionBF4DF3CAFunctionId"
+            },
+            {
+              "Fn::GetAtt": [
+                "MutationCreateStoreConnectionDataResolverFnMutationCreateStoreConnectionDataResolverFnAppSyncFunctionC58E9A3E",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"createStoreConnection\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "StoreConnectionTable"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"ap-northeast-1:8e31875f-24f9-4528-9706-8018a270112f\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"peerstoreStoreConnectHandler-dev\",\"peerstoreStoreDisconnectHandler-dev\",\"peerstoreVisitorConnectHandler-dev\",\"peerstoreVisitorDisconnectHandler-dev\",\"peerstoreVisitorMessageHandler-dev\",\"ddbGetOrderByID-dev\",\"apigatewayPaymentCallback-dev\",\"peerstoreVisitorPaymentHandler-dev\",\"ddbPositionNotifyHandler-dev\",\"peerstoreVisitorPositionHandler-dev\",\"ddbGetStoreByID-dev\"]))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "MutationupdateStoreConnectionauth0FunctionMutationupdateStoreConnectionauth0FunctionAppSyncFunction5EEE87A4": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Fn::GetAtt": [
+            "StoreConnectionDataSource",
+            "Name"
+          ]
+        },
+        "Name": "MutationupdateStoreConnectionauth0Function",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Mutation.updateStoreConnection.auth.1.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Mutation.updateStoreConnection.auth.1.res.vtl"
+            ]
+          ]
+        }
+      },
+      "DependsOn": [
+        "StoreConnectionDataSource"
+      ]
+    },
+    "MutationUpdateStoreConnectionDataResolverFnMutationUpdateStoreConnectionDataResolverFnAppSyncFunction8D36B2FB": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Fn::GetAtt": [
+            "StoreConnectionDataSource",
+            "Name"
+          ]
+        },
+        "Name": "MutationUpdateStoreConnectionDataResolverFn",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Mutation.updateStoreConnection.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Mutation.updateStoreConnection.res.vtl"
+            ]
+          ]
+        }
+      },
+      "DependsOn": [
+        "StoreConnectionDataSource"
+      ]
+    },
+    "UpdateStoreConnectionResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "updateStoreConnection",
+        "TypeName": "Mutation",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Ref": "referencetotransformerrootstackPositionNestedStackPositionNestedStackResource9A88757DOutputstransformerrootstackPositionMutationupdatePositioninit0FunctionMutationupdatePositioninit0FunctionAppSyncFunction97BD4B82FunctionId"
+            },
+            {
+              "Fn::GetAtt": [
+                "MutationupdateStoreConnectionauth0FunctionMutationupdateStoreConnectionauth0FunctionAppSyncFunction5EEE87A4",
+                "FunctionId"
+              ]
+            },
+            {
+              "Ref": "referencetotransformerrootstackPositionNestedStackPositionNestedStackResource9A88757DOutputstransformerrootstackPositionQuerygetPositionpostAuth0FunctionQuerygetPositionpostAuth0FunctionAppSyncFunctionBF4DF3CAFunctionId"
+            },
+            {
+              "Fn::GetAtt": [
+                "MutationUpdateStoreConnectionDataResolverFnMutationUpdateStoreConnectionDataResolverFnAppSyncFunction8D36B2FB",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"updateStoreConnection\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "StoreConnectionTable"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"ap-northeast-1:8e31875f-24f9-4528-9706-8018a270112f\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"peerstoreStoreConnectHandler-dev\",\"peerstoreStoreDisconnectHandler-dev\",\"peerstoreVisitorConnectHandler-dev\",\"peerstoreVisitorDisconnectHandler-dev\",\"peerstoreVisitorMessageHandler-dev\",\"ddbGetOrderByID-dev\",\"apigatewayPaymentCallback-dev\",\"peerstoreVisitorPaymentHandler-dev\",\"ddbPositionNotifyHandler-dev\",\"peerstoreVisitorPositionHandler-dev\",\"ddbGetStoreByID-dev\"]))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "MutationdeleteStoreConnectionauth0FunctionMutationdeleteStoreConnectionauth0FunctionAppSyncFunction315ED5E4": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Fn::GetAtt": [
+            "StoreConnectionDataSource",
+            "Name"
+          ]
+        },
+        "Name": "MutationdeleteStoreConnectionauth0Function",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Mutation.deleteStoreConnection.auth.1.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Mutation.deleteStoreConnection.auth.1.res.vtl"
+            ]
+          ]
+        }
+      },
+      "DependsOn": [
+        "StoreConnectionDataSource"
+      ]
+    },
+    "MutationDeleteStoreConnectionDataResolverFnMutationDeleteStoreConnectionDataResolverFnAppSyncFunction0925D856": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Fn::GetAtt": [
+            "StoreConnectionDataSource",
+            "Name"
+          ]
+        },
+        "Name": "MutationDeleteStoreConnectionDataResolverFn",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Mutation.deleteStoreConnection.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Mutation.deleteStoreConnection.res.vtl"
+            ]
+          ]
+        }
+      },
+      "DependsOn": [
+        "StoreConnectionDataSource"
+      ]
+    },
+    "DeleteStoreConnectionResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "deleteStoreConnection",
+        "TypeName": "Mutation",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "MutationdeleteStoreConnectionauth0FunctionMutationdeleteStoreConnectionauth0FunctionAppSyncFunction315ED5E4",
+                "FunctionId"
+              ]
+            },
+            {
+              "Ref": "referencetotransformerrootstackPositionNestedStackPositionNestedStackResource9A88757DOutputstransformerrootstackPositionQuerygetPositionpostAuth0FunctionQuerygetPositionpostAuth0FunctionAppSyncFunctionBF4DF3CAFunctionId"
+            },
+            {
+              "Fn::GetAtt": [
+                "MutationDeleteStoreConnectionDataResolverFnMutationDeleteStoreConnectionDataResolverFnAppSyncFunction0925D856",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"deleteStoreConnection\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "StoreConnectionTable"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"ap-northeast-1:8e31875f-24f9-4528-9706-8018a270112f\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"peerstoreStoreConnectHandler-dev\",\"peerstoreStoreDisconnectHandler-dev\",\"peerstoreVisitorConnectHandler-dev\",\"peerstoreVisitorDisconnectHandler-dev\",\"peerstoreVisitorMessageHandler-dev\",\"ddbGetOrderByID-dev\",\"apigatewayPaymentCallback-dev\",\"peerstoreVisitorPaymentHandler-dev\",\"ddbPositionNotifyHandler-dev\",\"peerstoreVisitorPositionHandler-dev\",\"ddbGetStoreByID-dev\"]))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "SubscriptiononCreateStoreConnectionauth0FunctionSubscriptiononCreateStoreConnectionauth0FunctionAppSyncFunctionC22B9E44": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name"
+        },
+        "Name": "SubscriptiononCreateStoreConnectionauth0Function",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Subscription.onCreateStoreConnection.auth.1.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson({})"
+      }
+    },
+    "SubscriptiononCreateStoreConnectionResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "onCreateStoreConnection",
+        "TypeName": "Subscription",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "SubscriptiononCreateStoreConnectionauth0FunctionSubscriptiononCreateStoreConnectionauth0FunctionAppSyncFunctionC22B9E44",
+                "FunctionId"
+              ]
+            },
+            {
+              "Ref": "referencetotransformerrootstackPositionNestedStackPositionNestedStackResource9A88757DOutputstransformerrootstackPositionQuerygetPositionpostAuth0FunctionQuerygetPositionpostAuth0FunctionAppSyncFunctionBF4DF3CAFunctionId"
+            },
+            {
+              "Ref": "referencetotransformerrootstackPositionNestedStackPositionNestedStackResource9A88757DOutputstransformerrootstackPositionSubscriptionOnCreatePositionDataResolverFnSubscriptionOnCreatePositionDataResolverFnAppSyncFunction243540D7FunctionId"
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"Subscription\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"onCreateStoreConnection\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"NONE\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n\n$util.qr($ctx.stash.put(\"identityPoolId\", \"ap-northeast-1:8e31875f-24f9-4528-9706-8018a270112f\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"peerstoreStoreConnectHandler-dev\",\"peerstoreStoreDisconnectHandler-dev\",\"peerstoreVisitorConnectHandler-dev\",\"peerstoreVisitorDisconnectHandler-dev\",\"peerstoreVisitorMessageHandler-dev\",\"ddbGetOrderByID-dev\",\"apigatewayPaymentCallback-dev\",\"peerstoreVisitorPaymentHandler-dev\",\"ddbPositionNotifyHandler-dev\",\"peerstoreVisitorPositionHandler-dev\",\"ddbGetStoreByID-dev\"]))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "SubscriptiononUpdateStoreConnectionResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "onUpdateStoreConnection",
+        "TypeName": "Subscription",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "SubscriptiononCreateStoreConnectionauth0FunctionSubscriptiononCreateStoreConnectionauth0FunctionAppSyncFunctionC22B9E44",
+                "FunctionId"
+              ]
+            },
+            {
+              "Ref": "referencetotransformerrootstackPositionNestedStackPositionNestedStackResource9A88757DOutputstransformerrootstackPositionQuerygetPositionpostAuth0FunctionQuerygetPositionpostAuth0FunctionAppSyncFunctionBF4DF3CAFunctionId"
+            },
+            {
+              "Ref": "referencetotransformerrootstackPositionNestedStackPositionNestedStackResource9A88757DOutputstransformerrootstackPositionSubscriptionOnCreatePositionDataResolverFnSubscriptionOnCreatePositionDataResolverFnAppSyncFunction243540D7FunctionId"
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"Subscription\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"onUpdateStoreConnection\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"NONE\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n\n$util.qr($ctx.stash.put(\"identityPoolId\", \"ap-northeast-1:8e31875f-24f9-4528-9706-8018a270112f\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"peerstoreStoreConnectHandler-dev\",\"peerstoreStoreDisconnectHandler-dev\",\"peerstoreVisitorConnectHandler-dev\",\"peerstoreVisitorDisconnectHandler-dev\",\"peerstoreVisitorMessageHandler-dev\",\"ddbGetOrderByID-dev\",\"apigatewayPaymentCallback-dev\",\"peerstoreVisitorPaymentHandler-dev\",\"ddbPositionNotifyHandler-dev\",\"peerstoreVisitorPositionHandler-dev\",\"ddbGetStoreByID-dev\"]))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "SubscriptiononDeleteStoreConnectionResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "onDeleteStoreConnection",
+        "TypeName": "Subscription",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "SubscriptiononCreateStoreConnectionauth0FunctionSubscriptiononCreateStoreConnectionauth0FunctionAppSyncFunctionC22B9E44",
+                "FunctionId"
+              ]
+            },
+            {
+              "Ref": "referencetotransformerrootstackPositionNestedStackPositionNestedStackResource9A88757DOutputstransformerrootstackPositionQuerygetPositionpostAuth0FunctionQuerygetPositionpostAuth0FunctionAppSyncFunctionBF4DF3CAFunctionId"
+            },
+            {
+              "Ref": "referencetotransformerrootstackPositionNestedStackPositionNestedStackResource9A88757DOutputstransformerrootstackPositionSubscriptionOnCreatePositionDataResolverFnSubscriptionOnCreatePositionDataResolverFnAppSyncFunction243540D7FunctionId"
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"Subscription\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"onDeleteStoreConnection\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"NONE\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n\n$util.qr($ctx.stash.put(\"identityPoolId\", \"ap-northeast-1:8e31875f-24f9-4528-9706-8018a270112f\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"peerstoreStoreConnectHandler-dev\",\"peerstoreStoreDisconnectHandler-dev\",\"peerstoreVisitorConnectHandler-dev\",\"peerstoreVisitorDisconnectHandler-dev\",\"peerstoreVisitorMessageHandler-dev\",\"ddbGetOrderByID-dev\",\"apigatewayPaymentCallback-dev\",\"peerstoreVisitorPaymentHandler-dev\",\"ddbPositionNotifyHandler-dev\",\"peerstoreVisitorPositionHandler-dev\",\"ddbGetStoreByID-dev\"]))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "QueryStoreConnectionsByConnectionIDDataResolverFnQueryStoreConnectionsByConnectionIDDataResolverFnAppSyncFunctionB5252186": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Fn::GetAtt": [
+            "StoreConnectionDataSource",
+            "Name"
+          ]
+        },
+        "Name": "QueryStoreConnectionsByConnectionIDDataResolverFn",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Query.storeConnectionsByConnectionID.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Query.storeConnectionsByConnectionID.res.vtl"
+            ]
+          ]
+        }
+      },
+      "DependsOn": [
+        "StoreConnectionDataSource"
+      ]
+    },
+    "QuerystoreConnectionsByConnectionIDResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "storeConnectionsByConnectionID",
+        "TypeName": "Query",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "QuerygetStoreConnectionauth0FunctionQuerygetStoreConnectionauth0FunctionAppSyncFunction1120D39E",
+                "FunctionId"
+              ]
+            },
+            {
+              "Ref": "referencetotransformerrootstackPositionNestedStackPositionNestedStackResource9A88757DOutputstransformerrootstackPositionQuerygetPositionpostAuth0FunctionQuerygetPositionpostAuth0FunctionAppSyncFunctionBF4DF3CAFunctionId"
+            },
+            {
+              "Fn::GetAtt": [
+                "QueryStoreConnectionsByConnectionIDDataResolverFnQueryStoreConnectionsByConnectionIDDataResolverFnAppSyncFunctionB5252186",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"Query\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"storeConnectionsByConnectionID\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "StoreConnectionTable"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"ap-northeast-1:8e31875f-24f9-4528-9706-8018a270112f\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"peerstoreStoreConnectHandler-dev\",\"peerstoreStoreDisconnectHandler-dev\",\"peerstoreVisitorConnectHandler-dev\",\"peerstoreVisitorDisconnectHandler-dev\",\"peerstoreVisitorMessageHandler-dev\",\"ddbGetOrderByID-dev\",\"apigatewayPaymentCallback-dev\",\"peerstoreVisitorPaymentHandler-dev\",\"ddbPositionNotifyHandler-dev\",\"peerstoreVisitorPositionHandler-dev\",\"ddbGetStoreByID-dev\"]))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "QueryStoreConnectionsByStoreIDDataResolverFnQueryStoreConnectionsByStoreIDDataResolverFnAppSyncFunction072C1221": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Fn::GetAtt": [
+            "StoreConnectionDataSource",
+            "Name"
+          ]
+        },
+        "Name": "QueryStoreConnectionsByStoreIDDataResolverFn",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Query.storeConnectionsByStoreID.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Query.storeConnectionsByStoreID.res.vtl"
+            ]
+          ]
+        }
+      },
+      "DependsOn": [
+        "StoreConnectionDataSource"
+      ]
+    },
+    "QuerystoreConnectionsByStoreIDResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "storeConnectionsByStoreID",
+        "TypeName": "Query",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "QuerygetStoreConnectionauth0FunctionQuerygetStoreConnectionauth0FunctionAppSyncFunction1120D39E",
+                "FunctionId"
+              ]
+            },
+            {
+              "Ref": "referencetotransformerrootstackPositionNestedStackPositionNestedStackResource9A88757DOutputstransformerrootstackPositionQuerygetPositionpostAuth0FunctionQuerygetPositionpostAuth0FunctionAppSyncFunctionBF4DF3CAFunctionId"
+            },
+            {
+              "Fn::GetAtt": [
+                "QueryStoreConnectionsByStoreIDDataResolverFnQueryStoreConnectionsByStoreIDDataResolverFnAppSyncFunction072C1221",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"Query\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"storeConnectionsByStoreID\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "StoreConnectionTable"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"ap-northeast-1:8e31875f-24f9-4528-9706-8018a270112f\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"peerstoreStoreConnectHandler-dev\",\"peerstoreStoreDisconnectHandler-dev\",\"peerstoreVisitorConnectHandler-dev\",\"peerstoreVisitorDisconnectHandler-dev\",\"peerstoreVisitorMessageHandler-dev\",\"ddbGetOrderByID-dev\",\"apigatewayPaymentCallback-dev\",\"peerstoreVisitorPaymentHandler-dev\",\"ddbPositionNotifyHandler-dev\",\"peerstoreVisitorPositionHandler-dev\",\"ddbGetStoreByID-dev\"]))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "QueryStoreConnectionsByPositionIDDataResolverFnQueryStoreConnectionsByPositionIDDataResolverFnAppSyncFunction937D51D5": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Fn::GetAtt": [
+            "StoreConnectionDataSource",
+            "Name"
+          ]
+        },
+        "Name": "QueryStoreConnectionsByPositionIDDataResolverFn",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Query.storeConnectionsByPositionID.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Query.storeConnectionsByPositionID.res.vtl"
+            ]
+          ]
+        }
+      },
+      "DependsOn": [
+        "StoreConnectionDataSource"
+      ]
+    },
+    "QuerystoreConnectionsByPositionIDResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "storeConnectionsByPositionID",
+        "TypeName": "Query",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "QuerygetStoreConnectionauth0FunctionQuerygetStoreConnectionauth0FunctionAppSyncFunction1120D39E",
+                "FunctionId"
+              ]
+            },
+            {
+              "Ref": "referencetotransformerrootstackPositionNestedStackPositionNestedStackResource9A88757DOutputstransformerrootstackPositionQuerygetPositionpostAuth0FunctionQuerygetPositionpostAuth0FunctionAppSyncFunctionBF4DF3CAFunctionId"
+            },
+            {
+              "Fn::GetAtt": [
+                "QueryStoreConnectionsByPositionIDDataResolverFnQueryStoreConnectionsByPositionIDDataResolverFnAppSyncFunction937D51D5",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"Query\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"storeConnectionsByPositionID\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "StoreConnectionTable"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"ap-northeast-1:8e31875f-24f9-4528-9706-8018a270112f\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"peerstoreStoreConnectHandler-dev\",\"peerstoreStoreDisconnectHandler-dev\",\"peerstoreVisitorConnectHandler-dev\",\"peerstoreVisitorDisconnectHandler-dev\",\"peerstoreVisitorMessageHandler-dev\",\"ddbGetOrderByID-dev\",\"apigatewayPaymentCallback-dev\",\"peerstoreVisitorPaymentHandler-dev\",\"ddbPositionNotifyHandler-dev\",\"peerstoreVisitorPositionHandler-dev\",\"ddbGetStoreByID-dev\"]))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    }
+  },
+  "Outputs": {
+    "GetAttStoreConnectionTableStreamArn": {
+      "Description": "Your DynamoDB table StreamArn.",
+      "Value": {
+        "Fn::GetAtt": [
+          "StoreConnectionTable",
+          "StreamArn"
+        ]
+      },
+      "Export": {
+        "Name": {
+          "Fn::Join": [
+            ":",
+            [
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "GetAtt:StoreConnectionTable:StreamArn"
+            ]
+          ]
+        }
+      }
+    },
+    "GetAttStoreConnectionTableName": {
+      "Description": "Your DynamoDB table name.",
+      "Value": {
+        "Ref": "StoreConnectionTable"
+      },
+      "Export": {
+        "Name": {
+          "Fn::Join": [
+            ":",
+            [
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "GetAtt:StoreConnectionTable:Name"
+            ]
+          ]
+        }
+      }
+    },
+    "GetAttStoreConnectionDataSourceName": {
+      "Description": "Your model DataSource name.",
+      "Value": {
+        "Fn::GetAtt": [
+          "StoreConnectionDataSource",
+          "Name"
+        ]
+      },
+      "Export": {
+        "Name": {
+          "Fn::Join": [
+            ":",
+            [
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "GetAtt:StoreConnectionDataSource:Name"
+            ]
+          ]
+        }
+      }
+    },
+    "transformerrootstackStoreConnectionMutationcreateStoreConnectioninit0FunctionMutationcreateStoreConnectioninit0FunctionAppSyncFunctionE63F33F3FunctionId": {
+      "Value": {
+        "Fn::GetAtt": [
+          "MutationcreateStoreConnectioninit0FunctionMutationcreateStoreConnectioninit0FunctionAppSyncFunctionDD9A703F",
+          "FunctionId"
+        ]
+      }
+    },
+    "transformerrootstackStoreConnectionMutationcreateStoreConnectionauth0FunctionMutationcreateStoreConnectionauth0FunctionAppSyncFunction6698B48BFunctionId": {
+      "Value": {
+        "Fn::GetAtt": [
+          "MutationcreateStoreConnectionauth0FunctionMutationcreateStoreConnectionauth0FunctionAppSyncFunction41678BFD",
+          "FunctionId"
+        ]
+      }
+    },
+    "transformerrootstackStoreConnectionStoreConnectionDataSource610C1EA8Name": {
+      "Value": {
+        "Fn::GetAtt": [
+          "StoreConnectionDataSource",
+          "Name"
+        ]
+      }
+    },
+    "transformerrootstackStoreConnectionStoreConnectionTable8AC11542Ref": {
+      "Value": {
+        "Ref": "StoreConnectionTable"
+      }
+    }
+  }
+}
