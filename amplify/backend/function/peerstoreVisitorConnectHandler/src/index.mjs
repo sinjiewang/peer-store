@@ -17,9 +17,27 @@ export async function handler(event) {
   console.log(`EVENT: ${JSON.stringify(event)}`)
 
   const { connectionId: connectionID } = event.requestContext
-  const { lat=0, lng=0, storeId: id='' } = event.queryStringParameters || {}
+  const { lat=null, lng=null, storeId: id='' } = event.queryStringParameters || {}
   const ddbVisitorConnection = new DdbVisitorConnection()
   const ddbStore = new DdbStore()
+
+  if (!id) {
+    if (lat === null || lng === null) return {
+      statusCode: 403,
+      body: 'Connection refused'
+    }
+
+    await ddbVisitorConnection.create({
+      connectionID,
+      lat: Number(lat),
+      lng: Number(lng),
+      zone: getZone({ lat, lng }),
+    })
+
+    return {
+      statusCode: 200,
+    }
+  }
 
   const res = await ddbStore.queryByID({ id }).catch(err => {
     console.error('DdbStore.query fail: ', err)
@@ -44,9 +62,9 @@ export async function handler(event) {
 
   await ddbVisitorConnection.create({
     connectionID,
-    lat: Number(lat),
-    lng: Number(lng),
-    zone: getZone({ lat, lng }),
+    lat: 0,
+    lng: 0,
+    zone: 'N/A',
   })
 
   return {

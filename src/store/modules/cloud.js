@@ -51,6 +51,19 @@ export default {
 
       return cloudConnection
     },
+    async browserConnect({ commit }, { lat=0, lng=0 }={}) {
+      const genToken = () => ({ lat, lng })
+      const cloudConnection = new CloudConnection({
+        url: VITE_AWS_API_GATEWAY_VISITOR_URL,
+        genToken,
+      })
+
+      await cloudConnection.connect()
+
+      commit('SET_CONNECTION', cloudConnection)
+
+      return cloudConnection
+    },
     disconnect({ state, commit }) {
       const { connection } = state
 

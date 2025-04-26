@@ -1,0 +1,46 @@
+{
+  "Records": [
+      {
+          "eventID": "4aa3727d1b0117316be29948d75a10c9",
+          "eventName": "INSERT",
+          "eventVersion": "1.1",
+          "eventSource": "aws:dynamodb",
+          "awsRegion": "ap-northeast-1",
+          "dynamodb": {
+              "ApproximateCreationDateTime": 1744721437,
+              "Keys": {
+                  "positionID": {
+                      "S": "25.049055_121.4496203"
+                  }
+              },
+              "NewImage": {
+                  "createdAt": {
+                      "S": "2025-04-15T12:50:37.462Z"
+                  },
+                  "lng": {
+                      "N": "121.4496203"
+                  },
+                  "positionID": {
+                      "S": "25.049055_121.4496203"
+                  },
+                  "__typename": {
+                      "S": "Position"
+                  },
+                  "id": {
+                      "S": "064801dd-05e3-4d1c-88e1-f73aaeff4295"
+                  },
+                  "lat": {
+                      "N": "25.049055"
+                  },
+                  "updatedAt": {
+                      "S": "2025-04-15T12:50:37.462Z"
+                  }
+              },
+              "SequenceNumber": "483634700001313053774819345",
+              "SizeBytes": 202,
+              "StreamViewType": "NEW_AND_OLD_IMAGES"
+          },
+          "eventSourceARN": "arn:aws:dynamodb:ap-northeast-1:301856136276:table/Position-uevkvteuhbgqjbht6wewlrukum-dev/stream/2025-01-03T07:28:11.616"
+      }
+  ]
+}

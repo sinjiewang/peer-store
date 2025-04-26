@@ -39,7 +39,7 @@
         },
         "peerstoreVisitorConnectHandler": {
           "deploymentBucketName": "amplify-peerstore-dev-54370-deployment",
-          "s3Key": "amplify-builds/peerstoreVisitorConnectHandler-5768535a6b3431437979-build.zip"
+          "s3Key": "amplify-builds/peerstoreVisitorConnectHandler-4e5475724a452f42444b-build.zip"
         },
         "peerstoreVisitorDisconnectHandler": {
           "deploymentBucketName": "amplify-peerstore-dev-54370-deployment",
@@ -68,6 +68,18 @@
         "peerstoreVisitorPaymentHandler": {
           "deploymentBucketName": "amplify-peerstore-dev-54370-deployment",
           "s3Key": "amplify-builds/peerstoreVisitorPaymentHandler-6f77682f676475635932-build.zip"
+        },
+        "ddbPositionNotifyHandler": {
+          "deploymentBucketName": "amplify-peerstore-dev-54370-deployment",
+          "s3Key": "amplify-builds/ddbPositionNotifyHandler-4375644b67576a5a6c6a-build.zip"
+        },
+        "peerstoreVisitorPositionHandler": {
+          "deploymentBucketName": "amplify-peerstore-dev-54370-deployment",
+          "s3Key": "amplify-builds/peerstoreVisitorPositionHandler-3730495a3878694a736f-build.zip"
+        },
+        "ddbGetStoreByID": {
+          "deploymentBucketName": "amplify-peerstore-dev-54370-deployment",
+          "s3Key": "amplify-builds/ddbGetStoreByID-42496e394433376c3557-build.zip"
         }
       },
       "hosting": {

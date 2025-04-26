@@ -1,0 +1,27 @@
+/* Amplify Params - DO NOT EDIT
+	API_PEERSTORE_GRAPHQLAPIIDOUTPUT
+	API_PEERSTORE_STORETABLE_ARN
+	API_PEERSTORE_STORETABLE_NAME
+	ENV
+	REGION
+Amplify Params - DO NOT EDIT */
+
+/**
+ * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
+ */
+import DdbStore from './utils/DdbStore.mjs'
+
+export async function handler(event) {
+  console.log(`EVENT: ${JSON.stringify(event)}`)
+
+  const { id } = event.arguments
+
+  if (!id) throw new Error('Bad Request')
+
+  const ddbStore = new DdbStore()
+  const res = await ddbStore.queryByID({ id }).catch(err => {
+    console.error('DdbOrder.query fail: ', err)
+  })
+
+  if (res.Items && res.Items.length) { return res.Items[0] }
+}
