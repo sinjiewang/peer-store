@@ -58,87 +58,6 @@ export const deletePosition = /* GraphQL */ `
     }
   }
 `;
-export const createStore = /* GraphQL */ `
-  mutation CreateStore(
-    $input: CreateStoreInput!
-    $condition: ModelStoreConditionInput
-  ) {
-    createStore(input: $input, condition: $condition) {
-      id
-      name
-      description
-      address
-      city
-      state
-      zip
-      phone
-      email
-      image
-      tags
-      merchantID
-      hashKey
-      hashIV
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const updateStore = /* GraphQL */ `
-  mutation UpdateStore(
-    $input: UpdateStoreInput!
-    $condition: ModelStoreConditionInput
-  ) {
-    updateStore(input: $input, condition: $condition) {
-      id
-      name
-      description
-      address
-      city
-      state
-      zip
-      phone
-      email
-      image
-      tags
-      merchantID
-      hashKey
-      hashIV
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const deleteStore = /* GraphQL */ `
-  mutation DeleteStore(
-    $input: DeleteStoreInput!
-    $condition: ModelStoreConditionInput
-  ) {
-    deleteStore(input: $input, condition: $condition) {
-      id
-      name
-      description
-      address
-      city
-      state
-      zip
-      phone
-      email
-      image
-      tags
-      merchantID
-      hashKey
-      hashIV
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
 export const createStoreConnection = /* GraphQL */ `
   mutation CreateStoreConnection(
     $input: CreateStoreConnectionInput!
@@ -318,6 +237,87 @@ export const deleteVisitorConnection = /* GraphQL */ `
       zone
       createdAt
       updatedAt
+      __typename
+    }
+  }
+`;
+export const createStore = /* GraphQL */ `
+  mutation CreateStore(
+    $input: CreateStoreInput!
+    $condition: ModelStoreConditionInput
+  ) {
+    createStore(input: $input, condition: $condition) {
+      id
+      name
+      description
+      address
+      city
+      state
+      zip
+      phone
+      email
+      image
+      tags
+      merchantID
+      hashKey
+      hashIV
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const updateStore = /* GraphQL */ `
+  mutation UpdateStore(
+    $input: UpdateStoreInput!
+    $condition: ModelStoreConditionInput
+  ) {
+    updateStore(input: $input, condition: $condition) {
+      id
+      name
+      description
+      address
+      city
+      state
+      zip
+      phone
+      email
+      image
+      tags
+      merchantID
+      hashKey
+      hashIV
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const deleteStore = /* GraphQL */ `
+  mutation DeleteStore(
+    $input: DeleteStoreInput!
+    $condition: ModelStoreConditionInput
+  ) {
+    deleteStore(input: $input, condition: $condition) {
+      id
+      name
+      description
+      address
+      city
+      state
+      zip
+      phone
+      email
+      image
+      tags
+      merchantID
+      hashKey
+      hashIV
+      createdAt
+      updatedAt
+      owner
       __typename
     }
   }

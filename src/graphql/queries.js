@@ -19,9 +19,29 @@ export const getOrderByID = /* GraphQL */ `
     }
   }
 `;
-export const getStore = /* GraphQL */ `
-  query GetStore($id: ID!) {
-    getStore(id: $id) {
+export const getPosition = /* GraphQL */ `
+  query GetPosition($positionID: String!, $limit: Int = 10, $nextToken: String = null) {
+    getPosition(positionID: $positionID) {
+      positionID
+      lat
+      lng
+      stores(limit: $limit, nextToken: $nextToken) {
+        nextToken
+        items {
+          storeID
+          createdAt
+          updatedAt
+        }
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const getStoreByID = /* GraphQL */ `
+  query GetStoreByID($id: ID!) {
+    getStoreByID(id: $id) {
       id
       name
       description
@@ -33,60 +53,6 @@ export const getStore = /* GraphQL */ `
       email
       image
       tags
-      merchantID
-      hashKey
-      hashIV
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const listStores = /* GraphQL */ `
-  query ListStores(
-    $filter: ModelStoreFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listStores(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        name
-        description
-        address
-        city
-        state
-        zip
-        phone
-        email
-        image
-        tags
-        merchantID
-        hashKey
-        hashIV
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-export const getPosition = /* GraphQL */ `
-  query GetPosition($positionID: String!) {
-    getPosition(positionID: $positionID) {
-      positionID
-      lat
-      lng
-      stores {
-        nextToken
-        __typename
-      }
-      createdAt
-      updatedAt
       __typename
     }
   }
@@ -421,6 +387,62 @@ export const visitorConnectionsByZone = /* GraphQL */ `
         zone
         createdAt
         updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const getStore = /* GraphQL */ `
+  query GetStore($id: ID!) {
+    getStore(id: $id) {
+      id
+      name
+      description
+      address
+      city
+      state
+      zip
+      phone
+      email
+      image
+      tags
+      merchantID
+      hashKey
+      hashIV
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const listStores = /* GraphQL */ `
+  query ListStores(
+    $filter: ModelStoreFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listStores(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        description
+        address
+        city
+        state
+        zip
+        phone
+        email
+        image
+        tags
+        merchantID
+        hashKey
+        hashIV
+        createdAt
+        updatedAt
+        owner
         __typename
       }
       nextToken

@@ -126,6 +126,48 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "ddbGetStoreByID": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "peerstore"
+        },
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "peerstoreconfigure"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "ddbPositionNotifyHandler": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "peerstore"
+        },
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "peerstoreconfigure"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "peerstoreStoreConnectHandler": {
       "build": true,
       "dependsOn": [
@@ -301,6 +343,27 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "peerstoreVisitorPositionHandler": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "peerstore"
+        },
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "peerstoreconfigure"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "peerstoreconfigure": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -343,6 +406,38 @@
         {
           "category": "function",
           "resourceName": "ddbGetOrderByID"
+        }
+      ]
+    },
+    "AMPLIFY_function_ddbGetStoreByID_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ddbGetStoreByID"
+        }
+      ]
+    },
+    "AMPLIFY_function_ddbGetStoreByID_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ddbGetStoreByID"
+        }
+      ]
+    },
+    "AMPLIFY_function_ddbPositionNotifyHandler_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ddbPositionNotifyHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_ddbPositionNotifyHandler_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ddbPositionNotifyHandler"
         }
       ]
     },
@@ -487,6 +582,22 @@
         {
           "category": "function",
           "resourceName": "peerstoreVisitorPaymentHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_peerstoreVisitorPositionHandler_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "peerstoreVisitorPositionHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_peerstoreVisitorPositionHandler_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "peerstoreVisitorPositionHandler"
         }
       ]
     },
